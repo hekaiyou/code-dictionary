@@ -31,22 +31,21 @@ Listening at http://localhost:3000
 - .nojekyll：阻止GitHub忽略下划线开头的文件
 - index.html：入口文件，整个网站的核心文件
 - README.md：默认页面，主页内容渲染
-- _coverpage.md：渲染封面
-- _sidebar.md：当前文档的侧边栏
 
 ### index文件设置
 
 - name：站点标题
 - repo：仓库地址，会在页面右上角渲染一个挂件
 - coverpage：开启渲染封面功能，对应 `_coverpage.md` 文件
-- repo：定制侧边栏，对应 `_sidebar.md` 文件
+- loadNavbar：配置导航栏，对应 `_navbar.md` 文件
 
 ```javascript
   <script>
     window.$docsify = {
       name: '开发小手册',
       repo: 'https://github.com/hekaiyou/code-dictionary',
-      coverpage: true
+      coverpage: true,
+      loadNavbar: true
     }
   </script>
 ```
