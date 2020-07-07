@@ -38,6 +38,7 @@ Listening at http://localhost:3000
 - repo：仓库地址，会在页面右上角渲染一个挂件
 - coverpage：开启渲染封面功能，对应 `_coverpage.md` 文件
 - loadNavbar：配置导航栏，对应 `_navbar.md` 文件
+- maxLevel：最大支持渲染的标题层级
 
 ```javascript
   <script>
@@ -45,7 +46,8 @@ Listening at http://localhost:3000
       name: '开发小手册',
       repo: 'https://github.com/hekaiyou/code-dictionary',
       coverpage: true,
-      loadNavbar: true
+      loadNavbar: true,
+      maxLevel: 4
     }
   </script>
 ```
