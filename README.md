@@ -22,4 +22,4 @@ Listening at http://localhost:3000
 
 ## GitHub预览文档
 
-找到 `setting` -> `GitHub Pages`，配置分支为 `master barnch /docs folder`
+找到 `setting` -> `GitHub Pages`，配置分支为 `master barnch /docs folder`，点击保存后会自动发布，并且给出发布地址。（例：https://hekaiyou.github.io/code-dictionary/#/）
