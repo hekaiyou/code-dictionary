@@ -47,7 +47,7 @@ Listening at http://localhost:3000
       repo: 'https://github.com/hekaiyou/code-dictionary',
       coverpage: true,
       loadNavbar: true,
-      maxLevel: 4
+      maxLevel: 3
     }
   </script>
 ```
