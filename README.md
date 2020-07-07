@@ -1,4 +1,6 @@
-个人的代码字典，结合docsify框架生成开发字典网站
+# 开发小手册
+
+个人的代码字典，结合docsify框架生成开发字典网站。
 
 ## 本地部署
 
@@ -26,10 +28,10 @@ Listening at http://localhost:3000
 
 ### docs目录结构
 
- - .nojekyll：让gitHub不忽略掉以 _ 打头的文件
- - index.html：整个网站的核心文件
- - README.md：默认页面
- - _coverpage.md：渲染封面
+- .nojekyll：让gitHub不忽略掉以 _ 打头的文件
+- index.html：整个网站的核心文件
+- README.md：默认页面
+- _coverpage.md：渲染封面
 
 ### index文件设置
 
