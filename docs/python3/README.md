@@ -45,8 +45,8 @@ str.center(width[, fillchar])
 
 ##### 参数
 
-- width -- 字符串的总宽度。
-- fillchar -- 填充字符。
+- width -- 字符串的总宽度
+- fillchar -- 填充字符
 
 ##### 返回值
 
@@ -63,4 +63,43 @@ print("str.center(40, '*'): ", str.center(40, '*'))
 
 ```powershell
 str.center(40, '*'):  ************[www.you.com]************
+```
+
+### count(str, beg=0, end=len(string))
+
+##### 描述
+
+统计字符串里某个字符出现的次数，可选参数为在字符串搜索的开始与结束位置。
+
+##### 语法
+
+```python
+str.count(sub, start=0, end=len(string))
+```
+
+##### 参数
+
+- sub -- 搜索的子字符串
+- start -- 字符串开始搜索的位置，默认为第一个字符，第一个字符索引值为0
+- end -- 字符串中结束搜索的位置，字符中第一个字符的索引为0，默认为字符串的最后一个位置
+
+##### 返回值
+
+返回子字符串在字符串中出现的次数。
+
+##### 实例
+
+```python
+str="www.you.com"
+sub='x'
+print ("str.count('x'): ", str.count(sub))
+sub='w'
+print ("str.count('w', 0, 10): ", str.count(sub, 0, 10))
+```
+
+以上实例输出结果如下：
+
+```powershell
+str.count('x'):  1
+str.count('w', 0, 10):  4
 ```
