@@ -46,8 +46,7 @@ Listening at http://localhost:3000
     window.$docsify = {
       name: '开发小手册',
       repo: 'https://github.com/hekaiyou/code-dictionary',
-      coverpage: true,
-      loadSidebar: true
+      coverpage: true
     }
   </script>
 ```
