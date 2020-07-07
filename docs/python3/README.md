@@ -100,6 +100,6 @@ print ("str.count('w', 0, 10): ", str.count(sub, 0, 10))
 以上实例输出结果如下：
 
 ```powershell
-str.count('x'):  1
-str.count('w', 0, 10):  4
+str.count('y'):  1
+str.count('w', 0, 10):  3
 ```
