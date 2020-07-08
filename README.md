@@ -38,7 +38,8 @@ Listening at http://localhost:3000
 - repo：仓库地址，会在页面右上角渲染一个挂件
 - coverpage：开启渲染封面功能，对应 `_coverpage.md` 文件
 - loadNavbar：配置导航栏，对应 `_navbar.md` 文件
-- maxLevel：最大支持渲染的标题层级
+- subMaxLevel：生成目录的最大层级
+- loadSidebar：加载自定义侧边栏，对应 `_sidebar.md` 文件
 - search：全文搜索插件配置，配合 `search.min.js` 使用
 
 ```javascript
@@ -48,7 +49,8 @@ Listening at http://localhost:3000
       repo: 'https://github.com/hekaiyou/code-dictionary',
       coverpage: true,
       loadNavbar: true,
-      maxLevel: 3,
+      loadSidebar: true,
+      subMaxLevel: 3,
       search: {
         maxAge: 86400000, // 过期时间，单位毫秒，默认一天
         paths: [], // or 'auto'
