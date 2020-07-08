@@ -1,6 +1,6 @@
 # Python3 字符串 {docsify-ignore}
 
-### capitalize()
+## capitalize()
 
 ###### 描述
 
@@ -29,7 +29,7 @@ print("str.capitalize(): ", str.capitalize())
 str.capitalize():  This is string example from you....wow!!!
 ```
 
-### center(width, fillchar)
+## center(width, fillchar)
 
 ###### 描述
 
@@ -63,7 +63,7 @@ print("str.center(40, '*'): ", str.center(40, '*'))
 str.center(40, '*'):  ************[www.you.com]************
 ```
 
-### count(str, beg=0, end=len(string))
+## count(str, beg=0, end=len(string))
 
 ###### 描述
 
@@ -102,7 +102,7 @@ str.count('y'):  1
 str.count('w', 0, 10):  3
 ```
 
-### bytes.decode(encoding="utf-8", errors="strict")
+## bytes.decode(encoding="utf-8", errors="strict")
 
 ###### 描述
 
@@ -146,7 +146,7 @@ UTF-8 解码： you示例
 GBK 解码： you示例
 ```
 
-### encode(encoding='UTF-8', errors='strict')
+## encode(encoding='UTF-8', errors='strict')
 
 ###### 描述
 
@@ -190,7 +190,7 @@ UTF-8 解码： you示例
 GBK 解码： you示例
 ```
 
-### endswith(suffix, beg=0, end=len(string))
+## endswith(suffix, beg=0, end=len(string))
 
 ###### 描述
 
@@ -233,7 +233,7 @@ False
 False
 ```
 
-### expandtabs(tabsize=8)
+## expandtabs(tabsize=8)
 
 ###### 描述
 
@@ -270,7 +270,7 @@ print("使用16个空格替换 \\t 符号: " +  str.expandtabs(16))
 使用16个空格替换 \t 符号: this is         string example....wow!!!
 ```
 
-### find(str, beg=0 end=len(string))
+## find(str, beg=0 end=len(string))
 
 ###### 描述
 
@@ -310,7 +310,7 @@ print(str1.find(str2, 7))
 -1
 ```
 
-### index(str, beg=0, end=len(string))
+## index(str, beg=0, end=len(string))
 
 ###### 描述
 
@@ -353,7 +353,7 @@ Traceback (most recent call last):
 ValueError: substring not found
 ```
 
-### isalnum()
+## isalnum()
 
 ###### 描述
 
@@ -385,7 +385,7 @@ True
 False
 ```
 
-### isalpha()
+## isalpha()
 
 ###### 描述
 
@@ -417,7 +417,7 @@ True
 False
 ```
 
-### isdigit()
+## isdigit()
 
 ###### 描述
 
@@ -449,7 +449,7 @@ True
 False
 ```
 
-### islower()
+## islower()
 
 ###### 描述
 
@@ -481,7 +481,7 @@ False
 True
 ```
 
-### isnumeric()
+## isnumeric()
 
 ###### 描述
 
@@ -513,7 +513,7 @@ False
 True
 ```
 
-### isspace()
+## isspace()
 
 ###### 描述
 
@@ -545,7 +545,7 @@ True
 False
 ```
 
-### istitle()
+## istitle()
 
 ###### 描述
 
@@ -577,7 +577,7 @@ True
 False
 ```
 
-### isupper()
+## isupper()
 
 ###### 描述
 
@@ -609,7 +609,7 @@ True
 False
 ```
 
-### join(seq)
+## join(seq)
 
 ###### 描述
 
@@ -644,4 +644,132 @@ print(s2.join(seq))
 ```powershell
 Y-o-u-2-3
 You23
+```
+
+## len(string)
+
+###### 描述
+
+返回字符串长度。
+
+###### 语法
+
+```python
+len(str)
+```
+
+###### 返回值
+
+字符串长度。
+
+###### 实例
+
+```python
+str = "you example....wow!!!"
+print("字符串长度: ", len(str))
+```
+
+以上实例输出结果如下：
+
+```powershell
+字符串长度:  21
+```
+
+## ljust(width[, fillchar])
+
+###### 描述
+
+返回一个原字符串左对齐，并使用空格填充至指定长度的新字符串，如果指定的长度小于原字符串的长度则返回原字符串。
+
+###### 语法
+
+```python
+str.ljust(width[, fillchar])
+```
+
+###### 参数
+
+- width -- 指定字符串长度
+- fillchar -- 填充字符，默认为空格
+
+###### 返回值
+
+一个原字符串左对齐，并使用空格填充至指定长度的新字符串，如果指定的长度小于原字符串的长度则返回原字符串。
+
+###### 实例
+
+```python
+str = "You example....wow!!!"
+print(str.ljust(50, '*'))
+```
+
+以上实例输出结果如下：
+
+```powershell
+You example....wow!!!*****************************
+```
+
+## lower()
+
+###### 描述
+
+转换字符串中所有大写字符为小写。
+
+###### 语法
+
+```python
+str.lower()
+```
+
+###### 返回值
+
+将字符串中所有大写字符转换为小写后生成的字符串。
+
+###### 实例
+
+```python
+str = "You EXAMPLE....WOW!!!"
+print(str.lower())
+```
+
+以上实例输出结果如下：
+
+```powershell
+you example....wow!!!
+```
+
+## lstrip()
+
+###### 描述
+
+截掉字符串左边的空格或指定字符。
+
+###### 语法
+
+```python
+str.lstrip([chars])
+```
+
+###### 参数
+
+- chars --指定截取的字符
+
+###### 返回值
+
+截掉字符串左边的空格或指定字符后生成的新字符串。
+
+###### 实例
+
+```python
+str = "     this is string example....wow!!!     "
+print(str.lstrip())
+str = "88888888this is string example....wow!!!8888888"
+print(str.lstrip('8'))
+```
+
+以上实例输出结果如下：
+
+```powershell
+this is string example....wow!!!
+this is string example....wow!!!8888888
 ```
