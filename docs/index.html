@@ -21,10 +21,13 @@
       coverpage: true,
       loadNavbar: true,
       maxLevel: 3,
-      search : [
-        '/',            // => /README.md
-        '/python3/',    // => /python3/README.md
-      ]
+      search: {
+        maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+        paths: [], // or 'auto'
+        placeholder: '搜索',
+        noData: '没有结果!',
+        depth: 2, // 搜索标题的最大层级, 1 - 6
+      }
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
