@@ -21,7 +21,10 @@
       coverpage: true,
       loadNavbar: true,
       maxLevel: 3,
-      search: 'auto', // 默认值
+      search : [
+        '/',            // => /README.md
+        '/python3/',    // => /python3/README.md
+      ]
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
