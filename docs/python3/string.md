@@ -773,3 +773,106 @@ print(str.lstrip('8'))
 this is string example....wow!!!
 this is string example....wow!!!8888888
 ```
+
+## maketrans()
+
+###### 描述
+
+创建字符映射的转换表，对于接受两个参数的最简单的调用方式，第一个参数是字符串，表示需要转换的字符，第二个参数也是字符串表示转换的目标。（注：两个字符串的长度必须相同，为一一对应的关系。）
+
+###### 语法
+
+```python
+str.maketrans(intab, outtab)
+```
+
+###### 参数
+
+- intab -- 字符串中要替代的字符组成的字符串
+- outtab -- 相应的映射字符的字符串
+
+###### 返回值
+
+字符串转换后生成的新字符串。
+
+###### 实例
+
+```python
+intab = "aeiou"
+outtab = "12345"
+trantab = str.maketrans(intab, outtab)
+str = "this is string example....wow!!!"
+print(str.translate(trantab))
+```
+
+以上实例输出结果如下：
+
+```powershell
+th3s 3s str3ng 2x1mpl2....w4w!!!
+```
+
+## max(str)
+
+###### 描述
+
+返回字符串中最大的字母或数字。
+
+###### 语法
+
+```python
+max(str)
+```
+
+###### 参数
+
+- str -- 字符串
+
+###### 返回值
+
+字符串中最大的字母或数字。
+
+###### 实例
+
+```python
+str = "You233"
+print("最大字符: " + max(str))
+```
+
+以上实例输出结果如下：
+
+```powershell
+最大字符: u
+```
+
+## min(str)
+
+###### 描述
+
+返回字符串中最小的字母或数字。
+
+###### 语法
+
+```python
+min(str)
+```
+
+###### 参数
+
+- str -- 字符串
+
+###### 返回值
+
+字符串中最小的字母或数字。
+
+###### 实例
+
+```python
+str = "You233"
+print("最小字符: " + min(str))
+```
+
+以上实例输出结果如下：
+
+```powershell
+最小字符: 2
+```
