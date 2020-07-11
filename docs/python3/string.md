@@ -916,3 +916,160 @@ You新地址： www.you.com
 You新地址： new.you.com
 thwas was string example....wow!!!
 ```
+
+## rfind(str, beg=0, end=len(string))
+
+###### 描述
+
+返回字符串最后一次出现的位置，如果没有匹配项则返回-1。
+
+###### 语法
+
+```python
+str.rfind(str, beg=0 end=len(string))
+```
+
+###### 参数
+
+- str -- 查找的字符串
+- beg -- 开始查找的位置，默认为0
+- end -- 结束查找位置，默认为字符串的长度
+
+###### 返回值
+
+字符串最后一次出现的位置，如果没有匹配项则返回-1。
+
+###### 实例
+
+```python
+str1 = "this is really a string example....wow!!!"
+str2 = "is"
+print(str1.rfind(str2))
+print(str1.rfind(str2, 0, 10))
+print(str1.rfind(str2, 10, 0))
+print(str1.find(str2))
+print(str1.find(str2, 0, 10))
+print(str1.find(str2, 10, 0))
+```
+
+以上实例输出结果如下：
+
+```powershell
+5
+5
+-1
+2
+2
+-1
+```
+
+## rindex(str, beg=0, end=len(string))
+
+###### 描述
+
+返回子字符串 `str` 在字符串中最后出现的位置，如果没有匹配的字符串会报异常，你可以指定可选参数 `[beg:end]` 设置查找的区间。
+
+###### 语法
+
+```python
+str.rindex(str, beg=0, end=len(string))
+```
+
+###### 参数
+
+- str -- 查找的字符串
+- beg -- 开始查找的位置，默认为0
+- end -- 结束查找位置，默认为字符串的长度
+
+###### 返回值
+
+子字符串 `str` 在字符串中最后出现的位置，如果没有匹配的字符串会报异常。
+
+###### 实例
+
+```python
+str1 = "this is really a string example....wow!!!"
+str2 = "is"
+print(str1.rindex(str2))
+print(str1.rindex(str2,10))
+```
+
+以上实例输出结果如下：
+
+```powershell
+5
+Traceback (most recent call last):
+  File "test.py", line 4, in <module>
+    print(str1.rindex(str2,10))
+ValueError: substring not found
+```
+
+## rjust(width[, fillchar])
+
+###### 描述
+
+返回一个原字符串右对齐，并使用空格填充至长度 `width` 的新字符串，如果指定的长度小于字符串的长度则返回原字符串。
+
+###### 语法
+
+```python
+str.rjust(width[, fillchar])
+```
+
+###### 参数
+
+- width -- 指定填充指定字符后中字符串的总长度
+- fillchar -- 填充的字符，默认为空格
+
+###### 返回值
+
+一个原字符串右对齐，并使用空格填充至长度 `width` 的新字符串，如果指定的长度小于字符串的长度则返回原字符串。
+
+###### 实例
+
+```python
+str = "this is string example....wow!!!"
+print(str.rjust(50, '*'))
+```
+
+以上实例输出结果如下：
+
+```powershell
+*******************this is string example....wow!!!
+```
+
+## rstrip()
+
+###### 描述
+
+删除字符串末尾的指定字符（默认为空格）。
+
+###### 语法
+
+```python
+str.rstrip([chars])
+```
+
+###### 参数
+
+- chars -- 指定删除的字符（默认为空格）
+
+###### 返回值
+
+删除字符串末尾的指定字符后生成的新字符串。
+
+###### 实例
+
+```python
+str = "     this is string example....wow!!!     "
+print(str.rstrip())
+str = "*****this is string example....wow!!!*****"
+print(str.rstrip('*'))
+```
+
+以上实例输出结果如下：
+
+```powershell
+     this is string example....wow!!!
+*****this is string example....wow!!!
+```
