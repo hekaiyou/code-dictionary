@@ -53,7 +53,7 @@ Listening at http://localhost:3000
       subMaxLevel: 3,
       search: {
         maxAge: 86400000, // 过期时间，单位毫秒，默认一天
-        paths: [], // or 'auto'
+        paths: 'auto', // [] or 'auto'
         placeholder: '搜索',
         noData: '没有结果!',
         depth: 2, // 搜索标题的最大层级, 1 - 6
