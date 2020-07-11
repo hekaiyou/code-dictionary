@@ -876,3 +876,43 @@ print("最小字符: " + min(str))
 ```powershell
 最小字符: 2
 ```
+
+## replace(old, new [, max])
+
+###### 描述
+
+把字符串中的 `old`（旧字符串）替换成 `new`（新字符串），如果指定第三个参数 `max`，则替换不超过 `max` 次。
+
+###### 语法
+
+```python
+str.replace(old, new[, max])
+```
+
+###### 参数
+
+- old -- 将被替换的子字符串
+- new -- 新字符串，用于替换old子字符串
+- max -- 可选字符串, 替换不超过max次
+
+###### 返回值
+
+字符串中的 `old`（旧字符串）替换成 `new`（新字符串）后生成的新字符串，如果指定第三个参数 `max`，则替换不超过 `max` 次。
+
+###### 实例
+
+```python
+str = "www.you.com"
+print("You新地址：", str)
+print("You新地址：", str.replace("www", "new"))
+str = "this is string example....wow!!!"
+print(str.replace("is", "was", 3))
+```
+
+以上实例输出结果如下：
+
+```powershell
+You新地址： www.you.com
+You新地址： new.you.com
+thwas was string example....wow!!!
+```
