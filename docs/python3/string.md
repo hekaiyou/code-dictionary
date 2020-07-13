@@ -1248,3 +1248,165 @@ print(str.swapcase())
 THIS IS yOU STRING EXAMPLE....WOW!!!
 tHIS iS YOU.COM sTRING eXAMPLE....wow!!!
 ```
+
+## title()
+
+###### 描述
+
+返回“标题化”的字符串，就是说所有单词都是以大写开始，其余字母均为小写（见 `istitle()`）。
+
+###### 语法
+
+```python
+str.title()
+```
+
+###### 返回值
+
+“标题化”的字符串，就是说所有单词都是以大写开始。
+
+###### 实例
+
+```python
+str = "this is string example from You....wow!!!"
+print(str.title())
+```
+
+以上实例输出结果如下：
+
+```powershell
+This Is String Example From You....Wow!!!
+```
+
+## translate(table, deletechars="")
+
+###### 描述
+
+根据参数 `table` 给出的表（包含256个字符）转换字符串的字符，要过滤掉的字符放到 `del` 参数中。
+
+###### 语法
+
+```python
+str.translate(table[, deletechars])
+```
+
+###### 参数
+
+- table -- 翻译表，翻译表是通过maketrans方法转换而来
+- deletechars -- 字符串中要过滤的字符列表
+
+###### 返回值
+
+翻译后的字符串。
+
+###### 实例
+
+```python
+intab = "aeiou"
+outtab = "12345"
+trantab = str.maketrans(intab, outtab)
+str = "this is string example....wow!!!"
+print(str.translate(trantab))
+```
+
+以上实例输出结果如下：
+
+```powershell
+th3s 3s str3ng 2x1mpl2....w4w!!!
+```
+
+## upper()
+
+###### 描述
+
+将字符串中的小写字母转为大写字母。
+
+###### 语法
+
+```python
+str.upper()
+```
+
+###### 返回值
+
+小写字母转为大写字母的字符串。
+
+###### 实例
+
+```python
+str = "this is string example from You....wow!!!";
+print("str.upper(): ", str.upper())
+```
+
+以上实例输出结果如下：
+
+```powershell
+str.upper():  THIS IS STRING EXAMPLE FROM YOU....WOW!!!
+```
+
+## zfill(width)
+
+###### 描述
+
+返回指定长度的字符串，原字符串右对齐，前面填充0。
+
+###### 语法
+
+```python
+str.zfill(width)
+```
+
+###### 参数
+
+- width -- 指定字符串的长度。原字符串右对齐，前面填充0
+
+###### 返回值
+
+指定长度的字符串。
+
+###### 实例
+
+```python
+str = "this is string example from You....wow!!!"
+print("str.zfill: ",str.zfill(40))
+print("str.zfill: ",str.zfill(50))
+```
+
+以上实例输出结果如下：
+
+```powershell
+str.zfill:  this is string example from You....wow!!!
+str.zfill:  000000000this is string example from You....wow!!!
+```
+
+## isdecimal()
+
+###### 描述
+
+检查字符串是否只包含十进制字符，这种方法只存在于 `unicode` 对象。（注意：定义一个十进制字符串，只需要在字符串前添加 `u` 前缀即可。）
+
+###### 语法
+
+```python
+str.isdecimal()
+```
+
+###### 返回值
+
+如果字符串是否只包含十进制字符返回 `True`，否则返回 `False`。
+
+###### 实例
+
+```python
+str = "You2016"
+print(str.isdecimal())
+str = "23443434"
+print(str.isdecimal())
+```
+
+以上实例输出结果如下：
+
+```powershell
+False
+True
+```
