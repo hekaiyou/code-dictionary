@@ -1073,3 +1073,178 @@ print(str.rstrip('*'))
      this is string example....wow!!!
 *****this is string example....wow!!!
 ```
+
+## split(str="", num=string.count(str))
+
+###### 描述
+
+通过指定分隔符对字符串进行切片，如果参数 `num` 有指定值，则仅分隔 `num` 个子字符串。
+
+###### 语法
+
+```python
+str.split(str="", num=string.count(str))
+```
+
+###### 参数
+
+- str -- 分隔符，默认为所有的空字符，包括空格、换行(\n)、制表符(\t)等
+- num -- 分割次数
+
+###### 返回值
+
+分割后的字符串列表。
+
+###### 实例
+
+```python
+str = "this is string example....wow!!!"
+print(str.split( ))
+print(str.split('i',1))
+print(str.split('w'))
+```
+
+以上实例输出结果如下：
+
+```powershell
+['this', 'is', 'string', 'example....wow!!!']
+['th', 's is string example....wow!!!']
+['this is string example....', 'o', '!!!']
+```
+
+## splitlines(num=string.count('\n'))
+
+###### 描述
+
+按照行分隔，返回一个包含各行作为元素的列表，如果 `num` 指定则仅切片 `num` 个行。
+
+###### 语法
+
+```python
+str.split(str="", num=string.count(str))
+```
+
+###### 参数
+
+- num -- 分割行的次数
+
+###### 返回值
+
+一个包含各行作为元素的列表。
+
+###### 实例
+
+```python
+str = "this is \nstring example....\nwow!!!"
+print(str.splitlines( ))
+```
+
+以上实例输出结果如下：
+
+```powershell
+['this is ', 'string example....', 'wow!!!']
+```
+
+## startswith(str, beg=0, end=len(string))
+
+###### 描述
+
+检查字符串是否是以指定子字符串开头，如果是则返回 `True`，否则返回 `False`。如果参数 `beg` 和 `end` 指定值，则在指定范围内检查。
+
+###### 语法
+
+```python
+str.startswith(str, beg=0, end=len(string))
+```
+
+###### 参数
+
+- str -- 检测的字符串
+- strbeg -- 可选参数用于设置字符串检测的起始位置
+- strend -- 可选参数用于设置字符串检测的结束位置
+
+###### 返回值
+
+如果检测到字符串则返回 `True`，否则返回 `False`。
+
+###### 实例
+
+```python
+str = "this is string example....wow!!!"
+print(str.startswith('this'))
+print(str.startswith('string', 8))
+print(str.startswith('this', 2, 4))
+```
+
+以上实例输出结果如下：
+
+```powershell
+True
+True
+False
+```
+
+## strip([chars])
+
+###### 描述
+
+移除字符串头尾指定的字符（默认为空格）。
+
+###### 语法
+
+```python
+str.strip([chars])
+```
+
+###### 参数
+
+- chars -- 移除字符串头尾指定的字符
+
+###### 返回值
+
+移除字符串头尾指定的字符生成的新字符串。
+
+###### 实例
+
+```python
+str = "*****this is string example....wow!!!*****"
+print(str.strip( '*' ))
+```
+
+以上实例输出结果如下：
+
+```powershell
+this is string example....wow!!!
+```
+
+## swapcase()
+
+###### 描述
+
+对字符串的大小写字母进行转换。
+
+###### 语法
+
+```python
+str.swapcase()
+```
+
+###### 返回值
+
+大小写字母转换后生成的新字符串。
+
+###### 实例
+
+```python
+str = "this is You string example....wow!!!"
+print(str.swapcase())
+str = "This Is you.com String Example....WOW!!!"
+print(str.swapcase())
+```
+
+以上实例输出结果如下：
+
+```powershell
+THIS IS yOU STRING EXAMPLE....WOW!!!
+tHIS iS YOU.COM sTRING eXAMPLE....wow!!!
+```
