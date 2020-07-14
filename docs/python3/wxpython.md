@@ -98,3 +98,55 @@ if __name__ == '__main__':
     frm.Show()
     app.MainLoop()
 ```
+
+## 常用对话框
+
+常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
+
+#### MessageDialog
+
+该对话框显示单行或多行消息，并带有 `OK`、`Cancel`、`Yes` 和 `No` 按钮的选择。在Windows下，可以显示可选图标，例如感叹号或问号。
+
+###### Demo 0
+
+```python
+dlg = wx.MessageDialog(None, '消息对话框内容', '标题信息', wx.OK)
+dlg.ShowModal()
+dlg.Destroy()
+```
+
+###### Demo 1
+
+```python
+dlg = wx.MessageDialog(None, '消息对话框内容', '标题信息', wx.YES_NO | wx.ICON_QUESTION)
+if dlg.ShowModal() == wx.ID_YES:
+    print('是')
+dlg.Destroy()
+```
+
+#### ColourDialog
+
+该对话框向用户显示颜色选择器，并返回颜色信息。
+
+###### Demo 0
+
+```python
+dlg = wx.ColourDialog(self)
+dlg.GetColourData().SetChooseFull(True)
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetColourData().GetColour())
+dlg.Destroy()
+```
+
+#### FontDialog
+
+该对话框向用户显示字体选择器，并返回字体和颜色信息。
+
+###### Demo 0
+
+```python
+dlg = wx.FontDialog(self, wx.FontData())
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetFontData().GetChosenFont())
+dlg.Destroy()
+```
