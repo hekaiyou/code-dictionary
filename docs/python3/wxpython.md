@@ -1,13 +1,13 @@
-# Python3 wxPython模块 {docsify-ignore}
+# Python3 wxPython库 {docsify-ignore}
 
-通过 `pip install wxPython` 命令下载 [wxPython](https://pypi.org/project/wxPython/) 模块。
+这个第三方库用于开发跨平台的 GUI 应用程序，可以轻松地创建健壮、功能强大的 GUI 程序。通过 `pip install wxPython` 命令下载 [wxPython](https://pypi.org/project/wxPython/) 库。
 
 ## Hello World
 
 下面是业余版本的 **Hello World**：
 
 ```python
-# 导入wxPython模块
+# 导入wxPython库
 import wx
 
 # 创建一个应用程序对象

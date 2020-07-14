@@ -5,6 +5,6 @@
   * [字符串](python3/string)
   * [列表](python3/list)
 
-* PyPi仓库的模块
+* PyPi的第三方库
 
-  * [字符串](python3/wxpython)
+  * [wxPython](python3/wxpython)
