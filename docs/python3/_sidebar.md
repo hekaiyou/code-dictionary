@@ -4,3 +4,7 @@
 
   * [字符串](python3/string)
   * [列表](python3/list)
+
+* PyPi仓库的模块
+
+  * [字符串](python3/wxpython)
