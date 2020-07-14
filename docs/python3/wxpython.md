@@ -105,7 +105,7 @@ if __name__ == '__main__':
 
 #### MessageDialog
 
-该对话框显示单行或多行消息，并带有 `OK`、`Cancel`、`Yes` 和 `No` 按钮的选择。在Windows下，可以显示可选图标，例如感叹号或问号。
+该对话框显示单行或多行消息，并带有 `OK`、`Cancel`、`Yes` 和 `No` 按钮的选择。在 *Windows* 下，可以显示可选图标，例如感叹号或问号。
 
 ###### Demo 0
 
@@ -148,5 +148,39 @@ dlg.Destroy()
 dlg = wx.FontDialog(self, wx.FontData())
 if dlg.ShowModal() == wx.ID_OK:
     print(dlg.GetFontData().GetChosenFont())
+dlg.Destroy()
+```
+
+#### FileDialog
+
+该对话框向用户弹出文件选择器框，在 *Windows* 和 *GTK 2.4+* 上，这是公共文件选择器对话框，在 *MacOS* 中，这是一个文件选择器框，功能有所减少。
+
+###### Demo 0
+
+```python
+filesFilter = "Dicom (*.dcm)|*.dcm|" "All files (*.*)|*.*"
+dlg = wx.FileDialog(self, message="选择单个文件", wildcard=filesFilter, style=wx.FD_OPEN)
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetPath())
+dlg.Destroy()
+```
+
+###### Demo 1
+
+```python
+filesFilter = "Dicom (*.dcm)|*.dcm|" "All files (*.*)|*.*"
+dlg = wx.FileDialog(self, message="多文件选择", wildcard=filesFilter, style=wx.FD_OPEN | wx.FD_MULTIPLE)
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetPaths())
+dlg.Destroy()
+```
+
+###### Demo 2
+
+```python
+filesFilter = "Dicom (*.dcm)|*.dcm|" "All files (*.*)|*.*"
+dlg = wx.FileDialog(self, message="保存文件", wildcard=filesFilter, style=wx.FD_SAVE)
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetPath())
 dlg.Destroy()
 ```
