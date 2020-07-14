@@ -184,3 +184,107 @@ if dlg.ShowModal() == wx.ID_OK:
     print(dlg.GetPath())
 dlg.Destroy()
 ```
+
+#### DirDialog
+
+该对话框向用户显示一个目录选择器对话框，允许用户选择一个目录。
+
+###### Demo 0
+
+```python
+dlg = wx.DirDialog(None, "选择一个目录:", style=wx.DD_DEFAULT_STYLE | wx.DD_NEW_DIR_BUTTON)
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetPath())
+dlg.Destroy()
+```
+
+#### TextEntryDialog
+
+该对话框是一个带有文本输入字段的对话框，使用 `wx.TextEntryDialog.GetValue()` 获得用户输入的值。
+
+###### Demo 0
+
+```python
+dlg = wx.TextEntryDialog(None, "请在下面文本框中输入内容:", "文本输入框标题", "默认内容")
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetValue())
+dlg.Destroy()
+```
+
+#### PasswordEntryDialog
+
+该对话框是是一个带有密码输入字段的对话框，使用 `wx.TextEntryDialog.GetValue()` 获得用户输入的值。
+
+###### Demo 0
+
+```python
+dlg = wx.PasswordEntryDialog(None, "请输入密码:", "密码输入框标题", "默认密码")
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetValue())
+dlg.Destroy()
+```
+
+#### SingleChoiceDialog
+
+该对话框显示选项列表，以及 `OK` 和（可选）`Cancel`，用户可以选择其中之一，可以从对话框中获得索引，字符串或客户数据的选择。
+
+###### Demo 0
+
+```python
+dlg = wx.SingleChoiceDialog(None, "请选择你喜欢的水果:", "列表选择框标题", ["苹果", "西瓜", "草莓"])
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetStringSelection())
+dlg.Destroy()
+```
+
+#### MultiChoiceDialog
+
+该对话框显示选项列表，以及 `OK` 和（可选）`Cancel`，用户可以选择其中一个或多个。
+
+###### Demo 0
+
+```python
+dlg = wx.MultiChoiceDialog(None, "请选择几种你喜欢的水果:", "列表多选框标题", ["苹果", "西瓜", "草莓"])
+if dlg.ShowModal() == wx.ID_OK:
+    print(dlg.GetSelections())
+dlg.Destroy()
+```
+
+## 电子表格
+
+使用 `Grid` 及其相关类可以显示和编辑表格数据，而且支持表单元格的自定义属性，从而可以完全自定义其外观，并使用单独的网格表（`GridTableBase` 派生）类进行数据管理，这意味着它可用于显示任意数量的数据。
+
+```python
+import wx
+import wx.grid
+
+class GridFrame(wx.Frame):
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent)
+        # 创建一个 wxGrid 对象
+        grid = wx.grid.Grid(self, -1)
+        # 调用 CreateGrid 设置网格的尺寸（在此示例中为50行和8列）
+        grid.CreateGrid(100, 10)
+        # 设置单个行和列的大小（以像素为单位）
+        grid.SetRowSize(0, 60)
+        grid.SetColSize(0, 120)
+        # 将网格单元格内容设置为字符串
+        grid.SetCellValue(0, 0, 'wxGrid很好')
+        # 指定某些单元格为只读
+        grid.SetCellValue(0, 3, '这是只读的')
+        grid.SetReadOnly(0, 3)
+        # 为网格单元格内容指定颜色
+        grid.SetCellValue(3, 3, '灰绿色')
+        grid.SetCellTextColour(3, 3, wx.GREEN)
+        grid.SetCellBackgroundColour(3, 3, wx.LIGHT_GREY)
+        # 指定一些单元格将存储数字值而不是字符串，
+        # 在这里，将网格列5设置为保留以6的宽度和2的精度显示的浮点值
+        grid.SetColFormatFloat(5, 6, 2)
+        grid.SetCellValue(0, 6, '3.1415')
+        self.Show()
+
+if __name__ == '__main__':
+    app = wx.App(0)
+    frame = GridFrame(None)
+    app.MainLoop()
+```
