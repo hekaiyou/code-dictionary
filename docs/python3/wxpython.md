@@ -381,7 +381,7 @@ class Example(wx.Frame):
 
 该控件展示应用的状态信息，可以被分成不同的部分来展示不同的信息。也可以把其他控件插入到 `wx.StatusBar` 中，它可以作为对话框的替代选择，预防对话框被滥用。可以通过两种方式新建 `wx.StatusBar`，可以直接创建 `wx.StatusBar` 然后调用 `SetStatusBar()` 函数，也可以简单的调用 `CreateStatusBar()` 函数即可，第二种方法创建了一个默认的 `wx.StatusBar`。
 
-![wxpython_statusbar](https://img-blog.csdnimg.cn/20200715173209367.png#pic_center)
+![wxpython_statusbar](https://img-blog.csdnimg.cn/20200715180431698.png#pic_center)
 
 ```python
 class Example(wx.Frame):
@@ -417,6 +417,49 @@ class Example(wx.Frame):
         # 使用 SetStatusText() 方法设置状态栏的文字
         self.sb.SetStatusText(name + ' widget')
         e.Skip()
+```
+
+#### RadioButton
+
+该控件让用户从一组选项中选择一个唯一选项，通过对第一个 `RadioButton` 设置 `wx.RB_GROUP` 样式标记，可以将紧随其后的其他 `RadioButton` 囊括为一组，随后的 `RadioButton` 如果也被设置了 `wx.RB_GROUP` 样式标记，那表明将开始新的一组选择框。
+
+![wxpython_radiobutton]((https://img-blog.csdnimg.cn/20200715180317369.png#pic_center)
+
+```python
+class Example(wx.Frame):
+    """创建一组3个 RadioButton，每个按钮的状态被显示在状态栏上"""
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        # 创建3个 RadioButton，其中第一个被设置了 wx.RB_GROUP 样式，表明接下来的 RadioButton 都是同一组
+        self.rb1 = wx.RadioButton(pnl, label='Value A', pos=(10, 10), style=wx.RB_GROUP)
+        self.rb2 = wx.RadioButton(pnl, label='Value B', pos=(10, 30))
+        self.rb3 = wx.RadioButton(pnl, label='Value C', pos=(10, 50))
+        # 将 wx.EVT_RADIOBUTTON 事件绑定至 SetVal() 事件处理函数上
+        self.rb1.Bind(wx.EVT_RADIOBUTTON, self.SetVal)
+        self.rb2.Bind(wx.EVT_RADIOBUTTON, self.SetVal)
+        self.rb3.Bind(wx.EVT_RADIOBUTTON, self.SetVal)
+        # 创建分三部分的 状态栏，并根据对应 RadioButton 的状态设置了初始文字
+        self.sb = self.CreateStatusBar(3)
+        self.sb.SetStatusText("True", 0)
+        self.sb.SetStatusText("False", 1)
+        self.sb.SetStatusText("False", 2)
+        self.SetSize((210, 210))
+        self.SetTitle('wx.RadioButton')
+        self.Centre()
+        self.Show(True)
+
+    def SetVal(self, e):
+        """对状态栏的文本进行了更新"""
+        state1 = str(self.rb1.GetValue())
+        state2 = str(self.rb2.GetValue())
+        state3 = str(self.rb3.GetValue())
+        self.sb.SetStatusText(state1, 0)
+        self.sb.SetStatusText(state2, 1)
+        self.sb.SetStatusText(state3, 2)
 ```
 
 ## 对话框
