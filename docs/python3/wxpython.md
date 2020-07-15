@@ -462,6 +462,83 @@ class Example(wx.Frame):
         self.sb.SetStatusText(state3, 2)
 ```
 
+#### Gauge
+
+该控件用在时间较长的任务场景，用来显示当前任务的状态。
+
+![wxpython_gauge](https://img-blog.csdnimg.cn/20200715203032663.png#pic_center)
+
+```python
+TASK_RANGE = 50
+
+class Example(wx.Frame):
+    """创建一个 进度条（Gauge）和两个按钮，一个按钮开始走进度条，一个按钮停止走进度条。"""
+
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        # 使用了 wx.Timer 来在特定的时间区间来执行代码，我们将在定义好的时间来更新进度条
+        self.timer = wx.Timer(self, 1)
+        # count 变量用来决定目前任务已经完成的比例
+        self.count = 0
+        self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
+        pnl = wx.Panel(self)
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        hbox2 = wx.BoxSizer(wx.HORIZONTAL)
+        hbox3 = wx.BoxSizer(wx.HORIZONTAL)
+        # wx.Gauge 控件的构造函数，range 参数定义了该控件最大的整数区间
+        self.gauge = wx.Gauge(pnl, range=TASK_RANGE, size=(250, 25))
+        self.btn1 = wx.Button(pnl, wx.ID_OK)
+        self.btn2 = wx.Button(pnl, wx.ID_STOP)
+        self.text = wx.StaticText(pnl, label='Task to be done')
+        self.Bind(wx.EVT_BUTTON, self.OnOk, self.btn1)
+        self.Bind(wx.EVT_BUTTON, self.OnStop, self.btn2)
+        hbox1.Add(self.gauge, proportion=1, flag=wx.ALIGN_CENTRE)
+        hbox2.Add(self.btn1, proportion=1, flag=wx.RIGHT, border=10)
+        hbox2.Add(self.btn2, proportion=1)
+        hbox3.Add(self.text, proportion=1)
+        vbox.Add((0, 30))
+        vbox.Add(hbox1, flag=wx.ALIGN_CENTRE)
+        vbox.Add((0, 20))
+        vbox.Add(hbox2, proportion=1, flag=wx.ALIGN_CENTRE)
+        vbox.Add(hbox3, proportion=1, flag=wx.ALIGN_CENTRE)
+        pnl.SetSizer(vbox)
+        self.SetSize((300, 200))
+        self.SetTitle('wx.Gauge')
+        self.Centre()
+        self.Show(True)
+
+    def OnOk(self, e):
+        # 检查 count 变量是否还在任务的整数区间内，如果不在，我们直接返回
+        if self.count == TASK_RANGE:
+            return
+        # 如果还在，表明任务还在继续，我们开始 timer 定时器并更新静态文本
+        self.timer.Start(100)
+        self.text.SetLabel('Task in Progress')
+
+    def OnStop(self, e):
+        # 检查各种条件
+        if self.count == 0 or self.count == TASK_RANGE or not self.timer.IsRunning():
+            return
+        # 符合的话停止定时器并更新静态文本
+        self.timer.Stop()
+        self.text.SetLabel('Task Interrupted')
+
+    def OnTimer(self, e):
+        """
+        在 timer 开始后被周期调用，在该方法内，更新 count 参数和进度条部件，
+        如果 count 等于 TASK_RANGE，停止 timer 并更新静态文本
+        """
+        self.count = self.count + 1
+        self.gauge.SetValue(self.count)
+        if self.count == TASK_RANGE:
+            self.timer.Stop()
+            self.text.SetLabel('Task Completed')
+```
+
 ## 对话框
 
 常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
