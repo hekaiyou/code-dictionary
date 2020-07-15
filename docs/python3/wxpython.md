@@ -267,6 +267,100 @@ class Example(wx.Frame):
         self.Show(True)
 ```
 
+#### StaticBox
+
+该控件是一个装饰控件，被用来逻辑上将一组控件包括起来。必须在它所包含的控件创建之前创建，且那些被包含的控件是 `wx.StaticBox` 的兄弟控件而非子控件。
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        wx.StaticBox(pnl, label='个人信息', pos=(5, 5), size=(240, 170))
+        wx.CheckBox(pnl, label='男', pos=(15, 30))
+        wx.CheckBox(pnl, label='已婚', pos=(15, 55))
+        wx.StaticText(pnl, label='年龄', pos=(15, 95))
+        wx.SpinCtrl(pnl, value='1', pos=(55, 90), size=(60, -1), min=1, max=120)
+        btn = wx.Button(pnl, label='Ok', pos=(90, 185), size=(60, -1))
+        btn.Bind(wx.EVT_BUTTON, self.OnClose)
+        self.SetSize((270, 250))
+        self.SetTitle('Static box')
+        self.Centre()
+        self.Show(True)
+
+    def OnClose(self, e):
+        self.Close(True)
+```
+
+#### ComboBox
+
+该控件是由一行文本域、一个带有下拉箭头图标的按钮和一个列表框所构成的。当你按下按钮时，将出现一个列表框，用户只可选择其中的一个选项。
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        # 被选择的选项将会显示在文本标签上
+        distros = ['Ubuntu', 'Arch', 'Fedora', 'Debian', 'Mint']
+        # 单选框将包含以上列表的字符串
+        # 创建 wx.ComboBox，通过 choices 参数传入一个字符串列表，wx.CB_READONLY 使得列表的字符串只读，即不可编辑
+        cb = wx.ComboBox(pnl, pos=(50, 30), choices=distros, style=wx.CB_READONLY)
+        self.st = wx.StaticText(pnl, label='', pos=(50, 140))
+        # 当从单选框选择一个选项时，wx.EVT_COMBOBOX 事件将被触发，绑定 OnSelect() 来处理该事件
+        cb.Bind(wx.EVT_COMBOBOX, self.OnSelect)
+        self.SetSize((250, 230))
+        self.SetTitle('wx.ComboBox')
+        self.Centre()
+        self.Show(True)
+
+    def OnSelect(self, e):
+        i = e.GetString()
+        self.st.SetLabel(i)
+```
+
+#### CheckBox
+
+该控件只有两个状态：打开或关闭，它有一个框和文本标签组成，文本标签可以设置为放在框的左边或者右边。当 `wx.CheckBox` 被选择之后，框里将出现一个对号√。
+
+```python
+class Example(wx.Frame):
+    """通过一个 wx.CheckBox 控件来决定是否显示或隐藏窗口的标题"""
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        # wx.CheckBox 控件的构造函数
+        cb = wx.CheckBox(pnl, label='显示标题', pos=(20, 20))
+        # 由于窗口的标题应该是被默认显示的，所以通过 SetValue() 方法默认选择 wx.CheckBox
+        cb.SetValue(True)
+        # 当点击 wx.CheckBox 控件时，wx.EVT_CHECKBOX 事件将被触发，将其绑定至事件处理器 ShowOrHideTitle() 函数
+        cb.Bind(wx.EVT_CHECKBOX, self.ShowOrHideTitle)
+        self.SetSize((270, 120))
+        self.SetTitle('wx.CheckBox')
+        self.Centre()
+        self.Show(True)
+
+    def ShowOrHideTitle(self, e):
+        """通过 wx.CheckBox 的状态来决定是否隐藏或显示窗口的标题"""
+        sender = e.GetEventObject()
+        isChecked = sender.GetValue()
+        if isChecked:
+            self.SetTitle('wx.CheckBox')
+        else:
+            self.SetTitle('')
+```
+
+![wxpython-checkbox](wxpython-checkbox.png)
+
 ## 对话框
 
 常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
