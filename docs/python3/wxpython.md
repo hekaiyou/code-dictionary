@@ -377,6 +377,48 @@ class Example(wx.Frame):
             self.SetTitle('')
 ```
 
+#### StatusBar
+
+该控件展示应用的状态信息，可以被分成不同的部分来展示不同的信息。也可以把其他控件插入到 `wx.StatusBar` 中，它可以作为对话框的替代选择，预防对话框被滥用。可以通过两种方式新建 `wx.StatusBar`，可以直接创建 `wx.StatusBar` 然后调用 `SetStatusBar()` 函数，也可以简单的调用 `CreateStatusBar()` 函数即可，第二种方法创建了一个默认的 `wx.StatusBar`。
+
+![wxpython_statusbar](https://img-blog.csdnimg.cn/20200715173209367.png#pic_center)
+
+```python
+class Example(wx.Frame):
+    """
+    创建 wx.Frame 和5个其他的控件，
+    如果把鼠标悬停在控件上面，控件的名字将会被显示在 wx.StatusBar 上
+    """
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        button = wx.Button(pnl, label='Button', pos=(20, 20))
+        text = wx.CheckBox(pnl, label='CheckBox', pos=(20, 90))
+        combo = wx.ComboBox(pnl, pos=(120, 22), choices=['Python', 'Ruby'])
+        slider = wx.Slider(pnl, 5, 6, 1, 10, (120, 90), (110, -1))
+        # 当鼠标进入到控件的区域时，EVT_ENTER_WINDOW 事件将被触发
+        pnl.Bind(wx.EVT_ENTER_WINDOW, self.OnWidgetEnter)
+        button.Bind(wx.EVT_ENTER_WINDOW, self.OnWidgetEnter)
+        text.Bind(wx.EVT_ENTER_WINDOW, self.OnWidgetEnter)
+        combo.Bind(wx.EVT_ENTER_WINDOW, self.OnWidgetEnter)
+        slider.Bind(wx.EVT_ENTER_WINDOW, self.OnWidgetEnter)
+        self.sb = self.CreateStatusBar()
+        self.SetSize((250, 230))
+        self.SetTitle('wx.Statusbar')
+        self.Centre()
+        self.Show(True)
+
+    def OnWidgetEnter(self, e):
+        # 得到鼠标进入的控件的名字
+        name = e.GetEventObject().GetClassName()
+        # 使用 SetStatusText() 方法设置状态栏的文字
+        self.sb.SetStatusText(name + ' widget')
+        e.Skip()
+```
+
 ## 对话框
 
 常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
