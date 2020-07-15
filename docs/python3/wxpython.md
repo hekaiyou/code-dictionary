@@ -359,7 +359,7 @@ class Example(wx.Frame):
             self.SetTitle('')
 ```
 
-![wxpython-checkbox](./image/wxpython-checkbox.png)
+![wxpython_checkbox](./image/wxpython_checkbox.png)
 
 ## 对话框
 
