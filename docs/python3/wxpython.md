@@ -423,7 +423,7 @@ class Example(wx.Frame):
 
 该控件让用户从一组选项中选择一个唯一选项，通过对第一个 `RadioButton` 设置 `wx.RB_GROUP` 样式标记，可以将紧随其后的其他 `RadioButton` 囊括为一组，随后的 `RadioButton` 如果也被设置了 `wx.RB_GROUP` 样式标记，那表明将开始新的一组选择框。
 
-![wxpython_radiobutton]((https://img-blog.csdnimg.cn/20200715180317369.png#pic_center)
+![wxpython_radiobutton](https://img-blog.csdnimg.cn/20200715180317369.png#pic_center)
 
 ```python
 class Example(wx.Frame):
