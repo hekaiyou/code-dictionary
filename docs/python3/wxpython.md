@@ -99,7 +99,175 @@ if __name__ == '__main__':
     app.MainLoop()
 ```
 
-## 常用对话框
+## 控件
+
+#### Button
+
+该控件仅包含一个文本字符串，用来触发某个动作。
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        # 创建一个 Close 按键，点击 Close 即可关闭应用
+        cbtn = wx.Button(pnl, label='Close', pos=(20, 30))
+        # 按钮的文本标签以及它在面板上的位置
+        cbtn.Bind(wx.EVT_BUTTON, self.OnClose)
+        self.SetSize((250, 200))
+        self.SetTitle('wx.Button')
+        self.Centre()
+        self.Show(True)
+
+    def OnClose(self, e):
+        # 调用 Close() 函数来关闭应用
+        self.Close(True)
+```
+
+#### ToggleButton
+
+该控件也是一种按钮，但它有两个状态：点击和非点击状态。通过点击按键可以在两种状态中切换，在特定场景中，这一功能将非常适用。
+
+```python
+class Example(wx.Frame):
+    """
+    创建了红色、绿色和蓝色的 Toggle button 和一个 Panel，
+    点击 toggle button的时候，可以改变 Panel 的颜色。
+    """
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        self.col = wx.Colour(0, 0, 0)
+        # 创建一个 wx.ToggleButton 控件
+        rtb = wx.ToggleButton(pnl, label='red', pos=(20, 25))
+        gtb = wx.ToggleButton(pnl, label='green', pos=(20, 60))
+        btb = wx.ToggleButton(pnl, label='blue', pos=(20, 100))
+        # 创建一个 Panel，颜色设置为 self.col
+        self.cpnl = wx.Panel(pnl, pos=(150, 20), size=(110, 110))
+        self.cpnl.SetBackgroundColour(self.col)
+        # 点击 rtb 触发这个 button 的时候 ToggleRed() 会被调用
+        rtb.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleRed)
+        gtb.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleGreen)
+        btb.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleBlue)
+        self.SetSize((300, 200))
+        self.SetTitle('Toggle buttons')
+        self.Centre()
+        self.Show(True)
+
+    def ToggleRed(self, e):
+        """对 rtb 按钮是否被按下做出反应，来改变特定面板的颜色"""
+        obj = e.GetEventObject()
+        isPressed = obj.GetValue()
+        green = self.col.Green()
+        blue = self.col.Blue()
+        if isPressed:
+            self.col.Set(255, green, blue)
+        else:
+            self.col.Set(0, green, blue)
+        self.cpnl.SetBackgroundColour(self.col)
+        self.cpnl.Refresh()
+
+    def ToggleGreen(self, e):
+        obj = e.GetEventObject()
+        isPressed = obj.GetValue()
+        red = self.col.Red()
+        blue = self.col.Blue()
+        if isPressed:
+            self.col.Set(red, 255, blue)
+        else:
+            self.col.Set(red, 0, blue)
+        self.cpnl.SetBackgroundColour(self.col)
+        self.cpnl.Refresh()
+
+    def ToggleBlue(self, e):
+        obj = e.GetEventObject()
+        isPressed = obj.GetValue()
+        red = self.col.Red()
+        green = self.col.Green()
+        if isPressed:
+            self.col.Set(red, green, 255)
+        else:
+            self.col.Set(red, green, 0)
+        self.cpnl.SetBackgroundColour(self.col)
+        self.cpnl.Refresh()
+```
+
+#### StaticLine
+
+该控件在窗口上展示一个简单的直线，可以是竖直或水平的。
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        font = wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD)
+        heading = wx.StaticText(self, label='The Central Europe', pos=(130, 15))
+        heading.SetFont(font)
+        wx.StaticLine(self, pos=(25, 50), size=(300, 1))
+        wx.StaticText(self, label='Slovakia', pos=(25, 80))
+        wx.StaticText(self, label='Hungary', pos=(25, 100))
+        wx.StaticText(self, label='Poland', pos=(25, 120))
+        wx.StaticText(self, label='5 445 000', pos=(250, 80))
+        wx.StaticText(self, label='10 014 000', pos=(250, 100))
+        wx.StaticText(self, label='38 186 000', pos=(250, 120))
+        wx.StaticLine(self, pos=(25, 160), size=(300, 1))
+        tsum = wx.StaticText(self, label='164 336 000', pos=(240, 180))
+        sum_font = tsum.GetFont()
+        sum_font.SetWeight(wx.BOLD)
+        tsum.SetFont(sum_font)
+        btn = wx.Button(self, label='Close', pos=(140, 210))
+        btn.Bind(wx.EVT_BUTTON, self.OnClose)
+        self.SetSize((360, 280))
+        self.SetTitle('wx.StaticLine')
+        self.Centre()
+        self.Show(True)
+
+    def OnClose(self, e):
+        self.Close(True)
+```
+
+#### StaticText
+
+该控件在窗口上展示展示一行或多行的只读文本。
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        # 要在 wx.StaticText 展示的字符串
+        txt1 = '''第一段第1行
+第一段第2行 体现居中效果
+第一段第3行'''
+        txt2 = '''第二段第1行
+第二段第2行
+第二段第3行 体现居中效果'''
+        pnl = wx.Panel(self)
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        # 创建 wx.StaticText 控件，文字居中展示
+        st1 = wx.StaticText(pnl, label=txt1, style=wx.ALIGN_CENTRE)
+        st2 = wx.StaticText(pnl, label=txt2, style=wx.ALIGN_CENTRE)
+        vbox.Add(st1, flag=wx.ALL, border=5)
+        vbox.Add(st2, flag=wx.ALL, border=5)
+        pnl.SetSizer(vbox)
+        self.SetSize((220, 180))
+        self.SetTitle('wx.StaticText')
+        self.Centre()
+        self.Show(True)
+```
+
+## 对话框
 
 常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
 
@@ -250,7 +418,7 @@ if dlg.ShowModal() == wx.ID_OK:
 dlg.Destroy()
 ```
 
-## 电子表格
+## 表格
 
 使用 `Grid` 及其相关类可以显示和编辑表格数据，而且支持表单元格的自定义属性，从而可以完全自定义其外观，并使用单独的网格表（`GridTableBase` 派生）类进行数据管理，这意味着它可用于显示任意数量的数据。
 
