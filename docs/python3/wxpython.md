@@ -6,6 +6,8 @@
 
 下面是业余版本的 **Hello World**：
 
+![wxpython_helloworld](https://img-blog.csdnimg.cn/20200715145653535.png#pic_center)
+
 ```python
 # 导入wxPython库
 import wx
@@ -21,6 +23,8 @@ app.MainLoop()
 ```
 
 下面是专业版本的 **Hello World Pro**：
+
+![wxpython_helloworldpro](https://img-blog.csdnimg.cn/20200715145910149.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
 
 ```python
 import wx
@@ -105,6 +109,8 @@ if __name__ == '__main__':
 
 该控件仅包含一个文本字符串，用来触发某个动作。
 
+![wxpython_button](https://img-blog.csdnimg.cn/2020071514544299.png#pic_center)
+
 ```python
 class Example(wx.Frame):
     def __init__(self, *args, **kw):
@@ -130,6 +136,8 @@ class Example(wx.Frame):
 #### ToggleButton
 
 该控件也是一种按钮，但它有两个状态：点击和非点击状态。通过点击按键可以在两种状态中切换，在特定场景中，这一功能将非常适用。
+
+![wxpython_togglebutton](https://img-blog.csdnimg.cn/20200715145148823.png#pic_center)
 
 ```python
 class Example(wx.Frame):
@@ -202,6 +210,8 @@ class Example(wx.Frame):
 
 该控件在窗口上展示一个简单的直线，可以是竖直或水平的。
 
+![wxpython_staticline](https://img-blog.csdnimg.cn/20200715144716623.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
+
 ```python
 class Example(wx.Frame):
     def __init__(self, *args, **kw):
@@ -239,6 +249,8 @@ class Example(wx.Frame):
 
 该控件在窗口上展示展示一行或多行的只读文本。
 
+![wxpython_statictext](https://img-blog.csdnimg.cn/20200715144506671.png#pic_center)
+
 ```python
 class Example(wx.Frame):
     def __init__(self, *args, **kw):
@@ -271,6 +283,8 @@ class Example(wx.Frame):
 
 该控件是一个装饰控件，被用来逻辑上将一组控件包括起来。必须在它所包含的控件创建之前创建，且那些被包含的控件是 `wx.StaticBox` 的兄弟控件而非子控件。
 
+![wxpython_staticbox](https://img-blog.csdnimg.cn/20200715144250495.png#pic_center)
+
 ```python
 class Example(wx.Frame):
     def __init__(self, *args, **kw):
@@ -298,6 +312,8 @@ class Example(wx.Frame):
 #### ComboBox
 
 该控件是由一行文本域、一个带有下拉箭头图标的按钮和一个列表框所构成的。当你按下按钮时，将出现一个列表框，用户只可选择其中的一个选项。
+
+![wxpython_combobox](https://img-blog.csdnimg.cn/20200715143911142.png#pic_center)
 
 ```python
 class Example(wx.Frame):
@@ -329,6 +345,8 @@ class Example(wx.Frame):
 
 该控件只有两个状态：打开或关闭，它有一个框和文本标签组成，文本标签可以设置为放在框的左边或者右边。当 `wx.CheckBox` 被选择之后，框里将出现一个对号√。
 
+![wxpython_checkbox](https://img-blog.csdnimg.cn/20200715143015500.png#pic_center)
+
 ```python
 class Example(wx.Frame):
     """通过一个 wx.CheckBox 控件来决定是否显示或隐藏窗口的标题"""
@@ -359,8 +377,6 @@ class Example(wx.Frame):
             self.SetTitle('')
 ```
 
-![wxpython_checkbox](https://img-blog.csdnimg.cn/20200715143015500.png#pic_center)
-
 ## 对话框
 
 常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
@@ -371,6 +387,8 @@ class Example(wx.Frame):
 
 ###### Demo 0
 
+![wxpython_messagedialog_0](https://img-blog.csdnimg.cn/20200715150306835.png#pic_center)
+
 ```python
 dlg = wx.MessageDialog(None, '消息对话框内容', '标题信息', wx.OK)
 dlg.ShowModal()
@@ -378,6 +396,8 @@ dlg.Destroy()
 ```
 
 ###### Demo 1
+
+![wxpython_messagedialog_1](https://img-blog.csdnimg.cn/2020071515044684.png#pic_center)
 
 ```python
 dlg = wx.MessageDialog(None, '消息对话框内容', '标题信息', wx.YES_NO | wx.ICON_QUESTION)
@@ -390,7 +410,7 @@ dlg.Destroy()
 
 该对话框向用户显示颜色选择器，并返回颜色信息。
 
-###### Demo 0
+![wxpython_colourdialog](https://img-blog.csdnimg.cn/20200715150640555.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
 
 ```python
 dlg = wx.ColourDialog(self)
@@ -404,7 +424,7 @@ dlg.Destroy()
 
 该对话框向用户显示字体选择器，并返回字体和颜色信息。
 
-###### Demo 0
+![wxpython_fontdialog](https://img-blog.csdnimg.cn/20200715150842987.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
 
 ```python
 dlg = wx.FontDialog(self, wx.FontData())
@@ -416,6 +436,8 @@ dlg.Destroy()
 #### FileDialog
 
 该对话框向用户弹出文件选择器框，在 *Windows* 和 *GTK 2.4+* 上，这是公共文件选择器对话框，在 *MacOS* 中，这是一个文件选择器框，功能有所减少。
+
+![wxpython_filedialog_0](https://img-blog.csdnimg.cn/20200715151214128.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
 
 ###### Demo 0
 
@@ -451,7 +473,7 @@ dlg.Destroy()
 
 该对话框向用户显示一个目录选择器对话框，允许用户选择一个目录。
 
-###### Demo 0
+![wxpython_dirdialog](https://img-blog.csdnimg.cn/2020071515161061.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
 
 ```python
 dlg = wx.DirDialog(None, "选择一个目录:", style=wx.DD_DEFAULT_STYLE | wx.DD_NEW_DIR_BUTTON)
@@ -464,7 +486,7 @@ dlg.Destroy()
 
 该对话框是一个带有文本输入字段的对话框，使用 `wx.TextEntryDialog.GetValue()` 获得用户输入的值。
 
-###### Demo 0
+![wxpython_textentrydialog](https://img-blog.csdnimg.cn/20200715151804635.png#pic_center)
 
 ```python
 dlg = wx.TextEntryDialog(None, "请在下面文本框中输入内容:", "文本输入框标题", "默认内容")
@@ -477,7 +499,7 @@ dlg.Destroy()
 
 该对话框是是一个带有密码输入字段的对话框，使用 `wx.TextEntryDialog.GetValue()` 获得用户输入的值。
 
-###### Demo 0
+![wxpython_passwordentrydialog](https://img-blog.csdnimg.cn/20200715152003834.png#pic_center)
 
 ```python
 dlg = wx.PasswordEntryDialog(None, "请输入密码:", "密码输入框标题", "默认密码")
@@ -490,7 +512,7 @@ dlg.Destroy()
 
 该对话框显示选项列表，以及 `OK` 和（可选）`Cancel`，用户可以选择其中之一，可以从对话框中获得索引，字符串或客户数据的选择。
 
-###### Demo 0
+![wxpython_singlechoicedialog](https://img-blog.csdnimg.cn/20200715152147593.png#pic_center)
 
 ```python
 dlg = wx.SingleChoiceDialog(None, "请选择你喜欢的水果:", "列表选择框标题", ["苹果", "西瓜", "草莓"])
@@ -503,7 +525,7 @@ dlg.Destroy()
 
 该对话框显示选项列表，以及 `OK` 和（可选）`Cancel`，用户可以选择其中一个或多个。
 
-###### Demo 0
+![wxpython_multichoicedialog](https://img-blog.csdnimg.cn/20200715152351705.png#pic_center)
 
 ```python
 dlg = wx.MultiChoiceDialog(None, "请选择几种你喜欢的水果:", "列表多选框标题", ["苹果", "西瓜", "草莓"])
@@ -515,6 +537,8 @@ dlg.Destroy()
 ## 表格
 
 使用 `Grid` 及其相关类可以显示和编辑表格数据，而且支持表单元格的自定义属性，从而可以完全自定义其外观，并使用单独的网格表（`GridTableBase` 派生）类进行数据管理，这意味着它可用于显示任意数量的数据。
+
+![wxpython_grid](https://img-blog.csdnimg.cn/2020071515260629.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
 
 ```python
 import wx
