@@ -539,6 +539,41 @@ class Example(wx.Frame):
             self.text.SetLabel('Task Completed')
 ```
 
+#### Slider
+
+该控件有一个简单的操作柄，可以向前或向后滑动，可以使用它完成特定的任务。
+
+![wxpython_slider](https://img-blog.csdnimg.cn/20200715204112620.png#pic_center)
+
+```python
+class Example(wx.Frame):
+    """在 Slider 中选择的值将被显示在下面的静态文本中。"""
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        # 创建了 wx.Slider，在构造函数中，提供了它的初始位置，以及最大、最小的滑动位置，还有设定了它的水平方向
+        sld = wx.Slider(pnl, value=200, minValue=150, maxValue=500, pos=(20, 20), size=(250, -1),
+                        style=wx.SL_HORIZONTAL)
+        #  wx.EVT_SCROLL 事件被触发的时候，将调用 OnSliderScroll() 函数
+        sld.Bind(wx.EVT_SCROLL, self.OnSliderScroll)
+        # 当前 Slider 的值将被显示在下方的静态文本中
+        self.txt = wx.StaticText(pnl, label='200', pos=(20, 90))
+        self.SetSize((290, 200))
+        self.SetTitle('wx.Slider')
+        self.Centre()
+        self.Show(True)
+
+    def OnSliderScroll(self, e):
+        # 得到了事件的发送者并得到其当前被选择的值
+        obj = e.GetEventObject()
+        val = obj.GetValue()
+        # 将其值设置到静态文本中
+        self.txt.SetLabel(str(val))
+```
+
 ## 对话框
 
 常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
