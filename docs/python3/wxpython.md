@@ -574,6 +574,47 @@ class Example(wx.Frame):
         self.txt.SetLabel(str(val))
 ```
 
+#### SpinCtrl
+
+该控件对一个值进行增加或减少，它有两个按钮，一个带向上箭头，一个带向下箭头。用户可以直接输入数值，也可以通过两个箭头来对数值进行上下增减。
+
+![wxpython_spinctrl](https://img-blog.csdnimg.cn/20200715205405585.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
+
+```python
+class Example(wx.Frame):
+    """将华氏温度转变为摄氏度，使用 wx.SpinCtrl 控件供用户来选择华氏温度的值。"""
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        wx.StaticText(self, label='将华氏度转换为摄氏度', pos=(20, 20))
+        wx.StaticText(self, label='华氏度: ', pos=(20, 80))
+        wx.StaticText(self, label='摄氏度: ', pos=(20, 150))
+        self.celsius = wx.StaticText(self, label='', pos=(150, 150))
+        # 创建一个初始值为0的 wx.SpinCtrl 控件，并通过 SetRange() 方法设置了该控件的取值范围
+        self.sc = wx.SpinCtrl(self, value='0', pos=(150, 75), size=(60, -1))
+        self.sc.SetRange(-459, 1000)
+        btn = wx.Button(self, label='计算', pos=(70, 230))
+        btn.SetFocus()
+        cbtn = wx.Button(self, label='Close', pos=(185, 230))
+        btn.Bind(wx.EVT_BUTTON, self.OnCompute)
+        cbtn.Bind(wx.EVT_BUTTON, self.OnClose)
+        self.SetSize((350, 310))
+        self.SetTitle('wx.SpinCtrl')
+        self.Centre()
+        self.Show(True)
+
+    def OnClose(self, e):
+        self.Close(True)
+
+    def OnCompute(self, e):
+        """获取用户设定的华氏温度值，并计算对应的摄氏温度值，将其更新在静态文本上。"""
+        fahr = self.sc.GetValue()
+        cels = round((fahr - 32) * 5 / 9.0, 2)
+        self.celsius.SetLabel(str(cels))
+```
+
 ## 对话框
 
 常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
