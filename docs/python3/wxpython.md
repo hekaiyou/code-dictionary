@@ -105,7 +105,7 @@ if __name__ == '__main__':
 
 ## 布局管理
 
-#### 绝对定位
+### 绝对定位
 
 该定位是以像素为单位对控件进行定位，但是该定位方式在整窗口大小时，控件的尺寸和位置不会随之改变，不推荐使用。
 
@@ -125,7 +125,7 @@ class Example(wx.Frame):
         wx.TextCtrl(panel, pos=(3, 3), size=(250, 150))
 ```
 
-#### Sizers
+### Sizers
 
 该定位比使用绝对定位更通用更灵活，可供选择的 Sizers 类型有：`wx.BoxSizer`、`wx.StaticBoxSizer`、`wx.GridSizer`、`wx.FlexGridSizer`、`wx.GridBagSizer`。
 
@@ -156,7 +156,7 @@ class Example(wx.Frame):
         wx.TextCtrl(self)
 ```
 
-##### BoxSizer
+#### BoxSizer
 
 该定位按行或者列来排列多个控件，同时也允许 `Sizer` 的嵌套，这时可以构造出非常复杂的布局。
 
