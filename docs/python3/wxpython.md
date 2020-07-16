@@ -733,7 +733,7 @@ class Example(wx.Frame):
 
 常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
 
-#### MessageDialog
+### MessageDialog
 
 该对话框显示单行或多行消息，并带有 `OK`、`Cancel`、`Yes` 和 `No` 按钮的选择。在 *Windows* 下，可以显示可选图标，例如感叹号或问号。
 
@@ -758,7 +758,7 @@ if dlg.ShowModal() == wx.ID_YES:
 dlg.Destroy()
 ```
 
-#### ColourDialog
+### ColourDialog
 
 该对话框向用户显示颜色选择器，并返回颜色信息。
 
@@ -772,7 +772,7 @@ if dlg.ShowModal() == wx.ID_OK:
 dlg.Destroy()
 ```
 
-#### FontDialog
+### FontDialog
 
 该对话框向用户显示字体选择器，并返回字体和颜色信息。
 
@@ -785,7 +785,7 @@ if dlg.ShowModal() == wx.ID_OK:
 dlg.Destroy()
 ```
 
-#### FileDialog
+### FileDialog
 
 该对话框向用户弹出文件选择器框，在 *Windows* 和 *GTK 2.4+* 上，这是公共文件选择器对话框，在 *MacOS* 中，这是一个文件选择器框，功能有所减少。
 
@@ -821,7 +821,7 @@ if dlg.ShowModal() == wx.ID_OK:
 dlg.Destroy()
 ```
 
-#### DirDialog
+### DirDialog
 
 该对话框向用户显示一个目录选择器对话框，允许用户选择一个目录。
 
@@ -834,7 +834,7 @@ if dlg.ShowModal() == wx.ID_OK:
 dlg.Destroy()
 ```
 
-#### TextEntryDialog
+### TextEntryDialog
 
 该对话框是一个带有文本输入字段的对话框，使用 `wx.TextEntryDialog.GetValue()` 获得用户输入的值。
 
@@ -847,7 +847,7 @@ if dlg.ShowModal() == wx.ID_OK:
 dlg.Destroy()
 ```
 
-#### PasswordEntryDialog
+### PasswordEntryDialog
 
 该对话框是是一个带有密码输入字段的对话框，使用 `wx.TextEntryDialog.GetValue()` 获得用户输入的值。
 
@@ -860,7 +860,7 @@ if dlg.ShowModal() == wx.ID_OK:
 dlg.Destroy()
 ```
 
-#### SingleChoiceDialog
+### SingleChoiceDialog
 
 该对话框显示选项列表，以及 `OK` 和（可选）`Cancel`，用户可以选择其中之一，可以从对话框中获得索引，字符串或客户数据的选择。
 
@@ -873,7 +873,7 @@ if dlg.ShowModal() == wx.ID_OK:
 dlg.Destroy()
 ```
 
-#### MultiChoiceDialog
+### MultiChoiceDialog
 
 该对话框显示选项列表，以及 `OK` 和（可选）`Cancel`，用户可以选择其中一个或多个。
 
