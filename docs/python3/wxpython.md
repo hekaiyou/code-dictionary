@@ -103,6 +103,27 @@ if __name__ == '__main__':
     app.MainLoop()
 ```
 
+## 布局管理
+
+#### 绝对定位
+
+该定位是以像素为单位对控件进行定位，但是该定位方式在整窗口大小时，控件的尺寸和位置不会随之改变，不推荐使用。
+
+![wxpython_possize](https://img-blog.csdnimg.cn/20200716101409557.png#pic_center)
+
+```python
+class Example(wx.Frame):
+    def __init__(self, parent):
+        super(Example, self).__init__(parent, title='绝对定位', size=(260, 180))
+        self.InitUI()
+        self.Centre()
+        self.Show()
+
+    def InitUI(self):
+        panel = wx.Panel(self, -1)
+        wx.TextCtrl(panel, pos=(3, 3), size=(250, 150))
+```
+
 ## 控件
 
 #### Button
