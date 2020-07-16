@@ -121,7 +121,39 @@ class Example(wx.Frame):
 
     def InitUI(self):
         panel = wx.Panel(self, -1)
+        # 使用绝对定位，x=3、y=3，宽度250px、高度150px
         wx.TextCtrl(panel, pos=(3, 3), size=(250, 150))
+```
+
+#### Sizers
+
+该定位比使用绝对定位更通用更灵活，可供选择的 Sizers 类型有：`wx.BoxSizer`、`wx.StaticBoxSizer`、`wx.GridSizer`、`wx.FlexGridSizer`、`wx.GridBagSizer`。
+
+![wxpython_sizers](https://img-blog.csdnimg.cn/2020071611373126.png#pic_center)
+
+```python
+class Example(wx.Frame):
+    """
+    把 wx.TextCtrl 放入 wx.Frame，它有一个内置的 sizer，但是只允许放置一个控件，多于一个的话会得到混乱的布局，
+    放入的子控件占用了所有剩余空间，除去边框、菜单、工具栏和状态栏
+    """
+    def __init__(self, parent):
+        super(Example, self).__init__(parent, title='内置的Sizer', size=(260, 180))
+        self.InitUI()
+        self.Centre()
+        self.Show()
+
+    def InitUI(self):
+        menubar = wx.MenuBar()
+        filem = wx.Menu()
+        editm = wx.Menu()
+        helpm = wx.Menu()
+        menubar.Append(filem, '&文件')
+        menubar.Append(editm, '&编辑')
+        menubar.Append(helpm, '&帮助')
+        self.SetMenuBar(menubar)
+        # 没有显式的 sizer 定义
+        wx.TextCtrl(self)
 ```
 
 ## 控件
