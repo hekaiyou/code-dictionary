@@ -219,7 +219,7 @@ class Example(wx.Frame):
 
 ## 控件
 
-#### Button
+### Button
 
 该控件仅包含一个文本字符串，用来触发某个动作。
 
@@ -247,7 +247,7 @@ class Example(wx.Frame):
         self.Close(True)
 ```
 
-#### ToggleButton
+### ToggleButton
 
 该控件也是一种按钮，但它有两个状态：点击和非点击状态。通过点击按键可以在两种状态中切换，在特定场景中，这一功能将非常适用。
 
@@ -320,7 +320,7 @@ class Example(wx.Frame):
         self.cpnl.Refresh()
 ```
 
-#### StaticLine
+### StaticLine
 
 该控件在窗口上展示一个简单的直线，可以是竖直或水平的。
 
@@ -359,7 +359,7 @@ class Example(wx.Frame):
         self.Close(True)
 ```
 
-#### StaticText
+### StaticText
 
 该控件在窗口上展示展示一行或多行的只读文本。
 
@@ -393,7 +393,7 @@ class Example(wx.Frame):
         self.Show(True)
 ```
 
-#### StaticBox
+### StaticBox
 
 该控件是一个装饰控件，被用来逻辑上将一组控件包括起来。必须在它所包含的控件创建之前创建，且那些被包含的控件是 `wx.StaticBox` 的兄弟控件而非子控件。
 
@@ -423,7 +423,7 @@ class Example(wx.Frame):
         self.Close(True)
 ```
 
-#### ComboBox
+### ComboBox
 
 该控件是由一行文本域、一个带有下拉箭头图标的按钮和一个列表框所构成的。当你按下按钮时，将出现一个列表框，用户只可选择其中的一个选项。
 
@@ -455,7 +455,7 @@ class Example(wx.Frame):
         self.st.SetLabel(i)
 ```
 
-#### CheckBox
+### CheckBox
 
 该控件只有两个状态：打开或关闭，它有一个框和文本标签组成，文本标签可以设置为放在框的左边或者右边。当 `wx.CheckBox` 被选择之后，框里将出现一个对号√。
 
@@ -491,7 +491,7 @@ class Example(wx.Frame):
             self.SetTitle('')
 ```
 
-#### StatusBar
+### StatusBar
 
 该控件展示应用的状态信息，可以被分成不同的部分来展示不同的信息。也可以把其他控件插入到 `wx.StatusBar` 中，它可以作为对话框的替代选择，预防对话框被滥用。可以通过两种方式新建 `wx.StatusBar`，可以直接创建 `wx.StatusBar` 然后调用 `SetStatusBar()` 函数，也可以简单的调用 `CreateStatusBar()` 函数即可，第二种方法创建了一个默认的 `wx.StatusBar`。
 
@@ -533,7 +533,7 @@ class Example(wx.Frame):
         e.Skip()
 ```
 
-#### RadioButton
+### RadioButton
 
 该控件让用户从一组选项中选择一个唯一选项，通过对第一个 `RadioButton` 设置 `wx.RB_GROUP` 样式标记，可以将紧随其后的其他 `RadioButton` 囊括为一组，随后的 `RadioButton` 如果也被设置了 `wx.RB_GROUP` 样式标记，那表明将开始新的一组选择框。
 
@@ -576,7 +576,7 @@ class Example(wx.Frame):
         self.sb.SetStatusText(state3, 2)
 ```
 
-#### Gauge
+### Gauge
 
 该控件用在时间较长的任务场景，用来显示当前任务的状态。
 
@@ -653,7 +653,7 @@ class Example(wx.Frame):
             self.text.SetLabel('Task Completed')
 ```
 
-#### Slider
+### Slider
 
 该控件有一个简单的操作柄，可以向前或向后滑动，可以使用它完成特定的任务。
 
@@ -688,7 +688,7 @@ class Example(wx.Frame):
         self.txt.SetLabel(str(val))
 ```
 
-#### SpinCtrl
+### SpinCtrl
 
 该控件对一个值进行增加或减少，它有两个按钮，一个带向上箭头，一个带向下箭头。用户可以直接输入数值，也可以通过两个箭头来对数值进行上下增减。
 
