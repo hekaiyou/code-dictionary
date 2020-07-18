@@ -2,7 +2,7 @@
 
 一本相对完整的代码开发手册，使用 `Node.js` 语言的 `docsify` 框架自动生成！
 
-## 本地部署
+## 本地预览
 
 ```powershell
 $ cd code-dictionary
