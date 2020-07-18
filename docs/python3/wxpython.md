@@ -374,6 +374,36 @@ class Example(wx.Frame):
         panel.SetSizer(hbox)
 ```
 
+#### GridBagSizer
+
+该定位是 `Sizer` 布局中最复杂的，可实现精确定位，还可以跨行或者跨列。
+
+```python
+wx.GridBagSizer(integer vgap, integer hgap)
+```
+
+竖直和水平的 `gap` 参数定义了所有子控件之间的间隔，使用 `Add()` 添加元素。
+
+```python
+Add(self, item, tuple pos, tuple span=wx.DefaultSpan, integer flag=0, integer border=0, userData=None)
+```
+
+- pos -- 定义了位置，左上角的位置为 (0,0)
+- span -- 表示跨几行或者列，比如 (3,2) 表示让一个控件跨3行和2列
+- flag -- 更具体的定义控件在 Sizer 中的行为（参考 BoxSizer）
+- border -- 在控件周围的空间
+
+```python
+AddGrowableRow(integer row)
+AddGrowableCol(integer col)
+```
+
+在窗口大小改变时，`Grid` 中的控件可以保持大小不变，也可以随窗口改变，如果想让它增长或者收缩，可以使用上面的两个方法。
+
+###### Demo 0
+
+![wxpython_gridbagsizer_0](https://img-blog.csdnimg.cn/20200718151524878.png#pic_center)
+
 ## 控件
 
 ### Button
