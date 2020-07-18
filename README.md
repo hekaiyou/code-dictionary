@@ -1,6 +1,6 @@
 # 开发小手册
 
-个人的代码字典，结合docsify框架生成开发字典网站。
+一本相对完整的代码开发手册，使用 `Node.js` 语言的 `docsify` 框架自动生成！
 
 ## 本地部署
 
@@ -14,13 +14,13 @@ Please run docsify init first.
 ➜  RemoteWorking git:(master) ✗ cd docs
 ➜  docs git:(master) ✗ docsify serve
 
-Serving /root/RemoteWorking/docs now.
+Serving /root/RemoteWorking now.
 Listening at http://localhost:3000
 ```
 
 ## Github部署
 
-找到 `setting` -> `GitHub Pages`，配置分支为 `master barnch /docs folder`，点击保存后会自动发布，并且给出发布地址。（例：https://hekaiyou.github.io/code-dictionary/#/）
+找到 `setting` -> `GitHub Pages`，配置分支为 `master barnch folder`，点击保存后会自动发布，并且给出发布地址。（例：https://hekaiyou.github.io/code-dictionary/#/）
 
 ## Docsify项目配置
 
