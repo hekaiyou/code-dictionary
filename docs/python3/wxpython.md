@@ -404,6 +404,95 @@ AddGrowableCol(integer col)
 
 ![wxpython_gridbagsizer_0](https://img-blog.csdnimg.cn/20200718151524878.png#pic_center)
 
+```python
+class Example(wx.Frame):
+    """创建一个大的 Grid 表"""
+    def __init__(self, parent):
+        super(Example, self).__init__(parent, title='wx.GridBagSizer', size=(320, 130))
+        self.InitUI()
+        self.Centre()
+        self.Show()
+
+    def InitUI(self):
+        panel = wx.Panel(self)
+        sizer = wx.GridBagSizer(4, 4)
+        # "重命名为" 文本将被放置在左上角，所以设置了 (0,0) 位置，另外在顶部、左边和底部增加了 5px 的间隔空间
+        text = wx.StaticText(panel, label="重命名为")
+        sizer.Add(text, pos=(0, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
+        # wx.TextCtrl 从第二行开始，从0开始计数，它占据了1行和5列：(1,5)，放置了 5px 的左右边框空间
+        tc = wx.TextCtrl(panel)
+        sizer.Add(tc, pos=(1, 0), span=(1, 5), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        buttonOk = wx.Button(panel, label="Ok", size=(90, 28))
+        buttonClose = wx.Button(panel, label="Close", size=(90, 28))
+        # 在第四行放置了2个 Button，第三行是空的，所以 wx.TextCtrl 和 Button 之间留有间隔，
+        # 把 OK 按钮放在第四列，close 按钮放在第五列。需要注意，一旦给一个控件应用了边框，整行都会受到影响，
+        # 这是没有为 OK 按钮设置底部边框空间的原因。因为在 wx.GridBagSizer 的构造函数中，已经设置了所有控件之间的间隔，
+        # 所以在两个按钮之间没有放置任何空间。
+        sizer.Add(buttonOk, pos=(3, 3))
+        sizer.Add(buttonClose, pos=(3, 4), flag=wx.RIGHT | wx.BOTTOM, border=5)
+        # 最后需要让对话框可增长，让第二列和第三行可增长，现在可以放大或者缩小窗口，注释掉则不能自动缩放
+        sizer.AddGrowableCol(1)
+        sizer.AddGrowableRow(2)
+        panel.SetSizerAndFit(sizer)
+```
+
+###### Demo 1
+
+![wxpython_gridbagsizer_1](https://img-blog.csdnimg.cn/20200718155403987.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
+
+```python
+class Example(wx.Frame):
+    """创建一个更复杂的布局，同时使用了 wx.GridBagSizer 和 wx.StaticBoxSizer"""
+    def __init__(self, parent):
+        super(Example, self).__init__(parent, title='wx.GridBagSizer Pro', size=(450, 350))
+        self.InitUI()
+        self.Centre()
+        self.Show()
+
+    def InitUI(self):
+        panel = wx.Panel(self)
+        sizer = wx.GridBagSizer(5, 5)
+        text1 = wx.StaticText(panel, label="Java 类")
+        sizer.Add(text1, pos=(0, 0), flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=15)
+        # 在第一行右侧放了一个 wx.StaticBitmap
+        icon = wx.StaticBitmap(panel, bitmap=wx.Bitmap('exec.png'))
+        sizer.Add(icon, pos=(0, 4), flag=wx.TOP | wx.RIGHT | wx.ALIGN_RIGHT, border=5)
+        # 创建一条分隔线，来分隔布局中不同组的控件
+        line = wx.StaticLine(panel)
+        sizer.Add(line, pos=(1, 0), span=(1, 5), flag=wx.EXPAND | wx.BOTTOM, border=10)
+        text2 = wx.StaticText(panel, label="名称")
+        sizer.Add(text2, pos=(2, 0), flag=wx.LEFT, border=10)
+        tc1 = wx.TextCtrl(panel)
+        sizer.Add(tc1, pos=(2, 1), span=(1, 3), flag=wx.TOP | wx.EXPAND)
+        text3 = wx.StaticText(panel, label="包")
+        sizer.Add(text3, pos=(3, 0), flag=wx.LEFT | wx.TOP, border=10)
+        tc2 = wx.TextCtrl(panel)
+        sizer.Add(tc2, pos=(3, 1), span=(1, 3), flag=wx.TOP | wx.EXPAND, border=5)
+        button1 = wx.Button(panel, label="浏览...")
+        sizer.Add(button1, pos=(3, 4), flag=wx.TOP | wx.RIGHT, border=5)
+        text4 = wx.StaticText(panel, label="继承")
+        sizer.Add(text4, pos=(4, 0), flag=wx.TOP | wx.LEFT, border=10)
+        combo = wx.ComboBox(panel)
+        sizer.Add(combo, pos=(4, 1), span=(1, 3), flag=wx.TOP | wx.EXPAND, border=5)
+        button2 = wx.Button(panel, label="浏览...")
+        sizer.Add(button2, pos=(4, 4), flag=wx.TOP | wx.RIGHT, border=5)
+        # wxStaticBoxSizer 和 wx.BoxSizer 类似，但它在 Sizer 周围添加了一个静态的盒子，在盒子中放入了 Check 选项
+        sb = wx.StaticBox(panel, label="可选属性")
+        boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+        boxsizer.Add(wx.CheckBox(panel, label="公有"), flag=wx.LEFT | wx.TOP, border=5)
+        boxsizer.Add(wx.CheckBox(panel, label="生成默认构造函数"), flag=wx.LEFT, border=5)
+        boxsizer.Add(wx.CheckBox(panel, label="生成 Main 方法"), flag=wx.LEFT | wx.BOTTOM, border=5)
+        sizer.Add(boxsizer, pos=(5, 0), span=(1, 5), flag=wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT, border=10)
+        button3 = wx.Button(panel, label='帮助')
+        sizer.Add(button3, pos=(7, 0), flag=wx.LEFT, border=10)
+        button4 = wx.Button(panel, label="确定")
+        sizer.Add(button4, pos=(7, 3))
+        button5 = wx.Button(panel, label="取消")
+        sizer.Add(button5, pos=(7, 4), span=(1, 1), flag=wx.BOTTOM | wx.RIGHT, border=5)
+        sizer.AddGrowableCol(2)
+        panel.SetSizer(sizer)
+```
+
 ## 控件
 
 ### Button
