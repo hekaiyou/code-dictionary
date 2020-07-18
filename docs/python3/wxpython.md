@@ -1202,3 +1202,44 @@ if __name__ == '__main__':
     frame = GridFrame(None)
     app.MainLoop()
 ```
+
+## 菜单
+
+### 图标和快捷键
+
+![wxpython_menuitem](https://img-blog.csdnimg.cn/20200718170522675.png#pic_center)
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kwargs):
+        super(Example, self).__init__(*args, **kwargs)
+        self.InitUI()
+
+    def InitUI(self):
+        # 新建一个 MenuBar 对象
+        menubar = wx.MenuBar()
+        # 新建一个 Menu 对象
+        fileMenu = wx.Menu()
+        # 创建一个 wx.MenuItem 对象，"&" 符号申明了快捷键，但是真正的快捷键由 "\t" 后面的字母组合定义，
+        # 这里定义了 Ctrl+Q，如果用户按下这一快捷键，应用就会退出
+        qmi = wx.MenuItem(fileMenu, id=1, text='&退出\tCtrl+Q')
+        # 使用 SetBitmap() 函数，为菜单项提供图标
+        qmi.SetBitmap(wx.Bitmap('exit.png'))
+        # AppendItem 则将菜单项添加到菜单中
+        fileMenu.Append(qmi)
+        # 绑定了菜单项的 wx.EVT_MENU 事件到自定义的 OnQuit() 函数（这里通过 id 来绑定，也可以通过菜单项对象来绑定）
+        self.Bind(wx.EVT_MENU, self.OnQuit, id=1)
+        # 将菜单加入到菜单栏中，"&" 符号创建了一个快捷键
+        menubar.Append(fileMenu, '&文件')
+        # 调用 SetMenuBar() 方法，这一方法属于 wx.Frame，它为 Frame 设定菜单栏
+        self.SetMenuBar(menubar)
+        self.SetSize((250, 200))
+        self.SetTitle('图标和快捷键')
+        self.Centre()
+        self.Show(True)
+
+    def OnQuit(self, e):
+        self.Close()
+```
+
+## 工具栏
