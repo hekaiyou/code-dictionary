@@ -1205,7 +1205,9 @@ if __name__ == '__main__':
 
 ## 菜单
 
-### 图标和快捷键
+菜单是 GUI 应用中的通用部件，菜单栏由多项菜单组成，顶级菜单在菜单栏上显示标签，菜单包含菜单项，菜单项在应用中执行特定的命令，菜单也可以包含子菜单，子菜单自身又包含菜单项。
+
+### 图标与快捷键
 
 ![wxpython_menuitem](https://img-blog.csdnimg.cn/20200718170522675.png#pic_center)
 
@@ -1235,6 +1237,58 @@ class Example(wx.Frame):
         self.SetMenuBar(menubar)
         self.SetSize((250, 200))
         self.SetTitle('图标和快捷键')
+        self.Centre()
+        self.Show(True)
+
+    def OnQuit(self, e):
+        self.Close()
+```
+
+### 子菜单与分隔符
+
+每个菜单可以包含子菜单，这样可以把相似的命令放到同一组中，还可以通过分隔符来分割不同的命令，其实就是简单的一条线。
+
+![wxpython_appendsubmenu](https://img-blog.csdnimg.cn/20200718175904382.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kwargs):
+        super(Example, self).__init__(*args, **kwargs)
+        self.InitUI()
+
+    def InitUI(self):
+        menubar = wx.MenuBar()
+        fileMenu = wx.Menu()
+        # 创建 新建 菜单项
+        new = wx.MenuItem(fileMenu, wx.ID_NEW, '&新建\tCtrl+N')
+        new.SetBitmap(wx.Bitmap('folder_new.png'))
+        fileMenu.Append(new)
+        # 创建 打开 菜单项
+        open = wx.MenuItem(fileMenu, wx.ID_OPEN, '&打开\tCtrl+O')
+        open.SetBitmap(wx.Bitmap('fileopen.png'))
+        fileMenu.Append(open)
+        # 创建 保存 菜单项
+        save = wx.MenuItem(fileMenu, wx.ID_SAVE, '&保存\tCtrl+S')
+        save.SetBitmap(wx.Bitmap('save_all.png'))
+        fileMenu.Append(save)
+        # AppendSeparator() 函数添加了分隔符
+        fileMenu.AppendSeparator()
+        # 子菜单同样也是 wx.Menu 对象，三个菜单项被添加到该菜单对象
+        imp = wx.Menu()
+        # wx.ID_ANY 是获取id的一种方法
+        imp.Append(wx.ID_ANY, '导入RSS源列表...')
+        imp.Append(wx.ID_ANY, '导入书签...')
+        imp.Append(wx.ID_ANY, '导入邮件...')
+        # 子菜单通过 AppendSubMenu() 方法被添加到文件菜单中
+        fileMenu.AppendSubMenu(imp, '导入')
+        qmi = wx.MenuItem(fileMenu, wx.ID_EXIT, '&退出\tCtrl+Q')
+        qmi.SetBitmap(wx.Bitmap('exit.png'))
+        fileMenu.Append(qmi)
+        self.Bind(wx.EVT_MENU, self.OnQuit, qmi)
+        menubar.Append(fileMenu, '&文件')
+        self.SetMenuBar(menubar)
+        self.SetSize((350, 250))
+        self.SetTitle('子菜单和分隔符')
         self.Centre()
         self.Show(True)
 
