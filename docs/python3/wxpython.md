@@ -1296,4 +1296,56 @@ class Example(wx.Frame):
         self.Close()
 ```
 
+### Check菜单项
+
+![wxpython_checkmenu](https://img-blog.csdnimg.cn/20200718181755201.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hla2FpeW91,size_16,color_FFFFFF,t_70#pic_center)
+
+```python
+class Example(wx.Frame):
+    """创建一个view菜单，它包括两个 Check 菜单项，这两个菜单项可以控制显示或隐藏状态栏和工具栏"""
+    def __init__(self, *args, **kwargs):
+        super(Example, self).__init__(*args, **kwargs)
+        self.InitUI()
+
+    def InitUI(self):
+        menubar = wx.MenuBar()
+        fileMenu = wx.Menu()
+        viewMenu = wx.Menu()
+        # 如果要添加一个 Check 菜单项，可以设定 kind 参数为 wx.ITEM_CHECK，该参数默认为 wx.ITEM_NORMAL，
+        # Append()方法返回一个 wx.MenuItem
+        self.shst = viewMenu.Append(wx.ID_ANY, '显示状态栏', '帮助：显示状态栏', kind=wx.ITEM_CHECK)
+        self.shtl = viewMenu.Append(wx.ID_ANY, '显示工具栏', '帮助：显示工具栏', kind=wx.ITEM_CHECK)
+        # 当应用开始的时候，状态栏和工具栏都应可见，所以使用 Check() 方法勾选 Check 菜单项
+        viewMenu.Check(self.shst.GetId(), True)
+        viewMenu.Check(self.shtl.GetId(), True)
+        self.Bind(wx.EVT_MENU, self.ToggleStatusBar, self.shst)
+        self.Bind(wx.EVT_MENU, self.ToggleToolBar, self.shtl)
+        menubar.Append(fileMenu, '&文件')
+        menubar.Append(viewMenu, '&视图')
+        self.SetMenuBar(menubar)
+        self.toolbar = self.CreateToolBar()
+        self.toolbar.AddTool(1, '', wx.Bitmap('folder_new.png'))
+        self.toolbar.Realize()
+        self.statusbar = self.CreateStatusBar()
+        self.statusbar.SetStatusText('状态栏')
+        self.SetSize((350, 250))
+        self.SetTitle('Check菜单项')
+        self.Centre()
+        self.Show(True)
+
+    def ToggleStatusBar(self, e):
+        """通过 Check 菜单项的状态来显示或隐藏状态栏"""
+        # 通过 ISChecked() 函数来获取check菜单项的状态
+        if self.shst.IsChecked():
+            self.statusbar.Show()
+        else:
+            self.statusbar.Hide()
+
+    def ToggleToolBar(self, e):
+        if self.shtl.IsChecked():
+            self.toolbar.Show()
+        else:
+            self.toolbar.Hide()
+```
+
 ## 工具栏
