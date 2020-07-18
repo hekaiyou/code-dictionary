@@ -5,7 +5,7 @@
 ## 本地部署
 
 ```powershell
-$ cd docs
+$ cd code-dictionary
 $ docsify serve
 
 No docs found /root/RemoteWorking/index.html
