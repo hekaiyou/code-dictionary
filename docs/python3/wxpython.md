@@ -1348,4 +1348,49 @@ class Example(wx.Frame):
             self.toolbar.Hide()
 ```
 
+### 上下文菜单
+
+![wxpython_mypopupmenu](https://img-blog.csdnimg.cn/20200718183517687.png#pic_center)
+
+```python
+class MyPopupMenu(wx.Menu):
+    """为主窗口创建上下文菜单，有两个菜单项，一个用来最小化应用，另一个结束应用"""
+    def __init__(self, parent):
+        # 创建一个单独的类叫做MyPopupMenu，它继承自wx.Menu
+        super(MyPopupMenu, self).__init__()
+        self.parent = parent
+        # 创建菜单项、添加到上下文菜单并绑定了事件处理函数
+        mmi = wx.MenuItem(self, wx.NewIdRef(), '最小化')
+        self.Append(mmi)
+        self.Bind(wx.EVT_MENU, self.OnMinimize, mmi)
+        cmi = wx.MenuItem(self, wx.NewIdRef(), '关闭')
+        self.Append(cmi)
+        self.Bind(wx.EVT_MENU, self.OnClose, cmi)
+
+    def OnMinimize(self, e):
+        self.parent.Iconize()
+
+    def OnClose(self, e):
+        self.parent.Close()
+
+
+class Example(wx.Frame):
+    def __init__(self, *args, **kwargs):
+        super(Example, self).__init__(*args, **kwargs)
+        self.InitUI()
+
+    def InitUI(self):
+        # 如果用户在 Frame 中点击右键，将调用 OnRightDown() 方法，这是通过绑定 wx.EVT_RIGHT_DOWN 事件来实现的
+        self.Bind(wx.EVT_RIGHT_DOWN, self.OnRightDown)
+        self.SetSize((250, 200))
+        self.SetTitle('上下文菜单')
+        self.Centre()
+        self.Show(True)
+
+    def OnRightDown(self, e):
+        # 调用了 PopupMenu() 方法，这个方法来自于 wx.Frame，第一个参数是要显示的菜单，第二个参数为显示的位置，
+        # 为了让上下文菜单显示在鼠标光标处，这里需要得到鼠标位置，事件对象的 GetPosition() 方法可以得到这一信息
+        self.PopupMenu(MyPopupMenu(self), e.GetPosition())
+```
+
 ## 工具栏
