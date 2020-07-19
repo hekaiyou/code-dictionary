@@ -1,6 +1,6 @@
 # 开发小手册
 
-使用 `Markdown` 文档记录开发文档与代码，并使用 [Node.js](https://nodejs.org/zh-cn/) 语言的 `docsify` 框架自动生成一个网站，便于在开发过程中快速查阅！
+使用 `Markdown` 文档记录开发文档与代码，并使用 [Node.js](https://nodejs.org/zh-cn/) 语言的 [Docsify](https://docsify.js.org/#/zh-cn/) 框架自动生成一个网站，便于在开发过程中快速查阅！
 
 ## 本地预览
 
@@ -8,23 +8,35 @@
 $ cd code-dictionary
 $ docsify serve
 
-No docs found /root/RemoteWorking/index.html
-Please run docsify init first.
-
-➜  RemoteWorking git:(master) ✗ cd docs
-➜  docs git:(master) ✗ docsify serve
-
-Serving /root/RemoteWorking now.
+Serving C:\Users\hekaiyou\Documents\code-dictionary now.
 Listening at http://localhost:3000
 ```
 
-## Github部署
+## 部署
 
-找到 `setting` -> `GitHub Pages`，配置分支为 `master barnch folder`，点击保存后会自动发布，并且给出发布地址。（例：https://hekaiyou.github.io/code-dictionary/#/）
+### GitHub Pages
+
+找到 `setting` -> `GitHub Pages`，配置分支为 `master barnch folder`，点击保存后会自动发布，并且给出发布地址。( 例如: https://hekaiyou.github.io/code-dictionary/#/ )
+
+### Nginx
+
+和部署所有静态网站一样，只需将服务器的访问根目录设定为 `index.html` 文件，在 `Nginx` 配置中添加如下内容。
+
+```nginx
+server {
+  listen 80;
+  server_name  your.domain.com;
+
+  location / {
+    alias /path/to/dir/of/docs/;
+    index index.html;
+  }
+}
+```
 
 ## Docsify项目配置
 
-更多配置请访问[Docsify官方文档](https://docsify.js.org/#/zh-cn/quickstart)
+更多配置请访问 [Docsify官方文档](https://docsify.js.org/#/zh-cn/configuration) 查阅。
 
 ### docs目录结构
 

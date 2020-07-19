@@ -1,4 +1,4 @@
-* [首页](python3/README)
+* [关于Python3](python3/README)
 
 * 内置函数与方法
 
