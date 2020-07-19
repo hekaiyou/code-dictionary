@@ -1,6 +1,6 @@
 # 开发小手册
 
-一本相对完整的代码开发手册，使用 `Node.js` 语言的 `docsify` 框架自动生成！
+使用 `Markdown` 文档记录开发文档与代码，并使用 [Node.js](https://nodejs.org/zh-cn/) 语言的 `docsify` 框架自动生成一个网站，便于在开发过程中快速查阅！
 
 ## 本地预览
 
