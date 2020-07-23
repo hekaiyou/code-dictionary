@@ -1,4 +1,4 @@
-![logo](https://docsify.js.org/_media/icon.svg)
+![logo](static/icon.svg)
 
 # 开发小手册 <small>2.333</small>
 
