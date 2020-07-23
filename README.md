@@ -24,11 +24,11 @@ Listening at http://localhost:3000
 
 ```nginx
 server {
-  listen 80;
-  server_name  your.domain.com;
+  listen 3000;
+  server_name  localhost;
 
   location / {
-    alias /path/to/dir/of/docs/;
+    alias /usr/code-dictionary/;
     index index.html;
   }
 }
