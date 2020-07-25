@@ -1348,6 +1348,31 @@ class Example(wx.Frame):
             self.toolbar.Hide()
 ```
 
+### Radio菜单项
+
+![wxpython_radiomenu](image/wxpython_radiomenu.png)
+
+```python
+class Example(wx.Frame):
+    """创建一个view菜单，它包括两个 Radio 菜单项，并只能选择其中一个"""
+    def __init__(self, *args, **kwargs):
+        super(Example, self).__init__(*args, **kwargs)
+        self.InitUI()
+
+    def InitUI(self):
+        menubar = wx.MenuBar()
+        viewMenu = wx.Menu()
+        # 如果要添加一个 Radio 菜单项，可以设定 kind 参数为 wx.ITEM_RADIO，该参数默认为 wx.ITEM_NORMAL
+        self.shst = viewMenu.Append(wx.ID_ANY, '夜间视图', kind=wx.ITEM_RADIO)
+        self.shtl = viewMenu.Append(wx.ID_ANY, '日间视图', kind=wx.ITEM_RADIO)
+        menubar.Append(viewMenu, '&视图')
+        self.SetMenuBar(menubar)
+        self.SetSize((350, 250))
+        self.SetTitle('Radio菜单项')
+        self.Centre()
+        self.Show(True)
+```
+
 ### 上下文菜单
 
 ![wxpython_mypopupmenu](image/wxpython_mypopupmenu.png)
