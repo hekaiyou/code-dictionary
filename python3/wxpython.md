@@ -1656,7 +1656,7 @@ class Example(wx.Frame):
 - wx.TextEditMixin -- 允许文本编辑
 - wx.CheckListCtrlMixin -- 为每一行添加一个选择框
 
-#### ListCtrlAutoWidthMixin
+#### wx.ListCtrlAutoWidthMixin
 
 ![wxpython_listctrlautowidthmixin](image/wxpython_listctrlautowidthmixin.png)
 
@@ -1698,7 +1698,7 @@ class Example(wx.Frame):
         self.Show(True)
 ```
 
-#### ColumnSorterMixin
+#### wx.ColumnSorterMixin
 
 ![wxpython_columnsortermixin](image/wxpython_columnsortermixin.png)
 
