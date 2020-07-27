@@ -1422,16 +1422,23 @@ class Example(wx.Frame):
 
 ### 单行工具栏
 
+![wxpython_simpletoolbar](image/wxpython_simpletoolbar.png)
+
 ```python
 class Example(wx.Frame):
+    """创建一个工具的工具栏，当用户点击这一工具时，程序将退出"""
     def __init__(self, *args, **kwargs):
         super(Example, self).__init__(*args, **kwargs)
         self.InitUI()
 
     def InitUI(self):
+        # 创建 ToolBar，默认情况下，工具栏是水平、无边框且显示图标的
         toolbar = self.CreateToolBar()
+        # 调用 AddTool() 方法来创建工具栏的工具。第一个参数为ID，第二个参数为工具的标签，第三个为工具的图标
         qtool = toolbar.AddTool(wx.ID_ANY, '退出', wx.Bitmap('undo.png'))
+        # 把工具项放到工具栏之后，调用 Realize() 方法。在 Linux 中，该方法的调用不是必须的，但在 Windows 却是必须的
         toolbar.Realize()
+        # 使用 wx.EVT_TOOL 事件绑定器
         self.Bind(wx.EVT_TOOL, self.OnQuit, qtool)
         self.SetSize((250, 200))
         self.SetTitle('单行工具栏')
@@ -1442,3 +1449,89 @@ class Example(wx.Frame):
         self.Close()
 ```
 
+### 多行工具栏
+
+![wxpython_toolbars](image/wxpython_toolbars.png)
+
+```python
+class Example(wx.Frame):
+    """创建两个水平的工具栏"""
+    def __init__(self, *args, **kwargs):
+        super(Example, self).__init__(*args, **kwargs)
+        self.InitUI()
+
+    def InitUI(self):
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        # 第一个工具栏对象
+        toolbar1 = wx.ToolBar(self)
+        toolbar1.AddTool(wx.ID_ANY, '', wx.Bitmap('folder.png'))
+        toolbar1.AddTool(wx.ID_ANY, '', wx.Bitmap('folder_new.png'))
+        toolbar1.AddTool(wx.ID_ANY, '', wx.Bitmap('folder_sent_mail.png'))
+        toolbar1.Realize()
+        # 第二个工具栏对象
+        toolbar2 = wx.ToolBar(self)
+        qtool = toolbar2.AddTool(wx.ID_EXIT, '', wx.Bitmap('undo.png'))
+        toolbar2.Realize()
+        vbox.Add(toolbar1, 0, wx.EXPAND)
+        vbox.Add(toolbar2, 0, wx.EXPAND)
+        self.Bind(wx.EVT_TOOL, self.OnQuit, qtool)
+        self.SetSizer(vbox)
+        self.SetSize((300, 250))
+        self.SetTitle('多行工具栏')
+        self.Centre()
+        self.Show(True)
+
+    def OnQuit(self, e):
+        self.Close()
+```
+
+### 禁用工具栏
+
+![wxpython_undoredo](image/wxpython_undoredo.png)
+
+```python
+class Example(wx.Frame):
+    """有三个工具栏按钮，一个按钮用来退出应用，其余两个按钮的功能为撤销和反撤销，在程序中模拟了4次改变，撤销和反撤销时对应的启用或禁用"""
+    def __init__(self, *args, **kwargs):
+        super(Example, self).__init__(*args, **kwargs)
+        self.InitUI()
+
+    def InitUI(self):
+        self.count = 5
+        self.toolbar = self.CreateToolBar()
+        tundo = self.toolbar.AddTool(wx.ID_UNDO, '', wx.Bitmap('previous.png'))
+        tredo = self.toolbar.AddTool(wx.ID_REDO, '', wx.Bitmap('next.png'))
+        # 程序开始时，撤销按钮是禁用的，调用 EnableTool() 函数，并传递 False 参数来实现
+        self.toolbar.EnableTool(wx.ID_REDO, False)
+        # 调用 AddSeparator() 函数来分隔不同的工具项
+        self.toolbar.AddSeparator()
+        texit = self.toolbar.AddTool(wx.ID_EXIT, '', wx.Bitmap('undo.png'))
+        self.toolbar.Realize()
+        self.Bind(wx.EVT_TOOL, self.OnQuit, texit)
+        self.Bind(wx.EVT_TOOL, self.OnUndo, tundo)
+        self.Bind(wx.EVT_TOOL, self.OnRedo, tredo)
+        self.SetSize((250, 200))
+        self.SetTitle('禁用工具栏')
+        self.Centre()
+        self.Show(True)
+
+    def OnUndo(self, e):
+        """模拟了撤销和反撤销的功能，如果没有什么可以撤销的，撤销按钮就会禁用"""
+        if self.count > 1 and self.count <= 5:
+            self.count = self.count - 1
+        if self.count == 1:
+            self.toolbar.EnableTool(wx.ID_UNDO, False)
+        if self.count == 4:
+            self.toolbar.EnableTool(wx.ID_REDO, True)
+
+    def OnRedo(self, e):
+        if self.count < 5 and self.count >= 1:
+            self.count = self.count + 1
+        if self.count == 5:
+            self.toolbar.EnableTool(wx.ID_REDO, False)
+        if self.count == 2:
+            self.toolbar.EnableTool(wx.ID_UNDO, True)
+
+    def OnQuit(self, e):
+        self.Close()
+```
