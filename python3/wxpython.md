@@ -1535,3 +1535,79 @@ class Example(wx.Frame):
     def OnQuit(self, e):
         self.Close()
 ```
+
+## 高级控件
+
+### ListBox
+
+该控件用来展示和操作一组列表项，它有一个矩形框，里面有一组字符串，通过它，可以展示一列 MP3文件、书名或者一堆朋友的名字。`wx.ListBox` 可以有两种形式，单选和多选，默认为单选。该控件有两个可触发事件。
+
+- wx.EVT_COMMAND_LISTBOX_SELECTED -- 当用户单击一个条目时触发
+- wx.EVT_COMMAND_LISTBOX_DOUBLE_CLICKED -- 当用户双击一个条目时触发
+
+根据文档，`wx.ListBox` 中条目的个数在 GTK 平台上限制为 2000 个，需要滚动时会自动展示滚动条。
+
+![wxpython_listbox](image/wxpython_listbox.png)
+
+```python
+class Example(wx.Frame):
+    """创建1个 ListBox 和4个 Button，每个 Button 对应一个不同的方法，即增删改查"""
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, -1, 'wx.ListBox', size=(350, 220))
+        panel = wx.Panel(self, -1)
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        # 创建一个空的 wx.ListBox，边框是 20px
+        self.listbox = wx.ListBox(panel, -1)
+        hbox.Add(self.listbox, 1, wx.EXPAND | wx.ALL, 20)
+        btnPanel = wx.Panel(panel, -1)
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        new = wx.Button(btnPanel, id=1, label='增加', size=(90, 30))
+        ren = wx.Button(btnPanel, id=2, label='修改', size=(90, 30))
+        dlt = wx.Button(btnPanel, id=4, label='删除', size=(90, 30))
+        clr = wx.Button(btnPanel, id=3, label='清空', size=(90, 30))
+        self.Bind(wx.EVT_BUTTON, self.NewItem, id=1)
+        self.Bind(wx.EVT_BUTTON, self.OnRename, id=2)
+        self.Bind(wx.EVT_BUTTON, self.OnDelete, id=4)
+        self.Bind(wx.EVT_BUTTON, self.OnClear, id=3)
+        # 使用 wx.EVT_LISTBOX_DCLICK 绑定器将 wx.EVT_COMMAND_LISTBOX_DOUBLE_CLICKED 事件绑定至 OnRename()，
+        # 当用户双击特定元素时将弹出一个重命名对话框
+        self.Bind(wx.EVT_LISTBOX_DCLICK, self.OnRename)
+        vbox.Add((-1, 20))
+        vbox.Add(new)
+        vbox.Add(ren, 0, wx.TOP, 5)
+        vbox.Add(dlt, 0, wx.TOP, 5)
+        vbox.Add(clr, 0, wx.TOP, 5)
+        btnPanel.SetSizer(vbox)
+        hbox.Add(btnPanel, 0.6, wx.EXPAND | wx.RIGHT, 20)
+        panel.SetSizer(hbox)
+        self.Centre()
+        self.Show(True)
+
+    def NewItem(self, event):
+        """点击 增加 按钮时，NewItem() 被调用，将展示一个 wx.GetTextFromUser 对话框，该对话框返回用户的输入"""
+        text = wx.GetTextFromUser('输入一个新条目', '插入对话框')
+        # 如果输入非空，使用 Append() 将其添加至 ListBox
+        if text != '':
+            self.listbox.Append(text)
+
+    def OnRename(self, event):
+        """wx.ListBox 控件没有 Rename() 方法，只能删除之前选择的条目，然后在原来的地方插入一个新的条目"""
+        sel = self.listbox.GetSelection()
+        text = self.listbox.GetString(sel)
+        renamed = wx.GetTextFromUser('重命名条目', '重命名对话框', text)
+        if renamed != '':
+            self.listbox.Delete(sel)
+            self.listbox.Insert(renamed, sel)
+
+    def OnDelete(self, event):
+        """分两步删除一个 Item"""
+        # 使用 GetSelection() 获取被选择条目的 index
+        sel = self.listbox.GetSelection()
+        if sel != -1:
+            # 将 index 作为参数传入 Delete() 方法删除该元素
+            self.listbox.Delete(sel)
+
+    def OnClear(self, event):
+        """调用 Clear() 清空 ListBox"""
+        self.listbox.Clear()
+```
