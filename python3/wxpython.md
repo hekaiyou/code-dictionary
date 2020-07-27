@@ -1668,6 +1668,7 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 actresses = [('1', '2012', '1054.74'), ('2', '2013', '1062.89'), ('3', '2014', '1077.89'), ('4', '2015', '1137.87'),
              ('5', '2016', '1190.84'), ('6', '2017', '1252.83'), ('7', '2018', '1302.66'), ('8', '2019', '1343.88')]
 
+
 class AutoWidthListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     """
     创建一个新的 AutoWidthListCtrl 类，该类继承自 wx.ListCtrl 和 ListCtrlAutoWidthMixin（多重继承），
@@ -1676,6 +1677,7 @@ class AutoWidthListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     def __init__(self, parent):
         wx.ListCtrl.__init__(self, parent, -1, style=wx.LC_REPORT)
         ListCtrlAutoWidthMixin.__init__(self)
+
 
 class Example(wx.Frame):
     def __init__(self, parent):
@@ -1698,5 +1700,47 @@ class Example(wx.Frame):
 
 #### ColumnSorterMixin
 
+![wxpython_columnsortermixin](image/wxpython_columnsortermixin.png)
+
 ```python
+import wx
+from wx.lib.mixins.listctrl import ColumnSorterMixin
+
+actresses = {
+    1: ('2012', '1054.74'), 2: ('2013', '1062.89'), 3: ('2014', '1077.89'), 4: ('2015', '1137.87'),
+    5: ('2016', '1190.84'), 6: ('2017', '1252.83'), 7: ('2018', '1302.66'), 8: ('2019', '1343.88')
+}
+
+
+class SortedListCtrl(wx.ListCtrl, ColumnSorterMixin):
+    def __init__(self, parent):
+        wx.ListCtrl.__init__(self, parent, -1, style=wx.LC_REPORT)
+        # ColumnSorterMixin 接受一个参数，即要排序的列的个数
+        ColumnSorterMixin.__init__(self, len(actresses))
+        # 必须将数据匹配到 itemDataMap 属性中，且数据类型为字典
+        self.itemDataMap = actresses
+
+    def GetListCtrl(self):
+        """必须创建一个 GetListCtrl() 方法，它会返回一个将被排序的 wx.ListCtrl 控件"""
+        return self
+
+
+class Example(wx.Frame):
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, -1, 'wx.ColumnSorterMixin', size=(380, 230))
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        panel = wx.Panel(self, -1)
+        self.list = SortedListCtrl(panel)
+        self.list.InsertColumn(0, '统计时间', width=130)
+        self.list.InsertColumn(1, '年末常住人口（万人）', wx.LIST_FORMAT_RIGHT, 90)
+        items = actresses.items()
+        for key, data in items:
+            index = self.list.InsertItem(2000, data[0])
+            self.list.SetItem(index, 1, data[1])
+            # 需要使用 SetItemData() 方法将每一行与一个 index 关联起来
+            self.list.SetItemData(index, key)
+        hbox.Add(self.list, 1, wx.EXPAND)
+        panel.SetSizer(hbox)
+        self.Centre()
+        self.Show(True)
 ```
