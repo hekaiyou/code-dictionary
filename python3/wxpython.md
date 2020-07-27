@@ -1611,3 +1611,37 @@ class Example(wx.Frame):
         """调用 Clear() 清空 ListBox"""
         self.listbox.Clear()
 ```
+
+### wx.ListCtrl
+
+该控件是展示多列条目的图形展示控件，常用于文件管理器、CD刻录的文件等。它有三种不同的使用格式：列表视图、报告视图和图标视图，分别通过 `style` 参数：`wx.LC_REPORT`、`wx.LC_LIST` 和 `wx.LC_ICON` 来控制。
+
+![wxpython_listctrl](image/wxpython_listctrl.png)
+
+```python
+packages = [('1', '2012', '1054.74'), ('2', '2013', '1062.89'), ('3', '2014', '1077.89'), ('4', '2015', '1137.87'),
+            ('5', '2016', '1190.84'), ('6', '2017', '1252.83'), ('7', '2018', '1302.66'), ('8', '2019', '1343.88')]
+
+class Example(wx.Frame):
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, -1, '深圳市年末常住人口', size=(380, 230))
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        panel = wx.Panel(self, -1)
+        # 使用 wx.LC_REPORT style 创建一个 wx.ListCtrl
+        self.list = wx.ListCtrl(panel, -1, style=wx.LC_REPORT)
+        # 插入 3 列，可以单独控制每一列的宽度和格式，默认的格式是 wx.LIST_FORMAT_LEFT
+        self.list.InsertColumn(0, '序号', width=140)
+        self.list.InsertColumn(1, '统计时间', width=130)
+        self.list.InsertColumn(2, '年末常住人口（万人）', wx.LIST_FORMAT_RIGHT, 90)
+        # 使用两种方法将数据插入到 wx.ListCtrl 中去
+        for i in packages:
+            # 对每一行，调用 InsertItem() 方法，第一个参数为行号，使用2000保证每次调用时插入的行在上次插入行之后，该方法返回行的索引值
+            index = self.list.InsertItem(index=2000, label=i[0])
+            # 通过 SetItem() 方法在当前行的后续列中插入数据
+            self.list.SetItem(index, 1, i[1])
+            self.list.SetItem(index, 2, i[2])
+        hbox.Add(self.list, 1, wx.EXPAND)
+        panel.SetSizer(hbox)
+        self.Centre()
+        self.Show(True)
+```
