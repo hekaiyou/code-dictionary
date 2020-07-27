@@ -1612,7 +1612,7 @@ class Example(wx.Frame):
         self.listbox.Clear()
 ```
 
-### wx.ListCtrl
+### ListCtrl
 
 该控件是展示多列条目的图形展示控件，常用于文件管理器、CD刻录的文件等。它有三种不同的使用格式：列表视图、报告视图和图标视图，分别通过 `style` 参数：`wx.LC_REPORT`、`wx.LC_LIST` 和 `wx.LC_ICON` 来控制。
 
@@ -1645,3 +1645,17 @@ class Example(wx.Frame):
         self.Centre()
         self.Show(True)
 ```
+
+### Mixins
+
+该控件增强了 `wx.ListCtrl` 的功能，位于 `wx.lib.mixins.listctrl` 模块，必须继承这些类才可使用它们。
+
+- wx.ColumnSorterMixin -- 允许排序
+- wx.ListCtrlAutoWidthMixin -- 自动调整最后一列的宽度（占满）
+- wx.ListCtrlSelectionManagerMix -- 定义独立于平台的选择策略
+- wx.TextEditMixin -- 允许文本编辑
+- wx.CheckListCtrlMixin -- 为每一行添加一个选择框
+
+#### ListCtrlAutoWidthMixin
+
+#### ColumnSorterMixin
