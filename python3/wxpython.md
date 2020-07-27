@@ -1419,3 +1419,26 @@ class Example(wx.Frame):
 ```
 
 ## 工具栏
+
+### 单行工具栏
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kwargs):
+        super(Example, self).__init__(*args, **kwargs)
+        self.InitUI()
+
+    def InitUI(self):
+        toolbar = self.CreateToolBar()
+        qtool = toolbar.AddTool(wx.ID_ANY, '退出', wx.Bitmap('undo.png'))
+        toolbar.Realize()
+        self.Bind(wx.EVT_TOOL, self.OnQuit, qtool)
+        self.SetSize((250, 200))
+        self.SetTitle('单行工具栏')
+        self.Centre()
+        self.Show(True)
+
+    def OnQuit(self, e):
+        self.Close()
+```
+
