@@ -1911,3 +1911,39 @@ class Example(wx.Frame):
         self.Centre()
         self.Show(True)
 ```
+
+## 事件
+
+事件是来源于底层框的应用层信息，事件循环主要用来分发事件和等待信息。事件分配器将事件匹配到对应的事件处理器，事件处理器即用来对响应事件做出特定反应的函数。
+
+### 移动事件
+
+当移动窗口到一个新位置时，会产生一个移动事件，它的类型是 `wx.MoveEvent`，该事件的绑定器是 `wx.EVT_MOVE`。
+
+![wxpython_moveevent](image/wxpython_moveevent.png)
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        wx.StaticText(self, label='x:', pos=(10, 10))
+        wx.StaticText(self, label='y:', pos=(10, 30))
+        self.st1 = wx.StaticText(self, label='', pos=(30, 10))
+        self.st2 = wx.StaticText(self, label='', pos=(30, 30))
+        # 将 wx.EVT_MOVE 事件绑定到 OnMove() 方法上
+        self.Bind(wx.EVT_MOVE, self.OnMove)
+        self.SetSize((250, 180))
+        self.SetTitle('窗口移动事件')
+        self.Centre()
+        self.Show(True)
+
+    def OnMove(self, e):
+        """这里的 e 是 wx.MoveEvent 类的一个实例，它包含了该 event 的一些信息，包括事件对象和窗口位置等"""
+        # 通过事件（即是 wx.Frame 控件）的 GetPosition() 函数来得到当前位置
+        x, y = e.GetPosition()
+        self.st1.SetLabel(str(x))
+        self.st2.SetLabel(str(y))
+```
