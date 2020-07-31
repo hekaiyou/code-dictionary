@@ -1770,3 +1770,37 @@ class Example(wx.Frame):
         self.Centre()
         self.Show(True)
 ```
+
+### HtmlWindow
+
+该控件可以展示HTML页面，但是它不是一个完整的浏览器，只能展示一些基本的标签。
+
+![wxpython_htmlwindow](image/wxpython_htmlwindow.png)
+
+```python
+import wx
+import wx.html as html
+
+page = """<html><body bgcolor="#8e8e95"><table cellspacing="5" border="0" width="250">
+<tr width="200" align="left"><td bgcolor="#e7e7e7">最大值</td><td bgcolor="#F0FFFF"><b>9000</b></td></tr>
+<tr align="left"><td bgcolor="#e7e7e7">平均值</td><td bgcolor="#F0F8FF"><b>6076</b></td></tr>
+<tr align="left"><td bgcolor="#e7e7e7">最小值</td><td bgcolor="#E6E6FA"><b>3800</b></td></tr>
+<tr align="left"><td bgcolor="#e7e7e7">中位数</td><td bgcolor="#FFF0F5"><b>6000</b></td></tr>
+<tr align="left"><td bgcolor="#e7e7e7">标准偏差</td><td bgcolor="#FFE4E1"><b>6076</b></td></tr>
+</table></body></html>"""
+
+class Example(wx.Frame):
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, -1, 'html.HtmlWindow', size=(400, 290))
+        panel = wx.Panel(self, -1)
+        v_box = wx.BoxSizer(wx.HORIZONTAL)
+        # 创建一个HTML窗口
+        html_win = html.HtmlWindow(panel, -1, style=wx.NO_BORDER)
+        html_win.SetBackgroundColour(wx.RED)
+        html_win.SetStandardFonts()
+        html_win.SetPage(page)
+        v_box.Add(html_win, 1, wx.EXPAND | wx.ALL, 9)
+        panel.SetSizer(v_box)
+        self.Centre()
+        self.Show(True)
+```
