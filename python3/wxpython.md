@@ -1804,3 +1804,7 @@ class Example(wx.Frame):
         self.Centre()
         self.Show(True)
 ```
+
+## 拖拽
+
+拖拽操作将一些数据从一个源位置移动到目标位置，实现拖拽需要有：一些数据、一个数据来源和一个数据目标。
