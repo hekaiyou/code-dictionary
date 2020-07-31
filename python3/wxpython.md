@@ -1005,6 +1005,32 @@ class Example(wx.Frame):
         self.celsius.SetLabel(str(cels))
 ```
 
+### ScrolledWindow
+
+该控件用来设置窗口可视面积的大小，单位是像素，带有纵向、横向的滚动条。
+
+![wxpython_scrolledwindow](image/wxpython_scrolledwindow.png)
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        # 创建一个滚动条控件
+        scroller = wx.ScrolledWindow(self, -1)
+        # 设置滚动条控件的大小
+        scroller.SetScrollbars(pixelsPerUnitX=1, pixelsPerUnitY=1, noUnitsX=1000, noUnitsY=800)
+        pnl = wx.Panel(scroller)
+        ms = wx.BoxSizer(wx.VERTICAL)
+        pnl.SetSizer(ms)
+        self.SetSize((270, 250))
+        self.SetTitle('wx.ScrolledWindow')
+        self.Centre()
+        self.Show(True)
+```
+
 ## 对话框
 
 常用对话框类和函数封装了常用对话框的需求，它们都是 `模态` 的，抓住了控制流，直到用户关闭对话框。
