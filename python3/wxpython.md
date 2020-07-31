@@ -1980,3 +1980,50 @@ class Example(wx.Frame):
         else:
             e.Veto()
 ```
+
+### 事件传播
+
+事件分两种：基础事件与命令事件，两者在事件传播上存在不同，事件传播是指将事件从子控件传播至父控件乃至更上层控件，基础事件不传播，而命令事件会传播。例如：`wx.CloseEvent` 是一个基础事件，这意味着它不会向上传播。默认情况下，如果事件被事件处理函数捕获，那么就会停止后续的传播，如果要让它继续传播，需要调用 `Skip()` 函数。
+
+![wxpython_eventskip](image/wxpython_eventskip.png)
+
+```python
+class MyPanel(wx.Panel):
+    def __init__(self, *args, **kw):
+        super(MyPanel, self).__init__(*args, **kw)
+        self.Bind(wx.EVT_BUTTON, self.OnButtonClicked)
+
+    def OnButtonClicked(self, e):
+        print('事件抵达 Panel 类')
+        e.Skip()
+
+
+class MyButton(wx.Button):
+    """处理了按钮点击事件，Skip() 函数使得事件继续向上层传播"""
+    def __init__(self, *args, **kw):
+        super(MyButton, self).__init__(*args, **kw)
+        self.Bind(wx.EVT_BUTTON, self.OnButtonClicked)
+
+    def OnButtonClicked(self, e):
+        print('事件抵达 Button 类')
+        e.Skip()
+
+
+class Example(wx.Frame):
+    """在 Frame 上的 Panel 中放置了一个 Button，并对所有的控件定义了事件处理函数"""
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        mpnl = MyPanel(self)
+        MyButton(mpnl, label='Ok', pos=(15, 15))
+        self.Bind(wx.EVT_BUTTON, self.OnButtonClicked)
+        self.SetTitle('传播事件')
+        self.Centre()
+        self.Show(True)
+
+    def OnButtonClicked(self, e):
+        print('事件抵达 Frame 类')
+        e.Skip()
+```
