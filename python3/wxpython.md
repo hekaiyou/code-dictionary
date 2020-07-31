@@ -1947,3 +1947,36 @@ class Example(wx.Frame):
         self.st1.SetLabel(str(x))
         self.st2.SetLabel(str(y))
 ```
+
+### 停止事件
+
+有时需要停止某个事件的继续处理，这时可以调用 `Veto()` 方法。
+
+![wxpython_closeevent](image/wxpython_closeevent.png)
+
+```python
+class Example(wx.Frame):
+    """处理了一个 wx.CloseEvent 事件，当点击窗口的 X关闭按钮、按下 Alt+F4 或者从菜单选择退出应用时，这个事件会被触发"""
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        # 绑定 wx.EVT_CLOSE 事件处理
+        self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
+        self.SetTitle('wx.EVT_CLOSE')
+        self.Centre()
+        self.Show(True)
+
+    def OnCloseWindow(self, e):
+        """在处理关闭事件时，显示一个消息对话框"""
+        dial = wx.MessageDialog(None, '你确定要退出吗?', '提示',
+                                wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
+        ret = dial.ShowModal()
+        # 根据对话框的返回值，可以销毁窗口或者停止这一事件
+        if ret == wx.ID_YES:
+            # 必须使用 Destroy() 来关闭窗口，如果调用 Close() 函数，程序将陷入死循环
+            self.Destroy()
+        else:
+            e.Veto()
+```
