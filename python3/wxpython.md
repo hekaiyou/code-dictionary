@@ -1808,3 +1808,69 @@ class Example(wx.Frame):
 ## 拖拽
 
 拖拽操作将一些数据从一个源位置移动到目标位置，实现拖拽需要有：一些数据、一个数据来源和一个数据目标。
+
+### TextDropTarget
+
+![wxpython_textdroptarget](image/wxpython_textdroptarget.png)
+
+```python
+import wx
+import os
+
+
+class MyTextDropTarget(wx.TextDropTarget):
+    """继承wx.TextDropTarget类，这是 wxPython 中两个预定义的数据目标之一"""
+    def __init__(self, object):
+        wx.TextDropTarget.__init__(self)
+        self.object = object
+
+    def OnDropText(self, x, y, data):
+        self.object.InsertItem(0, data)
+        return True
+
+
+class Example(wx.Frame):
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, -1, 'wx.TextDropTarget', size=(750, 450))
+        # 创建两个分隔窗口（wx.SplitterWindow）控件
+        splitter1 = wx.SplitterWindow(self, -1, style=wx.SP_3D)
+        splitter2 = wx.SplitterWindow(splitter1, -1, style=wx.SP_3D)
+        # 创建一个目录树（wx.GenericDirCtrl）控件
+        self.dir = wx.GenericDirCtrl(splitter1, -1, dir='C:/Users/hekaiyou/Downloads', style=wx.DIRCTRL_DIR_ONLY)
+        # 分别创建数据来源（lc1）列表与数据目标（lc2）列表
+        self.lc1 = wx.ListCtrl(splitter2, -1, style=wx.LC_LIST)
+        self.lc2 = wx.ListCtrl(splitter2, -1, style=wx.LC_LIST)
+        # 绑定数据目标列表的数据
+        dt = MyTextDropTarget(self.lc2)
+        self.lc2.SetDropTarget(dt)
+        self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.OnDragInit, id=self.lc1.GetId())
+        # 获取树控件的节点
+        tree = self.dir.GetTreeCtrl()
+        # 设置上下布局的分隔窗口，window1为上窗口，window2为下窗口，sashPosition是窗口的位置
+        splitter2.SplitHorizontally(window1=self.lc1, window2=self.lc2)
+        # 设置最小窗口尺寸，上下布局是指上窗口的最小尺寸
+        splitter2.SetMinimumPaneSize(200)
+        # 设置左右布局的分隔窗口，window1为左窗口，window2为右窗口，sashPosition是窗口的位置
+        splitter1.SplitVertically(window1=self.dir, window2=splitter2)
+        # 设置最小窗口尺寸，左右布局是指左窗口的最小尺寸
+        splitter1.SetMinimumPaneSize(320)
+        self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnSelect, id=tree.GetId())
+        self.OnSelect(0)
+        self.Centre()
+        self.Show(True)
+
+    def OnSelect(self, event):
+        list = os.listdir(self.dir.GetPath())
+        self.lc1.ClearAll()
+        self.lc2.ClearAll()
+        for i in range(len(list)):
+            if list[i][0] != '.':
+                self.lc1.InsertItem(0, list[i])
+
+    def OnDragInit(self, event):
+        text = self.lc1.GetItemText(event.GetIndex())
+        tdo = wx.TextDataObject(text)
+        tds = wx.DropSource(self.lc1)
+        tds.SetData(tdo)
+        tds.DoDragDrop(True)
+```
