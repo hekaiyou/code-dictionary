@@ -1874,3 +1874,40 @@ class Example(wx.Frame):
         tds.SetData(tdo)
         tds.DoDragDrop(True)
 ```
+
+### FileDropTarget
+
+![wxpython_filedroptarget](image/wxpython_filedroptarget.png)
+
+```python
+class FileDrop(wx.FileDropTarget):
+    def __init__(self, window):
+        wx.FileDropTarget.__init__(self)
+        self.window = window
+
+    def OnDropFiles(self, x, y, filenames):
+        for name in filenames:
+            try:
+                file = open(name, 'r')
+                text = file.read()
+                self.window.WriteText(text)
+                file.close()
+            except IOError as error:
+                dlg = wx.MessageDialog(None, '打开文件时出错', str(error))
+                dlg.ShowModal()
+            except UnicodeDecodeError as error:
+                dlg = wx.MessageDialog(None, '无法打开非ASCII文件', str(error))
+                dlg.ShowModal()
+        return True
+
+
+class Example(wx.Frame):
+    """可以将文件拖至编辑器，编辑器将显示其内容"""
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, -1, 'wx.FileDropTarget', size=(450, 400))
+        self.text = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE)
+        dt = FileDrop(self.text)
+        self.text.SetDropTarget(dt)
+        self.Centre()
+        self.Show(True)
+```
