@@ -2059,6 +2059,8 @@ class Example(wx.Frame):
 
 使用标准标识符可以在不同平台提供标准的图形或行为。
 
+![wxpython_standardidentifier](image/wxpython_standardidentifier.png)
+
 ```python
 class Example(wx.Frame):
     def __init__(self, *args, **kw):
@@ -2168,6 +2170,8 @@ class Example(wx.Frame):
 
 焦点是指当前应用中被选择的控件，从键盘输入或剪切板拷入的文本将被发送到该控件，有两个事件与焦点有关：`wx.EVT_SET_FOCUS` 和 `wx.EVT_KILL_FOCUS`。当一个控件获得焦点时，会触发 `wx.EVT_SET_FOCUS`，当控件丢失焦点时，会触发 `wx.EVT_KILL_FOCUS`。通过点击或者键盘按键，比如 Tab 键或 Shift+Tab 键可以改变焦点。
 
+![wxpython_evtsetfocus](image/wxpython_evtsetfocus.png)
+
 ```python
 class MyPanel(wx.Panel):
     def __init__(self, parent):
@@ -2224,6 +2228,8 @@ class Example(wx.Frame):
 ### 键盘事件
 
 在键盘上按下按钮时，一个键盘事件会被触发，并被发送到当前焦点控件，有三种不同的键盘事件：`wx.EVT_KEY_DOWN`、`wx.EVT_KEY_UP` 和 `wx.EVT_CHAR`。
+
+![wxpython_evtkeyeown](image/wxpython_evtkeyeown.png)
 
 ```python
 class Example(wx.Frame):
