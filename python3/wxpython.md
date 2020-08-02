@@ -2027,3 +2027,228 @@ class Example(wx.Frame):
         print('事件抵达 Frame 类')
         e.Skip()
 ```
+
+### 控件标识符
+
+控件标识符是指在事件系统中，找到控件的唯一整数标记，创建窗口标识符的方法有三种：系统自动创建ID、使用标准标识符、创建自定义ID。
+
+#### 自动创建ID
+
+在不需要修改控件状态的时候，一般选择由系统自动创建ID，可以将 `-1` 或者 `wx.ID_ANY` 赋值给 `id` 参数，但是系统自动创建的ID总是负值（用户创建的必须是正值），可以通过 `GetId()` 来获取ID。
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        exitButton = wx.Button(pnl, wx.ID_ANY, '退出', (10, 10))
+        # 通过 GetId() 函数直接获取自动生成的ID
+        self.Bind(wx.EVT_BUTTON, self.OnExit, id=exitButton.GetId())
+        self.SetTitle("系统自动创建ID")
+        self.Centre()
+        self.Show(True)
+
+    def OnExit(self, event):
+        self.Close()
+```
+
+#### 标准标识符
+
+使用标准标识符可以在不同平台提供标准的图形或行为。
+
+```python
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        grid = wx.GridSizer(cols=2)
+        # 将6个按钮加入到一个网格布局中
+        grid.AddMany([
+            (wx.Button(pnl, wx.ID_CANCEL), 0, wx.TOP | wx.LEFT, 9),  # 标准标识符-取消
+            (wx.Button(pnl, wx.ID_DELETE), 0, wx.TOP, 9),  # 标准标识符-删除
+            (wx.Button(pnl, wx.ID_SAVE), 0, wx.LEFT, 9),  # 标准标识符-保存
+            (wx.Button(pnl, wx.ID_EXIT)),  # 标准标识符-退出
+            (wx.Button(pnl, wx.ID_STOP), 0, wx.LEFT, 9),  # 标准标识符-停止
+            (wx.Button(pnl, wx.ID_NEW))  # 标准标识符-新建
+        ])
+        # 将事件绑定到 OnQuitAPP() 处理函数，使用 id 参数来区分不同的 Button，并唯一标识事件的来源
+        self.Bind(wx.EVT_BUTTON, self.OnQuitApp, id=wx.ID_EXIT)
+        pnl.SetSizer(grid)
+        self.SetSize((220, 180))
+        self.SetTitle("使用标准标识符")
+        self.Centre()
+        self.Show(True)
+
+    def OnQuitApp(self, event):
+        self.Close()
+```
+
+#### 自定义标识符
+
+```python
+# 定义全局的自定义的唯一ID
+ID_MENU_NEW = 1
+ID_MENU_OPEN = 2
+ID_MENU_SAVE = 3
+
+
+class Example(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        self.CreateMenuBar()
+        self.CreateStatusBar()
+        self.SetSize((250, 180))
+        self.SetTitle('自定义控件标识符')
+        self.Centre()
+        self.Show(True)
+
+    def CreateMenuBar(self):
+        mb = wx.MenuBar()
+        fMenu = wx.Menu()
+        fMenu.Append(ID_MENU_NEW, '新建')
+        fMenu.Append(ID_MENU_OPEN, '打开')
+        fMenu.Append(ID_MENU_SAVE, '保存')
+        mb.Append(fMenu, '文件')
+        self.SetMenuBar(mb)
+        # 通过唯一ID可以识别前面创建的三个菜单项
+        self.Bind(wx.EVT_MENU, self.DisplayMessage, id=ID_MENU_NEW)
+        self.Bind(wx.EVT_MENU, self.DisplayMessage, id=ID_MENU_OPEN)
+        self.Bind(wx.EVT_MENU, self.DisplayMessage, id=ID_MENU_SAVE)
+
+    def DisplayMessage(self, e):
+        sb = self.GetStatusBar()
+        # 从 e（事件对象）中得到ID，根据ID的不同，准备不同的信息，并输出在状态栏
+        eid = e.GetId()
+        if eid == ID_MENU_NEW:
+            msg = '选择 新建 菜单项'
+        elif eid == ID_MENU_OPEN:
+            msg = '选择 打开 菜单项'
+        elif eid == ID_MENU_SAVE:
+            msg = '选择 保存 菜单项'
+        else:
+            msg = ''
+        sb.SetStatusText(msg)
+```
+
+### 绘制事件
+
+当窗口重绘时会触发绘制事件，比如调整窗口大小或者最大化的时候。也可以程序化的触发绘制事件，比如，调用 `SetLabel()` 函数来修改 `wx.StaticText` 组件的文字时，就会触发绘制事件。
+
+```python
+class Example(wx.Frame):
+    """对绘制事件进行计数，并将当前数目设置为 Frame 窗口的标题"""
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        self.count = 0
+        # 将 wx.EVT_PAINT 事件绑定至 OnPaint 函数
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.SetSize((250, 180))
+        self.Centre()
+        self.Show(True)
+
+    def OnPaint(self, e):
+        """增加计数器，并设置新的窗口标题"""
+        self.count += 1
+        self.SetTitle(str(self.count))
+```
+
+### 焦点事件
+
+焦点是指当前应用中被选择的控件，从键盘输入或剪切板拷入的文本将被发送到该控件，有两个事件与焦点有关：`wx.EVT_SET_FOCUS` 和 `wx.EVT_KILL_FOCUS`。当一个控件获得焦点时，会触发 `wx.EVT_SET_FOCUS`，当控件丢失焦点时，会触发 `wx.EVT_KILL_FOCUS`。通过点击或者键盘按键，比如 Tab 键或 Shift+Tab 键可以改变焦点。
+
+```python
+class MyPanel(wx.Panel):
+    def __init__(self, parent):
+        super(MyPanel, self).__init__(parent)
+        self.color = '#b3b3b3'
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.Bind(wx.EVT_SIZE, self.OnSize)
+        # 把两个焦点事件绑定至事件处理函数
+        self.Bind(wx.EVT_SET_FOCUS, self.OnSetFocus)
+        self.Bind(wx.EVT_KILL_FOCUS, self.OnKillFocus)
+
+    def OnPaint(self, e):
+        """在面板上进行了绘制，外框的颜色取决于面板是否获得焦点，如果获得焦点，则使用蓝色"""
+        dc = wx.PaintDC(self)
+        dc.SetPen(wx.Pen(self.color))
+        x, y = self.GetSize()
+        dc.DrawRectangle(0, 0, x, y)
+
+    def OnSize(self, e):
+        self.Refresh()
+
+    def OnSetFocus(self, e):
+        # 设置 self.color 为蓝色
+        self.color = '#0099f7'
+        # 刷新 Frame 窗口，这会触发所有子控件的绘制事件，面板会被重绘，获取焦点的面板将得到一个蓝色外框
+        self.Refresh()
+
+    def OnKillFocus(self, e):
+        self.color = '#b3b3b3'
+        self.Refresh()
+
+
+class Example(wx.Frame):
+    """创建4个 Panel，获得当前焦点的 Panel 会被高亮显示"""
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        grid = wx.GridSizer(2, 2, 10, 10)
+        grid.AddMany([
+            (MyPanel(self), 0, wx.EXPAND | wx.TOP | wx.LEFT, 9),
+            (MyPanel(self), 0, wx.EXPAND | wx.TOP | wx.RIGHT, 9),
+            (MyPanel(self), 0, wx.EXPAND | wx.BOTTOM | wx.LEFT, 9),
+            (MyPanel(self), 0, wx.EXPAND | wx.BOTTOM | wx.RIGHT, 9)
+        ])
+        self.SetSizer(grid)
+        self.SetSize((350, 250))
+        self.SetTitle('焦点事件')
+        self.Centre()
+        self.Show(True)
+```
+
+### 键盘事件
+
+在键盘上按下按钮时，一个键盘事件会被触发，并被发送到当前焦点控件，有三种不同的键盘事件：`wx.EVT_KEY_DOWN`、`wx.EVT_KEY_UP` 和 `wx.EVT_CHAR`。
+
+```python
+class Example(wx.Frame):
+    """当按下 Esc 时，会弹出对话框询问，是否关闭应用"""
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+        self.InitUI()
+
+    def InitUI(self):
+        pnl = wx.Panel(self)
+        # 将 wx.EVT_KEY_DOWN 事件绑定至 self.OnKeyDown() 函数
+        pnl.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
+        pnl.SetFocus()
+        self.SetSize((250, 180))
+        self.SetTitle('键盘事件')
+        self.Centre()
+        self.Show(True)
+
+    def OnKeyDown(self, e):
+        # 通过 e（事件对象）得到按下键的编号
+        key = e.GetKeyCode()
+        # 检查键编号，判断按下的键是否是 Esc，它的键编号是 wx.WXK_ESCAPE
+        if key == wx.WXK_ESCAPE:
+            ret = wx.MessageBox('你确定要关闭应用吗?', '提醒',
+                                wx.YES_NO | wx.NO_DEFAULT, self)
+            if ret == wx.YES:
+                self.Close()
+```
