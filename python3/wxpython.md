@@ -2258,3 +2258,68 @@ class Example(wx.Frame):
             if ret == wx.YES:
                 self.Close()
 ```
+
+## 自定义控件
+
+一般通过两种方式创建自定义控件：修改或增强已有控件、从零开始创建。
+
+### 增强已有控件
+
+```python
+import wx
+# 导入 wx.lib.stattext.GenStaticText 控件
+from wx.lib.stattext import GenStaticText
+# 导入 webbrowser 标准模块
+import webbrowser
+
+
+class Link(GenStaticText):
+    """基于 wx.lib.stattext.GenStaticText 控件构建 超链接控件"""
+
+    def __init__(self, *args, **kw):
+        super(Link, self).__init__(*args, **kw)
+        self.font1 = wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, True, 'Verdana')
+        self.font2 = wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False, 'Verdana')
+        # 修改字体和文本的颜色
+        self.SetFont(self.font2)
+        self.SetForegroundColour('#0000ff')
+        self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvent)
+        self.Bind(wx.EVT_MOTION, self.OnMouseEvent)
+
+    def SetUrl(self, url):
+        self.url = url
+
+    def OnMouseEvent(self, e):
+        # 如果鼠标移到链接上方时，显示文本下划线，并将鼠标设置为手型
+        if e.Moving():
+            self.SetCursor(wx.Cursor(wx.CURSOR_HAND))
+            self.SetFont(self.font1)
+        # 如果点击链接，在默认浏览器打开它
+        elif e.LeftUp():
+            webbrowser.open_new(self.url)
+        else:
+            self.SetCursor(wx.NullCursor)
+            self.SetFont(self.font2)
+        e.Skip()
+
+
+class Example(wx.Frame):
+
+    def __init__(self, *args, **kw):
+        super(Example, self).__init__(*args, **kw)
+
+        self.InitUI()
+
+    def InitUI(self):
+        panel = wx.Panel(self)
+        lnk = Link(panel, label='ZetCode', pos=(10, 60))
+        lnk.SetUrl('http://www.zetcode.com')
+
+        motto = GenStaticText(panel, label='Knowledge only matters', pos=(10, 30))
+        motto.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False, 'Verdana'))
+
+        self.SetSize((220, 150))
+        self.SetTitle('A Hyperlink')
+        self.Centre()
+        self.Show(True)
+```
