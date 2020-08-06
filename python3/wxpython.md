@@ -2265,6 +2265,8 @@ class Example(wx.Frame):
 
 ### 增强已有控件
 
+![wxpython_genstatictext](image/wxpython_genstatictext.png)
+
 ```python
 import wx
 # 导入 wx.lib.stattext.GenStaticText 控件
@@ -2275,7 +2277,6 @@ import webbrowser
 
 class Link(GenStaticText):
     """基于 wx.lib.stattext.GenStaticText 控件构建 超链接控件"""
-
     def __init__(self, *args, **kw):
         super(Link, self).__init__(*args, **kw)
         self.font1 = wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, True, 'Verdana')
@@ -2304,22 +2305,20 @@ class Link(GenStaticText):
 
 
 class Example(wx.Frame):
-
     def __init__(self, *args, **kw):
         super(Example, self).__init__(*args, **kw)
-
         self.InitUI()
 
     def InitUI(self):
         panel = wx.Panel(self)
-        lnk = Link(panel, label='ZetCode', pos=(10, 60))
-        lnk.SetUrl('http://www.zetcode.com')
-
-        motto = GenStaticText(panel, label='Knowledge only matters', pos=(10, 30))
+        lnk = Link(panel, label='百度', pos=(10, 60))
+        lnk.SetUrl('https://www.baidu.com')
+        motto = GenStaticText(panel, label='通过系统默认浏览器打开', pos=(10, 30))
         motto.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False, 'Verdana'))
-
         self.SetSize((220, 150))
-        self.SetTitle('A Hyperlink')
+        self.SetTitle('超链接控件')
         self.Centre()
         self.Show(True)
 ```
+
+### 从零开始创建
