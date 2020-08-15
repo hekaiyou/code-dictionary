@@ -2263,8 +2263,6 @@ class Example(wx.Frame):
 
 一般通过两种方式创建自定义控件：修改或增强已有控件、从零开始创建。
 
-### 增强已有控件
-
 ![wxpython_genstatictext](image/wxpython_genstatictext.png)
 
 ```python
@@ -2320,5 +2318,3 @@ class Example(wx.Frame):
         self.Centre()
         self.Show(True)
 ```
-
-### 从零开始创建
