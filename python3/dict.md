@@ -1,6 +1,6 @@
 # Python3 字典 {docsify-ignore}
 
-## radiansdict.clear()
+## dict.clear()
 
 ###### 描述
 
@@ -28,7 +28,7 @@ print("字典删除后长度: %d" %  len(dict))
 字典删除后长度: 0
 ```
 
-## radiansdict.copy()
+## dict.copy()
 
 ###### 描述
 
@@ -56,4 +56,42 @@ print("新复制的字典为: ", dict2)
 
 ```powershell
 新复制的字典为:  {'Age': 7, 'Name': 'You', 'Class': 'First'}
+```
+
+## dict.fromkeys()
+
+###### 描述
+
+创建一个新字典，以序列 `seq` 中元素做字典的键，`value` 为字典所有键对应的初始值。
+
+###### 语法
+
+```python
+dict.fromkeys(seq[, value]))
+```
+
+###### 参数
+
+- seq -- 字典键值列表
+- value -- 可选参数，设置键序列（seq）的值
+
+###### 返回值
+
+一个新字典。
+
+###### 实例
+
+```python
+tuple1 = ('name', 'age', 'sex')
+dict1 = dict.fromkeys(tuple1)
+print("新的字典为: %s" % str(dict1))
+dict1 = dict.fromkeys(tuple1, 10)
+print("新的字典为: %s" % str(dict1))
+```
+
+以上实例输出结果如下：
+
+```powershell
+新的字典为: {'name': None, 'age': None, 'sex': None}
+新的字典为: {'name': 10, 'age': 10, 'sex': 10}
 ```
