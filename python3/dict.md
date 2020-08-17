@@ -95,3 +95,109 @@ print("新的字典为: %s" % str(dict1))
 新的字典为: {'name': None, 'age': None, 'sex': None}
 新的字典为: {'name': 10, 'age': 10, 'sex': 10}
 ```
+
+## dict.get(key, default=None)
+
+###### 描述
+
+返回指定键的值，如果值不在字典中则返回默认值。
+
+###### 语法
+
+```python
+dict.get(key, default=None)
+```
+
+###### 参数
+
+- key -- 字典中要查找的键
+- default -- 如果指定键的值不存在时，返回该默认值值
+
+###### 返回值
+
+指定键的值，如果值不在字典中则返回默认值 `None`。
+
+###### 实例
+
+```python
+dict1 = {'Name': 'You', 'Age': 27}
+print("Age 值为: %s" % dict1.get('Age'))
+print("Sex 值为: %s" % dict1.get('Sex', "NA"))
+```
+
+以上实例输出结果如下：
+
+```powershell
+Age 值为: 27
+Sex 值为: NA
+```
+
+## key in dict
+
+###### 描述
+
+判断键是否存在于字典中，如果键在字典 `dict` 里返回 `True`，否则返回 `False`。
+
+###### 语法
+
+```python
+key in dict
+```
+
+###### 参数
+
+- key -- 要在字典中查找的键
+
+###### 返回值
+
+如果键在字典里返回 `True`，否则返回 `False`。
+
+###### 实例
+
+```python
+dict1 = {'Name': 'You', 'Age': 7}
+if 'Age' in dict1:
+    print("键 Age 存在")
+else:
+	print("键 Age 不存在")
+if 'Age' not in dict1:
+    print("键 Age 不存在")
+else:
+    print("键 Age 存在")
+```
+
+以上实例输出结果如下：
+
+```powershell
+键 Age 存在
+键 Age 存在
+```
+
+## dict.items()
+
+###### 描述
+
+以列表返回可遍历的键值对（`key`:`value`）元组数组。
+
+###### 语法
+
+```python
+dict.items()
+```
+
+###### 返回值
+
+可遍历的键值对（`key`:`value`）元组数组。
+
+###### 实例
+
+```python
+dict1 = {'Name': 'You', 'Age': 7}
+print("Value: %s" % dict1.items())
+```
+
+以上实例输出结果如下：
+
+```powershell
+Value: dict_items([('Name', 'You'), ('Age', 7)])
+```
