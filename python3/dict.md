@@ -201,3 +201,66 @@ print("Value: %s" % dict1.items())
 ```powershell
 Value: dict_items([('Name', 'You'), ('Age', 7)])
 ```
+
+## dict.keys()
+
+###### 描述
+
+以列表返回一个字典所有的键。
+
+###### 语法
+
+```python
+dict.keys()
+```
+
+###### 返回值
+
+一个字典所有的键。
+
+###### 实例
+
+```python
+dict = {'Name': 'You', 'Age': 7}
+print("字典所有的键为: %s" % dict.keys())
+```
+
+以上实例输出结果如下：
+
+```powershell
+字典所有的键为: dict_keys(['Name', 'Age'])
+```
+
+## dict.setdefault(key, default=None)
+
+###### 描述
+
+如果键不已经存在于字典中，将会添加键并将值设为默认值。
+
+###### 语法
+
+```python
+dict.setdefault(key, default=None)
+```
+
+###### 参数
+
+- key -- 查找的键值
+- default -- 键不存在时，设置的默认键值
+
+###### 实例
+
+```python
+dict = {'Name': 'You', 'Age': 7}
+print("Age 键的值为: %s" %  dict.setdefault('Age', None))
+print("Sex 键的值为: %s" %  dict.setdefault('Sex', None))
+print("新字典为：", dict)
+```
+
+以上实例输出结果如下：
+
+```powershell
+Age 键的值为: 7
+Sex 键的值为: None
+新字典为： {'Name': 'You', 'Age': 7, 'Sex': None}
+```
