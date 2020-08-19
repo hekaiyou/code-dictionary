@@ -235,7 +235,7 @@ print("字典所有的键为: %s" % dict.keys())
 
 ###### 描述
 
-如果键不已经存在于字典中，将会添加键并将值设为默认值。
+和 `get()` 方法类似，如果键不已经存在于字典中，将会添加键并将值设为默认值。
 
 ###### 语法
 
@@ -263,4 +263,64 @@ print("新字典为：", dict)
 Age 键的值为: 7
 Sex 键的值为: None
 新字典为： {'Name': 'You', 'Age': 7, 'Sex': None}
+```
+
+## dict.update(dict2)
+
+###### 描述
+
+把字典 `dict2` 的键/值对更新到 `dict` 里。
+
+###### 语法
+
+```python
+dict.update(dict2)
+```
+
+###### 参数
+
+- dict2 -- 添加到指定字典dict里的字典
+
+###### 实例
+
+```python
+dict1 = {'Name': 'You', 'Age': 7}
+dict2 = {'Sex': 'female'}
+dict1.update(dict2)
+print("更新字典 dict1: ", dict1)
+```
+
+以上实例输出结果如下：
+
+```powershell
+更新字典 dict1:  {'Name': 'You', 'Age': 7, 'Sex': 'female'}
+```
+
+## dict.values()
+
+###### 描述
+
+以列表返回字典中的所有值。
+
+###### 语法
+
+```python
+dict.values()
+```
+
+###### 返回值
+
+字典中的所有值。
+
+###### 实例
+
+```python
+dict1 = {'Sex': 'female', 'Age': 7, 'Name': 'Zara'}
+print("字典所有值为: ",  list(dict1.values()))
+```
+
+以上实例输出结果如下：
+
+```powershell
+字典所有值为:  ['female', 7, 'Zara']
 ```
