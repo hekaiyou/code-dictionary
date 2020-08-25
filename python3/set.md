@@ -32,3 +32,55 @@ print(fruits)
 {'apple', 'orange', 'cherry', 'banana'}
 {'apple', 'orange', 'cherry', 'banana'}
 ```
+
+## clear()
+
+###### 描述
+
+移除集合中的所有元素。
+
+###### 语法
+
+```python
+set.clear()
+```
+
+###### 实例
+
+```python
+fruits = {"apple", "banana", "cherry"}
+fruits.clear()
+print(fruits)
+```
+
+以上实例输出结果如下：
+
+```powershell
+set()
+```
+
+## clear()
+
+###### 描述
+
+拷贝一个集合。
+
+###### 语法
+
+```python
+set.copy()
+```
+
+###### 实例
+
+```python
+fruits = {"apple", "banana", "cherry"}
+x = fruits.copy()
+print(x)
+```
+
+以上实例输出结果如下：
+
+```powershell
+{'apple', 'cherry', 'banana'}
+```
