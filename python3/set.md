@@ -180,3 +180,39 @@ print(fruits)
 ```powershell
 {'apple', 'cherry'}
 ```
+
+## intersection()
+
+###### 描述
+
+返回两个或更多集合中都包含的元素，即交集。
+
+###### 语法
+
+```python
+set.intersection(set1, set2 ... etc)
+```
+
+###### 参数
+
+- set1 -- 必需，要查找相同元素的集合
+- set2 -- 可选，其他要查找相同元素的集合，可以使用多个逗号隔开
+
+###### 返回值
+
+一个新的集合。
+
+###### 实例
+
+```python
+x = {"apple", "banana", "cherry"}
+y = {"google", "w3xue", "apple"}
+z = x.intersection(y)
+print(z)
+```
+
+以上实例输出结果如下：
+
+```powershell
+{'apple'}
+```
