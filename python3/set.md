@@ -216,3 +216,148 @@ print(z)
 ```powershell
 {'apple'}
 ```
+
+## intersection_update()
+
+###### 描述
+
+获取两个或更多集合中都重叠的元素，即计算交集，该方法不同于 `intersection()` 方法，因为 `intersection()` 方法是返回一个新的集合，而 `intersection_update()` 方法是在原始的集合上移除不重叠的元素。
+
+###### 语法
+
+```python
+set.intersection_update(set1, set2 ... etc)
+```
+
+###### 参数
+
+- set1 -- 必需，要查找相同元素的集合
+- set2 -- 可选，其他要查找相同元素的集合，可以多个，多个使用逗号, 隔开
+
+###### 实例
+
+```python
+x = {"apple", "banana", "cherry"}
+y = {"google", "you", "apple"}
+x.intersection_update(y)
+print(x)
+```
+
+以上实例输出结果如下：
+
+```powershell
+{'apple'}
+```
+
+## isdisjoint()
+
+###### 描述
+
+判断两个集合是否包含相同的元素，如果没有返回 `True`，否则返回 `False`。
+
+###### 语法
+
+```python
+set.isdisjoint(set)
+```
+
+###### 参数
+
+- set -- 必需，要比较的集合
+
+###### 返回值
+
+布尔值，如果不包含返回 `True`，否则返回 `False`。
+
+###### 实例
+
+```python
+x = {"apple", "banana", "cherry"}
+y1 = {"google", "you", "facebook"}
+y2 = {"google", "you", "apple"}
+z = x.isdisjoint(y1) 
+print(z)
+z = x.isdisjoint(y2) 
+print(z)
+```
+
+以上实例输出结果如下：
+
+```powershell
+True
+False
+```
+
+## issubset()
+
+###### 描述
+
+判断集合的所有元素是否都包含在指定集合中，如果是则返回 `True`，否则返回 `False`。
+
+###### 语法
+
+```python
+set.issubset(set)
+```
+
+###### 参数
+
+- set -- 必需，要比查找的集合
+
+###### 返回值
+
+布尔值，如果都包含返回 `True`，否则返回 `False`。
+
+###### 实例
+
+```python
+x = {"a", "b", "c"}
+y1 = {"f", "e", "d", "c", "b", "a"}
+y2 = {"f", "e", "d", "c", "b"}
+z = x.issubset(y1)
+print(z)
+z = x.issubset(y2)
+print(z)
+```
+
+以上实例输出结果如下：
+
+```powershell
+True
+False
+```
+
+## issuperset()
+
+###### 描述
+
+判断指定集合的所有元素是否都包含在原始的集合中，如果是则返回 `True`，否则返回 `False`。
+
+###### 语法
+
+```python
+set.issuperset(set)
+```
+
+###### 参数
+
+- set -- 必需，要比查找的集合
+
+###### 返回值
+
+布尔值，如果都包含返回 `True`，否则返回 `False`。
+
+###### 实例
+
+```python
+x = {"f", "e", "d", "c", "b", "a"}
+y = {"a", "b", "c"}
+z = x.issuperset(y)
+print(z)
+```
+
+以上实例输出结果如下：
+
+```powershell
+True
+```
