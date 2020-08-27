@@ -6,6 +6,7 @@
   * [列表](python3/list)
   * [字典](python3/dict)
   * [集合](python3/set)
+  * [列表](python3/tuple)
 
 * PyPi的第三方库
 
