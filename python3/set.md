@@ -361,3 +361,208 @@ print(z)
 ```powershell
 True
 ```
+
+## pop()
+
+###### 描述
+
+随机移除一个元素。
+
+###### 语法
+
+```python
+set.pop()
+```
+
+###### 返回值
+
+移除的元素。
+
+###### 实例
+
+```python
+fruits = {"apple", "banana", "cherry"}
+x = fruits.pop()
+print(fruits)
+print(x)
+```
+
+以上实例输出结果如下：
+
+```powershell
+{'banana', 'apple'}
+cherry
+```
+
+## remove()
+
+###### 描述
+
+移除集合中的指定元素，该方法不同于 `discard()` 方法，因为 `remove()` 方法在移除一个不存在的元素时会发生错误，而 `discard()` 方法不会。
+
+###### 语法
+
+```python
+set.remove(item)
+```
+
+###### 参数
+
+- item -- 要移除的元素
+
+###### 返回值
+
+移除的元素。
+
+###### 实例
+
+```python
+fruits = {"apple", "banana", "cherry"}
+fruits.remove("banana")
+print(fruits)
+```
+
+以上实例输出结果如下：
+
+```powershell
+{'cherry', 'apple'}
+```
+
+## symmetric_difference()
+
+###### 描述
+
+返回两个集合中不重复的元素集合，即会移除两个集合中都存在的元素。
+
+###### 语法
+
+```python
+set.symmetric_difference(set)
+```
+
+###### 参数
+
+- set -- 集合
+
+###### 返回值
+
+一个新的集合。
+
+###### 实例
+
+```python
+x = {"apple", "banana", "cherry"}
+y = {"google", "you", "apple"}
+z = x.symmetric_difference(y)
+print(z)
+```
+
+以上实例输出结果如下：
+
+```powershell
+{'google', 'banana', 'cherry', 'you'}
+```
+
+## symmetric_difference_update()
+
+###### 描述
+
+移除当前集合中在另外一个指定集合相同的元素，并将另外一个指定集合中不同的元素插入到当前集合中。
+
+###### 语法
+
+```python
+set.symmetric_difference_update(set)
+```
+
+###### 参数
+
+- set -- 要检测的集合
+
+###### 实例
+
+```python
+x = {"apple", "banana", "cherry"}
+y = {"google", "you", "apple"}
+x.symmetric_difference_update(y)
+print(x)
+```
+
+以上实例输出结果如下：
+
+```powershell
+{'google', 'banana', 'cherry', 'you'}
+```
+
+## union()
+
+###### 描述
+
+返回两个集合的并集，即包含了所有集合的元素，重复的元素只会出现一次。
+
+###### 语法
+
+```python
+set.union(set1, set2...)
+```
+
+###### 参数
+
+- set1 -- 必需，合并的目标集合
+- set2 -- 可选，其他要合并的集合，可以使用多个逗号隔开
+
+###### 返回值
+
+一个新集合。
+
+###### 实例
+
+```python
+x = {"apple", "banana", "cherry"}
+y = {"google", "you", "apple"}
+z = x.union(y)
+print(z)
+x = {"a", "b", "c"}
+y = {"f", "d", "a"}
+z = {"c", "d", "e"} 
+result = x.union(y, z)
+print(result)
+```
+
+以上实例输出结果如下：
+
+```powershell
+{'cherry', 'google', 'banana', 'apple', 'you'}
+{'c', 'a', 'd', 'e', 'b', 'f'}
+```
+
+## update()
+
+###### 描述
+
+修改当前集合，可以添加新的元素或集合到当前集合中，如果添加的元素在集合中已存在，则该元素只会出现一次，重复的会忽略。
+
+###### 语法
+
+```python
+set.update(set)
+```
+
+###### 参数
+
+- set -- 必需，可以是元素或集合
+
+###### 实例
+
+```python
+x = {"apple", "banana", "cherry"}
+y = {"google", "you", "apple"}
+x.update(y)
+print(x)
+```
+
+以上实例输出结果如下：
+
+```powershell
+{'cherry', 'google', 'banana', 'apple', 'you'}
+```
