@@ -102,7 +102,7 @@ str.count('y'):  1
 str.count('w', 0, 10):  3
 ```
 
-## bytes.decode(encoding="utf-8", errors="strict")
+## bytes.decode(encoding="utf-8")
 
 ###### 描述
 
