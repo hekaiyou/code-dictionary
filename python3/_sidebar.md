@@ -8,6 +8,7 @@
   * [集合](python3/set)
   * [元组](python3/tuple)
   * [随机数](python3/random)
+  * [数学](python3/math)
 
 * PyPi的第三方库
 
