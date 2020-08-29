@@ -9,6 +9,7 @@
   * [元组](python3/tuple)
   * [随机数](python3/random)
   * [数学](python3/math)
+  * [时间](python3/time)
 
 * PyPi的第三方库
 

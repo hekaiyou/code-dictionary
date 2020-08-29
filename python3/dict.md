@@ -324,3 +324,78 @@ print("字典所有值为: ",  list(dict1.values()))
 ```powershell
 字典所有值为:  ['female', 7, 'Zara']
 ```
+
+## len(dict)
+
+###### 描述
+
+计算字典元素个数，即键的总数。
+
+###### 语法
+
+```python
+len(dict)
+```
+
+###### 实例
+
+```python
+dict1 = {'Name': 'You', 'Age': 7, 'Class': 'First'}
+print("字典元素个数为: ", len(dict1))
+```
+
+以上实例输出结果如下：
+
+```powershell
+字典元素个数为:  3
+```
+
+## str(dict)
+
+###### 描述
+
+输出字典以可打印的字符串表示。
+
+###### 语法
+
+```python
+str(dict)
+```
+
+###### 实例
+
+```python
+dict1 = {'Name': 'You', 'Age': 7, 'Class': 'First'}
+print("字典的字符串表示: ", str(dict1))
+```
+
+以上实例输出结果如下：
+
+```powershell
+字典的字符串表示:  {'Name': 'You', 'Age': 7, 'Class': 'First'}
+```
+
+## type(dict)
+
+###### 描述
+
+返回输入的变量类型，如果变量是字典就返回字典类型。
+
+###### 语法
+
+```python
+type(dict)
+```
+
+###### 实例
+
+```python
+dict1 = {'Name': 'You', 'Age': 7, 'Class': 'First'}
+print("字典的类型判断返回: ", type(dict1))
+```
+
+以上实例输出结果如下：
+
+```powershell
+字典的类型判断返回:  <class 'dict'>
+```

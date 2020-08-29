@@ -511,3 +511,37 @@ print("list2 列表: ", list2)
 ```powershell
 list2 列表:  ['Google', 'You', 'Taobao', 'Baidu']
 ```
+
+## del list[i]
+
+###### 描述
+
+删除列表元素。
+
+###### 语法
+
+```python
+del list[i]
+```
+
+###### 参数
+
+- i -- 列表元素的索引
+
+###### 返回值
+
+无返回值，但是会修改原来的列表。
+
+###### 实例
+
+```python
+list1 = ['Google', 'You', 'Taobao', 'Baidu']
+del list1[2]
+print("更新后的列表: ", list1)
+```
+
+以上实例输出结果如下：
+
+```powershell
+更新后的列表:  ['Google', 'You', 'Baidu']
+```
