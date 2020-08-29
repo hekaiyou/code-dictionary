@@ -548,3 +548,423 @@ math.sqrt(100):  10.0
 math.sqrt(7):  2.6457513110645907
 math.sqrt(math.pi):  1.7724538509055159
 ```
+
+## acos(x)
+
+###### 描述
+
+返回 `x` 的反余弦弧度值。
+
+###### 语法
+
+```python
+import math
+math.acos(x)
+```
+
+###### 参数
+
+- x -- -1到1之间的数值，如果x是大于1，会产生一个错误
+
+###### 返回值
+
+数值 `x` 的反余弦弧度值。
+
+###### 实例
+
+```python
+import math
+print("acos(0.64): ",  math.acos(0.64))
+print("acos(0): ",  math.acos(0))
+print("acos(-1): ",  math.acos(-1))
+print("acos(1): ",  math.acos(1))
+```
+
+以上实例输出结果如下：
+
+```powershell
+acos(0.64):  0.8762980611683406
+acos(0):  1.5707963267948966
+acos(-1):  3.141592653589793
+acos(1):  0.0
+```
+
+## asin(x)
+
+###### 描述
+
+返回 `x` 的反正弦弧度值。
+
+###### 语法
+
+```python
+import math
+math.asin(x)
+```
+
+###### 参数
+
+- x -- 1到1之间的数值，如果x是大于1，会产生一个错误
+
+###### 返回值
+
+数值 `x` 的反正弦弧度值。
+
+###### 实例
+
+```python
+import math
+print("asin(0.64): ",  math.asin(0.64))
+print("asin(0): ",  math.asin(0))
+print("asin(-1): ",  math.asin(-1))
+print("asin(1): ",  math.asin(1))
+```
+
+以上实例输出结果如下：
+
+```powershell
+asin(0.64):  0.694498265626556
+asin(0):  0.0
+asin(-1):  -1.5707963267948966
+asin(1):  1.5707963267948966
+```
+
+## atan(x)
+
+###### 描述
+
+返回 `x` 的反正切弧度值。
+
+###### 语法
+
+```python
+import math
+math.atan(x)
+```
+
+###### 参数
+
+- x -- 一个数值
+
+###### 返回值
+
+数值 `x` 的反正切弧度值。
+
+###### 实例
+
+```python
+import math
+print("atan(0.64): ",  math.atan(0.64))
+print("atan(0): ",  math.atan(0))
+print("atan(10): ",  math.atan(10))
+print("atan(-1): ",  math.atan(-1))
+print("atan(1): ",  math.atan(1))
+```
+
+以上实例输出结果如下：
+
+```powershell
+atan(0.64):  0.5693131911006619
+atan(0):  0.0
+atan(10):  1.4711276743037347
+atan(-1):  -0.7853981633974483
+atan(1):  0.7853981633974483
+```
+
+## atan2(y, x)
+
+###### 描述
+
+返回给定的 `X` 及 `Y` 坐标值的反正切值。
+
+###### 语法
+
+```python
+import math
+math.atan2(y, x)
+```
+
+###### 参数
+
+- x -- 一个数值
+- y -- 一个数值
+
+###### 返回值
+
+给定的 `X` 及 `Y` 坐标值的反正切值。
+
+###### 实例
+
+```python
+import math
+print("atan2(-0.50,-0.50): ",  math.atan2(-0.50,-0.50))
+print("atan2(0.50,0.50): ",  math.atan2(0.50,0.50))
+print("atan2(5,5): ",  math.atan2(5,5))
+print("atan2(-10,10): ",  math.atan2(-10,10))
+print("atan2(10,20): ",  math.atan2(10,20))
+```
+
+以上实例输出结果如下：
+
+```powershell
+atan2(-0.50,-0.50):  -2.356194490192345
+atan2(0.50,0.50):  0.7853981633974483
+atan2(5,5):  0.7853981633974483
+atan2(-10,10):  -0.7853981633974483
+atan2(10,20):  0.4636476090008061
+```
+
+## cos(x)
+
+###### 描述
+
+返回 `x` 的弧度的余弦值。
+
+###### 语法
+
+```python
+import math
+math.cos(x)
+```
+
+###### 参数
+
+- x -- 一个数值
+
+###### 返回值
+
+数值 `x` 的弧度的余弦值，-1 到 1 之间。
+
+###### 实例
+
+```python
+import math
+print("cos(3): ",  math.cos(3))
+print("cos(-3): ",  math.cos(-3))
+print("cos(0): ",  math.cos(0))
+print("cos(math.pi): ",  math.cos(math.pi))
+print("cos(2*math.pi): ",  math.cos(2*math.pi))
+```
+
+以上实例输出结果如下：
+
+```powershell
+cos(3):  -0.9899924966004454
+cos(-3):  -0.9899924966004454
+cos(0):  1.0
+cos(math.pi):  -1.0
+cos(2*math.pi):  1.0
+```
+
+## hypot(x, y)
+
+###### 描述
+
+返回欧几里德范数 `sqrt(x*x + y*y)`。
+
+###### 语法
+
+```python
+import math
+math.hypot(x, y)
+```
+
+###### 参数
+
+- x -- 一个数值
+- y -- 一个数值
+
+###### 返回值
+
+欧几里德范数 `sqrt(x*x + y*y)`。
+
+###### 实例
+
+```python
+import math
+print("hypot(3, 2): ",  math.hypot(3, 2))
+print("hypot(-3, 3): ",  math.hypot(-3, 3))
+print("hypot(0, 2): ",  math.hypot(0, 2))
+```
+
+以上实例输出结果如下：
+
+```powershell
+hypot(3, 2):  3.6055512754639896
+hypot(-3, 3):  4.242640687119286
+hypot(0, 2):  2.0
+```
+
+## sin(x)
+
+###### 描述
+
+返回的 `x` 弧度的正弦值。
+
+###### 语法
+
+```python
+import math
+math.sin(x)
+```
+
+###### 参数
+
+- x -- 一个数值
+
+###### 返回值
+
+返回的 `x` 弧度的正弦值，数值在 -1 到 1 之间。
+
+###### 实例
+
+```python
+import math
+print("sin(3): ",  math.sin(3))
+print("sin(-3): ",  math.sin(-3))
+print("sin(0): ",  math.sin(0))
+print("sin(math.pi): ",  math.sin(math.pi))
+print("sin(math.pi/2): ",  math.sin(math.pi/2))
+```
+
+以上实例输出结果如下：
+
+```powershell
+sin(3):  0.1411200080598672
+sin(-3):  -0.1411200080598672
+sin(0):  0.0
+sin(math.pi):  1.2246467991473532e-16
+sin(math.pi/2):  1.0
+```
+
+## tan(x)
+
+###### 描述
+
+返回 `x` 弧度的正弦值。
+
+###### 语法
+
+```python
+import math
+math.tan(x)
+```
+
+###### 参数
+
+- x -- 一个数值
+
+###### 返回值
+
+数值 `x` 弧度的正弦值，数值在 -1 到 1 之间。
+
+###### 实例
+
+```python
+import math
+print("tan(3): ",  math.tan(3))
+print("tan(-3): ",  math.tan(-3))
+print("tan(0): ",  math.tan(0))
+print("tan(math.pi): ",  math.tan(math.pi))
+print("tan(math.pi/2): ",  math.tan(math.pi/2))
+print("tan(math.pi/4): ",  math.tan(math.pi/4))
+```
+
+以上实例输出结果如下：
+
+```powershell
+tan(3):  -0.1425465430742778
+tan(-3):  0.1425465430742778
+tan(0):  0.0
+tan(math.pi):  -1.2246467991473532e-16
+tan(math.pi/2):  1.633123935319537e+16
+tan(math.pi/4):  0.9999999999999999
+```
+
+## degrees(x)
+
+###### 描述
+
+将弧度转换为角度。
+
+###### 语法
+
+```python
+import math
+math.degrees(x)
+```
+
+###### 参数
+
+- x -- 一个数值
+
+###### 返回值
+
+一个角度值。
+
+###### 实例
+
+```python
+import math
+print("degrees(3): ",  math.degrees(3))
+print("degrees(-3): ",  math.degrees(-3))
+print("degrees(0): ",  math.degrees(0))
+print("degrees(math.pi): ",  math.degrees(math.pi))
+print("degrees(math.pi/2): ",  math.degrees(math.pi/2))
+print("degrees(math.pi/4): ",  math.degrees(math.pi/4))
+```
+
+以上实例输出结果如下：
+
+```powershell
+degrees(3):  171.88733853924697
+degrees(-3):  -171.88733853924697
+degrees(0):  0.0
+degrees(math.pi):  180.0
+degrees(math.pi/2):  90.0
+degrees(math.pi/4):  45.0
+```
+
+## radians(x)
+
+###### 描述
+
+将角度转换为弧度。
+
+###### 语法
+
+```python
+import math
+math.radians(x)
+```
+
+###### 参数
+
+- x -- 一个数值
+
+###### 返回值
+
+一个角度的弧度值。
+
+###### 实例
+
+```python
+import math
+print("radians(3): ",  math.radians(3))
+print("radians(-3): ",  math.radians(-3))
+print("radians(0): ",  math.radians(0))
+print("radians(math.pi): ",  math.radians(math.pi))
+print("radians(math.pi/2): ",  math.radians(math.pi/2))
+print("radians(math.pi/4): ",  math.radians(math.pi/4))
+```
+
+以上实例输出结果如下：
+
+```powershell
+radians(3):  0.05235987755982989
+radians(-3):  -0.05235987755982989
+radians(0):  0.0
+radians(math.pi):  0.05483113556160755
+radians(math.pi/2):  0.027415567780803774
+radians(math.pi/4):  0.013707783890401887
+```
