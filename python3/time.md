@@ -224,3 +224,208 @@ print("time.asctime(t): %s " % time.asctime(t))
 ```powershell
 time.asctime(t): Sat Aug 29 17:36:50 2020
 ```
+
+## time.ctime([secs])
+
+###### 描述
+
+相当于 `asctime(localtime(secs))`，未给参数相当于 `asctime()`。
+
+###### 语法
+
+```python
+time.ctime([secs])
+```
+
+###### 实例
+
+```python
+import time
+print("time.ctime(): %s" % time.ctime())
+```
+
+以上实例输出结果如下：
+
+```powershell
+time.ctime(): Sat Aug 29 23:08:54 2020
+```
+
+## time.gmtime([secs])
+
+###### 描述
+
+接收时间戳（1970纪元后经过的浮点秒数）并返回格林威治天文时间下的时间元组 `t`，须注意 `t.tm_isdst` 始终为0。
+
+###### 语法
+
+```python
+time.gmtime([secs])
+```
+
+###### 实例
+
+```python
+import time
+print("gmtime:", time.gmtime(1455508609.34375))
+```
+
+以上实例输出结果如下：
+
+```powershell
+gmtime: time.struct_time(tm_year=2016, tm_mon=2, tm_mday=15, tm_hour=3, tm_min=56, tm_sec=49, tm_wday=0, tm_yday=46, tm_isdst=0)
+```
+
+## time.localtime([secs])
+
+###### 描述
+
+接收时间戳（1970纪元后经过的浮点秒数）并返回当地时间下的时间元组 `t`，这里的 `t.tm_isdst` 可取0或1，取决于当地当时是不是夏令时。
+
+###### 语法
+
+```python
+time.localtime([secs])
+```
+
+###### 实例
+
+```python
+import time
+print("localtime(): ", time.localtime(1455508609.34375))
+```
+
+以上实例输出结果如下：
+
+```powershell
+localtime():  time.struct_time(tm_year=2016, tm_mon=2, tm_mday=15, tm_hour=11, tm_min=56, tm_sec=49, tm_wday=0, tm_yday=46, tm_isdst=0)
+```
+
+## time.sleep(secs)
+
+###### 描述
+
+推迟调用线程的运行。
+
+###### 语法
+
+```python
+time.sleep(secs)
+```
+
+###### 参数
+
+- secs -- 推迟秒数
+
+###### 实例
+
+```python
+import time
+print("开始: %s" % time.ctime())
+time.sleep(5)
+print("结束: %s" % time.ctime())
+```
+
+以上实例输出结果如下：
+
+```powershell
+开始: Sat Aug 29 23:19:01 2020
+结束: Sat Aug 29 23:19:06 2020
+```
+
+## time.strftime(fmt[, tupletime])
+
+###### 描述
+
+返回以可读字符串表示的当地时间，格式由 `fmt` 决定。
+
+###### 语法
+
+```python
+time.strftime(fmt[, tupletime])
+```
+
+###### 参数
+
+- fmt -- 字符串格式
+- tupletime -- 时间元组
+
+###### 返回值
+
+以可读字符串表示的当地时间，格式由 `fmt` 决定。
+
+###### 实例
+
+```python
+import time
+print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+```
+
+以上实例输出结果如下：
+
+```powershell
+2020-08-29 23:25:28
+```
+
+## time.strptime(str, fmt)
+
+###### 描述
+
+根据 `fmt` 的格式把一个时间字符串解析为时间元组。
+
+###### 语法
+
+```python
+time.strptime(str, fmt)
+```
+
+###### 参数
+
+- str -- 时间字符串
+- fmt -- 字符串格式
+
+###### 返回值
+
+一个时间元组。
+
+###### 实例
+
+```python
+import time
+struct_time = time.strptime("30 Nov 00", "%d %b %y")
+print("返回元组: ", struct_time)
+```
+
+以上实例输出结果如下：
+
+```powershell
+返回元组:  time.struct_time(tm_year=2000, tm_mon=11, tm_mday=30, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=335, tm_isdst=-1)
+```
+
+## time.time()
+
+###### 描述
+
+返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
+
+###### 语法
+
+```python
+time.time()
+```
+
+###### 返回值
+
+当前时间的时间戳。
+
+###### 实例
+
+```python
+import time
+print(time.time())
+```
+
+以上实例输出结果如下：
+
+```powershell
+1598715132.0319996
+```
