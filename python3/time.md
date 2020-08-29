@@ -123,3 +123,104 @@ print(time.strftime('%X %x %Z'))
 23:25:45 04/06/16 EDT
 13:25:45 04/07/16 AEST
 ```
+
+## time.timezone
+
+###### 描述
+
+当地时区（未启动夏令时）距离格林威治的偏移秒数，`>0`-美洲、`<=0`大部分欧洲，亚洲，非洲）。
+
+###### 语法
+
+```python
+time.timezone
+```
+
+###### 实例
+
+```python
+import time
+print("当地时区与格林威治的偏移: ", time.timezone)
+```
+
+以上实例输出结果如下：
+
+```powershell
+当地时区与格林威治的偏移:  -28800
+```
+
+## time.tzname
+
+###### 描述
+
+包含一对根据情况的不同而不同的字符串，分别是带夏令时的本地时区名称，和不带的。
+
+###### 语法
+
+```python
+time.tzname
+```
+
+###### 实例
+
+```python
+import time
+print("本地时区名称: ", time.tzname)
+```
+
+以上实例输出结果如下：
+
+```powershell
+本地时区名称:  ('中国标准时间', '中国夏令时')
+```
+
+## time.altzone
+
+###### 描述
+
+返回格林威治西部的夏令时地区的偏移秒数，如果该地区在格林威治东部会返回负值（如西欧，包括英国），对夏令时启用地区才能使用。
+
+###### 语法
+
+```python
+time.altzone
+```
+
+###### 实例
+
+```python
+import time
+print("time.altzone %d " % time.altzone)
+```
+
+以上实例输出结果如下：
+
+```powershell
+time.altzone -32400
+```
+
+## time.asctime([tupletime])
+
+###### 描述
+
+接受时间元组并返回一个可读的形式为 `Sat Aug 29 17:36:50 2020`（2020年29月8日 周六17时36分50秒）的24个字符的字符串。
+
+###### 语法
+
+```python
+time.asctime([tupletime])
+```
+
+###### 实例
+
+```python
+import time
+t = time.localtime()
+print("time.asctime(t): %s " % time.asctime(t))
+```
+
+以上实例输出结果如下：
+
+```powershell
+time.asctime(t): Sat Aug 29 17:36:50 2020
+```
