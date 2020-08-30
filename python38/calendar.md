@@ -71,3 +71,93 @@ Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
 26 27 28 29 30 31         23 24 25 26 27 28 29      28 29 30 31
                           30
 ```
+
+## calendar.firstweekday()
+
+###### 描述
+
+返回当前每周起始日期的设置，默认情况下，首次载入 `caendar` 模块时返回0，即星期一。
+
+###### 语法
+
+```python
+import calendar
+calendar.firstweekday()
+```
+
+###### 返回值
+
+当前每周起始日期的设置。
+
+###### 实例
+
+```python
+import calendar
+print("每周起始日期: ", calendar.firstweekday())
+```
+
+以上实例输出结果如下：
+
+```powershell
+每周起始日期:  0
+```
+
+## calendar.isleap(year)
+
+###### 描述
+
+判断是否闰年，是闰年则返回 `True`，否则为 `False`。
+
+###### 语法
+
+```python
+import calendar
+calendar.isleap(year)
+```
+
+###### 返回值
+
+是闰年返回 `True`，否则为 `False`。
+
+###### 实例
+
+```python
+import calendar
+print("2020年是闰年: ", calendar.isleap(2020))
+```
+
+以上实例输出结果如下：
+
+```powershell
+2020年是闰年:  True
+```
+
+## calendar.leapdays(y1, y2)
+
+###### 描述
+
+返回在 `y1`、`y2` 两年之间的闰年总数。
+
+###### 语法
+
+```python
+import calendar
+calendar.leapdays(y1, y2)
+```
+
+###### 返回值
+
+在 `y1`、`y2` 两年之间的闰年总数。
+
+###### 实例
+
+```python
+import calendar
+print("2000~2020年间有 %s 个闰年" % calendar.leapdays(2000, 2020))
+```
+
+以上实例输出结果如下：
+
+```powershell
+2000~2020年间有 5 个闰年
+```
