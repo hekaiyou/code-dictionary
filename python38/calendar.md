@@ -390,3 +390,120 @@ Mo Tu We Th Fr Sa Su
 24 25 26 27 28 29 30
 31
 ```
+
+## calendar.setfirstweekday(weekday)
+
+###### 描述
+
+设置每周的起始日期码，0（星期一）到6（星期日）。
+
+###### 语法
+
+```python
+import calendar
+calendar.setfirstweekday(weekday)
+```
+
+###### 参数
+
+- weekday -- 每周从星期几（0~6）开始
+
+###### 实例
+
+```python
+import calendar
+calendar.prmonth(2020, 8, w=2, l=1)
+calendar.setfirstweekday(3)
+calendar.prmonth(2020, 8, w=2, l=1)
+```
+
+以上实例输出结果如下：
+
+```powershell
+    August 2020
+Mo Tu We Th Fr Sa Su
+                1  2
+ 3  4  5  6  7  8  9
+10 11 12 13 14 15 16
+17 18 19 20 21 22 23
+24 25 26 27 28 29 30
+31
+    August 2020
+Th Fr Sa Su Mo Tu We
+       1  2  3  4  5
+ 6  7  8  9 10 11 12
+13 14 15 16 17 18 19
+20 21 22 23 24 25 26
+27 28 29 30 31
+```
+
+## calendar.timegm(tupletime)
+
+###### 描述
+
+和 `time.gmtime` 相反，接受一个时间元组形式，返回该时刻的时间戳（1970纪元后经过的浮点秒数）。
+
+###### 语法
+
+```python
+import calendar
+calendar.timegm(tupletime)
+```
+
+###### 参数
+
+- tupletime -- 时间元组
+
+###### 返回值
+
+该时刻的时间戳（1970纪元后经过的浮点秒数）。
+
+###### 实例
+
+```python
+import time
+import calendar
+print(calendar.timegm(time.localtime()))
+```
+
+以上实例输出结果如下：
+
+```powershell
+1598815166
+```
+
+## calendar.weekday(year, month, day)
+
+###### 描述
+
+返回给定日期的星期码，0（星期一）到6（星期日）。
+
+###### 语法
+
+```python
+import calendar
+calendar.weekday(year, month, day)
+```
+
+###### 参数
+
+- year -- 日历年份
+- month -- 日历月份
+- day -- 日历天数
+
+###### 返回值
+
+给定日期的星期码，0（星期一）到6（星期日）。
+
+###### 实例
+
+```python
+import calendar
+print(calendar.weekday(2020, 8, 30))
+```
+
+以上实例输出结果如下：
+
+```powershell
+6
+```
