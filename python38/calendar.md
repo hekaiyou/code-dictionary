@@ -10,7 +10,7 @@
 
 ```python
 import calendar
-calendar.calendar(year, w, l, c)
+calendar.calendar(year, w=2, l=1, c=6)
 ```
 
 ###### 参数
@@ -172,7 +172,7 @@ print("2000~2020年间有 %s 个闰年" % calendar.leapdays(2000, 2020))
 
 ```python
 import calendar
-calendar.month(year, month, w, l)
+calendar.month(year, month, w=2, l=1)
 ```
 
 ###### 参数
@@ -203,4 +203,190 @@ Mo Tu We Th Fr Sa Su
 14 15 16 17 18 19 20
 21 22 23 24 25 26 27
 28 29 30 31
+```
+
+## calendar.monthcalendar(year, month)
+
+###### 描述
+
+返回一个整数的单层嵌套列表，每个子列表装载代表一个星期的整数，`year` 年 `month` 月外的日期都设为0，范围内的日都由该月第几日表示，从1开始。
+
+###### 语法
+
+```python
+import calendar
+calendar.monthcalendar(year, month)
+```
+
+###### 参数
+
+- year -- 日历年份
+- month -- 日历月份
+
+###### 返回值
+
+一个整数的单层嵌套列表，每个子列表装载代表一个星期的整数。
+
+###### 实例
+
+```python
+import calendar
+print(calendar.monthcalendar(2000, 8))
+```
+
+以上实例输出结果如下：
+
+```powershell
+[[0, 1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12, 13], [14, 15, 16, 17, 18, 19, 20], [21, 22, 23, 24, 25, 26, 27], [28, 29, 30, 31, 0, 0, 0]]
+```
+
+## calendar.monthrange(year, month)
+
+###### 描述
+
+返回两个整数，第一个是该月的星期几的日期码，第二个是该月的日期码。日从0（星期一）到6（星期日），月从1到12。
+
+###### 语法
+
+```python
+import calendar
+calendar.monthrange(year, month)
+```
+
+###### 参数
+
+- year -- 日历年份
+- month -- 日历月份
+
+###### 返回值
+
+两个整数，第一个是该月的星期几的日期码，第二个是该月的日期码。
+
+###### 实例
+
+```python
+import calendar
+print(calendar.monthrange(2000, 8))
+```
+
+以上实例输出结果如下：
+
+```powershell
+(1, 31)
+```
+
+## calendar.prcal(year, w=2, l=1, c=6)
+
+###### 描述
+
+相当于 `print(calendar.calendar(year, w, l, c))`，返回一个多行字符串格式的 `year` 年日历。
+
+###### 语法
+
+```python
+import calendar
+calendar.prcal(year, w=2, l=1, c=6)
+```
+
+###### 参数
+
+- year -- 日历年份
+- w -- 每日宽度间隔字符
+- l -- 每星期行数
+- c -- 间隔距离
+
+###### 返回值
+
+一个多行字符串格式的 `year` 年日历。
+
+###### 实例
+
+```python
+import calendar
+calendar.prcal(2020, w=2, l=1, c=6)
+```
+
+以上实例输出结果如下：
+
+```powershell
+                                  2020
+
+      January                   February                   March
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+       1  2  3  4  5                      1  2                         1
+ 6  7  8  9 10 11 12       3  4  5  6  7  8  9       2  3  4  5  6  7  8
+13 14 15 16 17 18 19      10 11 12 13 14 15 16       9 10 11 12 13 14 15
+20 21 22 23 24 25 26      17 18 19 20 21 22 23      16 17 18 19 20 21 22
+27 28 29 30 31            24 25 26 27 28 29         23 24 25 26 27 28 29
+                                                    30 31
+
+       April                      May                       June
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+       1  2  3  4  5                   1  2  3       1  2  3  4  5  6  7
+ 6  7  8  9 10 11 12       4  5  6  7  8  9 10       8  9 10 11 12 13 14
+13 14 15 16 17 18 19      11 12 13 14 15 16 17      15 16 17 18 19 20 21
+20 21 22 23 24 25 26      18 19 20 21 22 23 24      22 23 24 25 26 27 28
+27 28 29 30               25 26 27 28 29 30 31      29 30
+
+        July                     August                  September
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+       1  2  3  4  5                      1  2          1  2  3  4  5  6
+ 6  7  8  9 10 11 12       3  4  5  6  7  8  9       7  8  9 10 11 12 13
+13 14 15 16 17 18 19      10 11 12 13 14 15 16      14 15 16 17 18 19 20
+20 21 22 23 24 25 26      17 18 19 20 21 22 23      21 22 23 24 25 26 27
+27 28 29 30 31            24 25 26 27 28 29 30      28 29 30
+                          31
+
+      October                   November                  December
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+          1  2  3  4                         1          1  2  3  4  5  6
+ 5  6  7  8  9 10 11       2  3  4  5  6  7  8       7  8  9 10 11 12 13
+12 13 14 15 16 17 18       9 10 11 12 13 14 15      14 15 16 17 18 19 20
+19 20 21 22 23 24 25      16 17 18 19 20 21 22      21 22 23 24 25 26 27
+26 27 28 29 30 31         23 24 25 26 27 28 29      28 29 30 31
+                          30
+```
+
+## calendar.prmonth(year, month, w, l)
+
+###### 描述
+
+相当于 `print(calendar.month(year, month, w=2, l=1))`，返回一个多行字符串格式的 `year` 年 `month` 月日历。
+
+###### 语法
+
+```python
+import calendar
+calendar.prmonth(year, month, w=2, l=1)
+```
+
+###### 参数
+
+- year -- 日历年份
+- month -- 日历月份
+- w -- 每日宽度间隔字符
+- l -- 每星期的行数
+
+###### 返回值
+
+一个多行字符串格式的 `year` 年 `month` 月日历。
+
+###### 实例
+
+```python
+import calendar
+calendar.prmonth(2020, 8, w=2, l=1)
+```
+
+以上实例输出结果如下：
+
+```powershell
+    August 2020
+Mo Tu We Th Fr Sa Su
+                1  2
+ 3  4  5  6  7  8  9
+10 11 12 13 14 15 16
+17 18 19 20 21 22 23
+24 25 26 27 28 29 30
+31
 ```
