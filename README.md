@@ -5,10 +5,10 @@
 ## 本地预览
 
 ```powershell
-$ cd code-dictionary
+$ cd python-dict
 $ docsify serve
 
-Serving C:\Users\hekaiyou\Documents\code-dictionary now.
+Serving C:\Users\hekaiyou\Documents\python-dict now.
 Listening at http://localhost:3000
 ```
 
@@ -16,7 +16,7 @@ Listening at http://localhost:3000
 
 ### GitHub Pages
 
-找到 `setting` -> `GitHub Pages`，配置分支为 `master barnch folder`，点击保存后会自动发布，并且给出发布地址。( 例如: https://hekaiyou.github.io/code-dictionary/#/ )
+找到 `setting` -> `GitHub Pages`，配置分支为 `master barnch folder`，点击保存后会自动发布，并且给出发布地址。( 例如: https://hekaiyou.github.io/python-dict/#/ )
 
 ### Nginx
 
@@ -28,7 +28,7 @@ server {
   server_name  localhost;
 
   location / {
-    alias /usr/code-dictionary/;
+    alias /usr/python-dict/;
     index index.html;
   }
 }
@@ -58,7 +58,7 @@ server {
   <script>
     window.$docsify = {
       name: '开发小手册',
-      repo: 'https://github.com/hekaiyou/code-dictionary',
+      repo: 'https://github.com/hekaiyou/python-dict',
       coverpage: true,
       loadNavbar: true,
       loadSidebar: true,
