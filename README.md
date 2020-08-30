@@ -1,4 +1,4 @@
-# 开发小手册
+# Python小手册
 
 使用 `Markdown` 文档记录开发文档与代码，并使用 [Node.js](https://nodejs.org/zh-cn/) 语言的 [Docsify](https://docsify.js.org/#/zh-cn/) 框架自动生成一个网站，便于在开发过程中快速查阅！
 
