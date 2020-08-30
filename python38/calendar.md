@@ -1,6 +1,6 @@
 # Python3 日历 {docsify-ignore}
 
-## calendar.calendar(year, w, l, c)
+## calendar.calendar(year, w=2, l=1, c=6)
 
 ###### 描述
 
@@ -160,4 +160,47 @@ print("2000~2020年间有 %s 个闰年" % calendar.leapdays(2000, 2020))
 
 ```powershell
 2000~2020年间有 5 个闰年
+```
+
+## calendar.month(year, month, w=2, l=1)
+
+###### 描述
+
+返回一个多行字符串格式的 `year` 年 `month` 月日历，每行的长度为 `7*w + 6`。
+
+###### 语法
+
+```python
+import calendar
+calendar.month(year, month, w, l)
+```
+
+###### 参数
+
+- year -- 日历年份
+- month -- 日历月份
+- w -- 每日宽度间隔字符
+- l -- 每星期的行数
+
+###### 返回值
+
+一个多行字符串格式的 `year` 年 `month` 月日历。
+
+###### 实例
+
+```python
+import calendar
+print(calendar.month(2000, 8, w=2, l=1))
+```
+
+以上实例输出结果如下：
+
+```powershell
+    August 2000
+Mo Tu We Th Fr Sa Su
+    1  2  3  4  5  6
+ 7  8  9 10 11 12 13
+14 15 16 17 18 19 20
+21 22 23 24 25 26 27
+28 29 30 31
 ```
