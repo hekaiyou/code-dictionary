@@ -15,4 +15,5 @@
 
 * PyPi的第三方库
 
+  * [Django](python38/django)
   * [wxPython](python38/wxpython)
