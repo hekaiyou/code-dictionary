@@ -179,7 +179,11 @@ name_1 = models.EmailField(max_length=250)
 
 例如 `MEDIA_ROOT` 设置为 `/home/media`，而 `upload_to` 设置为 `photos/%Y/%m/%d`。`upload_to` 的 `%Y/%m/%d` 部分为 `strftime()` 格式；`%Y` 是四位数的年份，`%m` 是两位数的月份，`%d` 是两位数的日期。如果在2020年9月2日上传文件，该文件将保存在目录 `/home/media/photos/2020/09/02` 中。
 
-如果要检索上传的文件在磁盘上的文件名或文件的大小，可以分别使用 `name` 和 `size` 属性。
+如果要检索上传的文件在磁盘上的文件名或文件的大小，可以分别使用 `name` 和 `size` 属性。可以使用 `url` 属性获取上传文件的相对URL。
+
+请注意，每当处理上传的文件时，都应密切注意上传文件的位置以及文件的类型，以免出现安全漏洞。验证所有上传的文件，以确保文件符合条件。例如，如果盲目地让某人未经验证将文件上传到 Web 服务器的文档目录，那么某人可以上传 CGI 或 PHP 脚本并通过访问站点上的 URL 来执行该脚本。还要注意，即使上传的 HTML 文件也可以由浏览器执行（尽管不能由服务器执行），但它也会构成等同于 XSS 或 CSRF 攻击的安全威胁。
+
+`FileField` 实例在数据库中创建为 `varchar` 列，默认最大长度为 100 个字符。与其他字段一样，可以使用 `max_length` 参数更改最大长度。
 
 ###### FileField.upload_to
 
@@ -242,3 +246,260 @@ class TestStorage(FileSystemStorage):
 ```python
 name_1 = models.FileField(storage=TestStorage())
 ```
+
+##### FilePathField
+
+特殊的 `CharField` 类型，其内容仅限于文件系统上某个目录中的文件名。有一些特殊的参数，其中第一个是必需的。例如：大多数网站在插入图片时，先上传大尺寸图时，再自动生成一张缩略图，然后网页中插入缩略图，并把地址指向大尺寸的图。
+
+```python
+img = models.ImageField(upload_to='screenshots')
+thumb = models.FilePathField(path='screenshots/thumb')
+```
+
+###### FilePathField.path
+
+必需的，目录的绝对文件系统路径，应从中获取此 `FilePathField` 的选择，例如：`/home/images`。`path` 也可以是可调用的，例如在运行时动态设置路径的函数：
+
+```python
+import os
+from django.db import models
+from django.conf import settings
+
+def images_path():
+    return os.path.join(settings.LOCAL_FILE_DIR, 'images')
+
+class MyModel(models.Model):
+    file = models.FilePathField(path=images_path)
+```
+
+###### FilePathField.match
+
+可选的，`FilePathField` 将用于过滤文件名的正则表达式（字符串）。请注意，正则表达式仅应用于基本文件名，而不是完整路径。例如：`foo.*\.txt$`，它将与名为 `foo23.txt` 的文件匹配，但与 `bar.txt` 或 `foo23.png` 的文件不匹配。
+
+###### FilePathField.recursive
+
+可选的，`True` 或 `False`，默认值为 `False`，指定是否应包含所有子目录的路径。
+
+###### FilePathField.allow_files
+
+可选的，`True` 或 `False`，默认值为 `True`，指定是否应包含指定位置的文件，这个或 `allow_folders` 必须有一个为 `True`。
+
+###### FilePathField.allow_folders
+
+可选的，`True` 或 `False`，默认值为 `False`，指定是否应包含指定位置的文件夹。 这个或 `allow_files` 必须有一个为 `True`。
+
+一个潜在的难题是，`match` 适用于基本文件名，而不是完整路径。因此，此示例：
+
+```python
+FilePathField(path="/home/images", match="foo.*", recursive=True)
+```
+
+将匹配 `/home/images/foo.png` 但不匹配 `/home/images/foo/bar.png`，因为 `match` 项适用于基本文件名（`foo.png` 和 `bar.png`）。`FilePathField` 实例在数据库中创建为 `varchar` 列，默认最大长度为 100 个字符，与其他字段一样，可以使用 `max_length` 参数更改最大长度。
+
+##### FloatField
+
+浮点数，在 Python 中由 `float` 实例表示，当 `localize` 为 `False` 时，此字段的默认表单控件为 `NumberInput`，否则为 `TextInput`。
+
+```python
+name = models.FloatField(default=0.0)
+```
+
+`FloatField` 类有时与 `DecimalField` 类混合在一起，尽管它们都代表实数，但它们代表的数字却有所不同。`FloatField` 内部使用 Python 的 `float` 类型，而 `DecimalField` 使用 Python 的 `Decimal` 类型。
+
+##### ImageField
+
+特殊的 `FileField` 类型，从 `FileField` 继承所有属性和方法，同时会验证上传的对象是否为有效的图像文件。需要注意，它依赖 `Pillow` 第三方库。
+
+```python
+name = models.ImageField(upload_to='images/%Y/%m')
+```
+
+除了可用于 `FileField` 的特殊属性外，`ImageField` 还有 `height` 和 `width` 属性。为了方便查询这些属性，`ImageField` 有两个额外的可选参数：
+
+- ImageField.height_field : 每次保存模型实例时，都会更新图像的高度
+- ImageField.width_field : 每次保存模型实例时，都会更新图像的宽度
+
+`ImageField` 实例在数据库中创建为 `varchar` 列，默认最大长度为 100 个字符。与其他字段一样，您可以使用 `max_length`参数更改最大长度。此字段的默认表单控件是 `ClearableFileInput`。
+
+##### IntegerField
+
+整数，在 Django 支持的所有数据库中，-2147483648 到 2147483647 之间的值都是安全的。它使用 `MinValueValidator` 和 `MaxValueValidator` 根据默认数据库支持的值来验证输入。
+
+```python
+name = models.IntegerField(default=0)
+```
+
+当 `localize` 为 `False` 时，此字段的默认表单控件为 `NumberInput`，否则为 `TextInput`。
+
+##### GenericIPAddressField
+
+字符串格式的 IPv4 或 IPv6 地址（例如 `192.0.2.30` 或 `2a02:42fe::4`），此字段的默认表单控件是 `TextInput`。
+
+- GenericIPAddressField.protocol : 将有效输入限制为指定的协议，接受的值为 both（默认）、IPv4 或 IPv6，匹配不区分大小写
+- GenericIPAddressField.unpack_ipv4 : 解压缩 IPv4 映射的地址，如 ::ffff:192.0.2.1，如果启用此选项，则该地址将解压缩为 192.0.2.1，默认设置为禁用，只能在 protocol 设置为 both 时使用
+
+```python
+name = models.GenericIPAddressField(protocol='IPv4')
+```
+
+IPv6 地址规范化遵循 `RFC 4291#section-2.2` 第2.2节，包括使用该节第 3 段中建议的 IPv4 格式，例如 `::ffff:192.0.2.0`，例如，将 `2001:0::0:01` 标准化为 `2001::1`，并将 `::ffff:0a0a:0a0a` 标准化为 `::ffff:10.10.10.10`。同时，所有字符都将转换为小写。
+
+##### JSONField
+
+用于存储 JSON 编码数据的字段，在 Python 中，数据以其 Python 本机格式表示：字典、列表、字符串、数字、布尔值和 None。（数据库要求：MariaDB 10.2.7+、MySQL 5.7.8+、Oracle、PostgreSQL、SQLite 3.9.0+）
+
+```python
+name = models.JSONField(default={})
+```
+
+如果为该字段提供 `default` 值，请确保它是一个不变的对象（例如字符串），或者是每次都返回一个新的可变对象（例如字典或函数）的可调用对象。提供可变的默认对象（例如 `default={}` 或 `default=[]`）在所有模型实例之间共享一个对象。
+
+###### JSONField.encoder
+
+可选的 `json.JSONEncoder` 子类，用于序列化标准 JSON 序列化程序不支持的数据类型（例如 `datetime.datetime` 或 `UUID`），具体可以使用 `DjangoJSONEncoder` 类。（默认为 `json.JSONEncoder`）
+
+###### JSONField.decoder
+
+可选的 `json.JSONDecoder` 子类，用于反序列化从数据库检索的值，该值将采用自定义编码器选择的格式（通常是字符串）。（默认为 `json.JSONDecoder`）
+
+反序列化时需要考虑不确定输入类型的情况，例如，冒着返回一个日期时间的风险，该日期时间实际上是一个字符串，恰好与为日期时间选择的格式相同。
+
+##### PositiveIntegerField
+
+正整数字段，类似于 `IntegerField`，但必须为正数或零（0）。在 Django 支持的所有数据库中，0 到 2147483647 之间的值都是安全的，出于向后兼容的原因，可接受值为 0。
+
+```python
+name = models.PositiveIntegerField(default=1)
+```
+
+##### PositiveBigIntegerField
+
+较大的正整数字段，类似于 `PositiveIntegerField`，但仅允许在特定点（与数据库有关）下的值。在 Django 支持的所有数据库中，0 到 9223372036854775807 的值都是安全的。
+
+```python
+name = models.PositiveBigIntegerField()
+```
+
+##### PositiveSmallIntegerField
+
+较小的正整数字段，似于 `PositiveIntegerField`，但仅允许在特定点（与数据库有关）下的值。在 Django 支持的所有数据库中，0 到 32767 的值都是安全的。
+
+```python
+name = models.PositiveSmallIntegerField()
+```
+
+##### SlugField
+
+`Slug` 是一个语义，是某个事物的简短标签，仅包含字母、数字、下划线或连字符。它们通常在 URL 中使用，例如有一个关于文章的模型，有两个字段，分别是 `title`（标题） 和 `slug`（短网址）：
+
+```python
+class Article(models.Model):
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=40)
+```
+
+这时候存入模型的一条信息，`title="The song of ice and fire"`，如果想用文章的标题作为 URL 进行访问，完整的标题可能是：`www.xxx.com/article/The song of ice and fire`，但是 URL 是不能出现空格的，因此空格会被转变成 `%20`，最后网址得到 `www.xxx.com/article/The%20song%20of%20ice%20and%20fire`，我们不希望出现这么多难看的 `%20`，而是希望用短横线 `-` 替代空格，得到 `www.xxx.com/article/the-song-of-ice-and-fire`。
+
+而 Django 的 `django.utils.text` 提供了一个 `slugify` 方法叫，可以把刚才的文章标题 `The song of ice and fire` 做两个转变：
+
+1. 全部转化成小写字母
+2. 空格部分替换成短横线 -
+
+因为这种转变主要用于做 URL 拼接，所以我们把这种结果都统一放在 `SlugField` 字段里面，用以构建语义化的 URL 网址。
+
+##### SmallAutoField
+
+较小的自增 `id`，与 `AutoField` 相似，但仅允许值处于一定限制（与数据库有关）之下。从 1 到 32767 的值在 Django 支持的所有数据库中都是安全的。
+
+```python
+id = models.SmallAutoField(primary_key=True)
+```
+
+##### SmallIntegerField
+
+较小的整数，类似于 `IntegerField`，但仅允许在特定点（与数据库有关）下的值。在 Django 支持的所有数据库中，从 -32768 到 32767 的值都是安全的。
+
+```python
+name = models.SmallIntegerField(default=0)
+```
+
+##### TextField
+
+大文本字段，此字段的默认表单控件是 `Textarea`，不建议使用 `max_length` 属性，如果有需要可以使用 `CharField` 类型。
+
+```python
+name = models.TextField()
+```
+
+##### TimeField
+
+时间字段，在 Python 中用 `datetime.time` 实例表示，接受与 `DateField` 相同的参数。此字段的默认表单控件为 `TimeInput`。
+
+```python
+name_1 = models.TimeField(auto_now=True)
+```
+
+##### URLField
+
+特殊的 `CharField` 类型，用于存储 URL，由 `URLValidator` 验证。此字段的默认表单控件是 `URLInput`，像所有 `CharField` 子类一样，`URLField` 采用可选的 `max_length` 参数。如果未指定 `max_length`，则使用默认值 200。
+
+```python
+name = models.URLField()
+```
+
+##### UUIDField
+
+UUID 类型，用于存储通用唯一标识符的字段，使用 Python 的 `UUID` 类。在 PostgreSQL 上使用时，它存储在 `uuid` 数据类型中，否则存储在 `char(32)` 中。通用唯一标识符是 `AutoField` 的优秀替代品，数据库不会为您生成 UUID，因此建议使用 `default` 参数。
+
+```python
+import uuid
+from django.db import models
+
+class MyUUIDModel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+```
+
+##### ForeignKey
+
+关联关系字段，多对一的关系。需要两个位置参数：被关联的类 和 `on_delete` 选项。
+
+```python
+name = models.ForeignKey('myapp.Manufacturer', on_delete=models.CASCADE)
+```
+
+如果要创建一个递归关系（一个与其自身有多对一关系的对象）则使用：
+
+```python
+models.ForeignKey('self', on_delete=models.CASCADE)
+```
+
+如果需要在尚未定义的模型上创建关系，则可以使用模型的名称，而不是模型对象本身：
+
+```python
+from django.db import models
+
+class Car(models.Model):
+    manufacturer = models.ForeignKey(
+        'Manufacturer',
+        on_delete=models.CASCADE,
+    )
+
+class Manufacturer(models.Model):
+    pass
+```
+
+要引用在另一个应用中定义的模型，可以显式指定带有完整应用标签的模型。例如，如果 `Manufacturer` 模型是在另一个称为 `production` 的应用程序中定义的，则需要使用：
+
+```python
+class Car(models.Model):
+    manufacturer = models.ForeignKey(
+        'production.Manufacturer',
+        on_delete=models.CASCADE,
+    )
+```
+
+在解决两个应用之间的循环导入依赖关系时，这种称为惰性关系的引用可能会很有用。数据库索引是在 `ForeignKey` 上自动创建的。可以通过将 `db_index` 设置为 `False` 来禁用它。如果要创建外键以保持一致性而不是联接，或者要创建替代索引（例如部分或多列索引），则可能要避免索引的开销。
+
+在幕后，Django 在字段名称后附加 `_id` 以创建其数据库列名称。除非编写自定义 SQL，否则您的代码永远不必处理数据库列名，您只要处理模型对象的字段名称。
+
+#### 字段选项
