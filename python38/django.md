@@ -2,6 +2,35 @@
 
 这个第三方库最初被设计用于具有快速开发需求的新闻类站点，目的是要实现简单快捷的网站开发。通过 `pip install Django` 命令下载 [wxPython](https://pypi.org/project/Django/) 库。
 
+## 常用命令
+
+查看 Django 是否安装，且安装的是哪个版本：
+
+```powershell
+python -m django --version
+```
+
+创建 Django 项目，创建时要避免使用 Python 或 Django 的内部保留字来命名你的项目。具体地说，要得避免使用像 django（会和 Django 自己产生冲突）或 test（会和 Python 的内置组件产生冲突）这样的名字。命令如下：
+
+```powershell
+django-admin startproject [项目名称]
+```
+
+启动 Django 自带的用于开发的简易服务器，它是一个用纯 Python 写的轻量级的 Web 服务器。要注意的是，**千万不要**将这个服务器用于和生产环境相关的任何地方，因为这个服务器只是为了开发而设计的。命令如下：
+
+```powershell
+python manage.py runserver
+python manage.py runserver 8080
+python manage.py runserver 0:8000
+python manage.py runserver 0.0.0.0:8000
+```
+
+创建 Django 应用，项目和应用有什么区别？应用是一个专门做某件事的网络应用程序，项目则是一个网站使用的配置和应用的集合，项目可以包含很多个应用，应用可以被很多个项目使用。命令如下：
+
+```powershell
+python manage.py startapp [应用名称]
+```
+
 ## 数据模型
 
 模型在 `models.py` 文件中定义，通过 “对象关系映射器” 实现无需 SQL 语句的数据库模型设计，如下定义了一个 `Person` 模型类，拥有 `first_name` 和 `last_nam` 两个类属性：
