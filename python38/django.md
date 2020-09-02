@@ -112,7 +112,7 @@ name = models.CharField(max_length=250)
 
 ##### DateField
 
-日期类型 `YYYY-MM-DD`，有一些额外的可选参数：
+日期类型 `YYYY-MM-DD`，在 Python 中由 `datetime.date` 实例表示，有一些额外的可选参数：
 
 - DateField.auto_now : 每次保存对象时都自动更新日期，通常用于 last_modified 字段。仅在调用 Model.save() 时自动更新，以其他方式，例如 QuerySet.update()，对字段进行更新时，该字段不会更新
 - DateField.auto_now_add : 第一次创建时添加，之后的更新不再改变，通常用于创建时间戳
@@ -126,9 +126,109 @@ name_2 = models.DateField(auto_now_add=True)
 
 ##### DateTimeField
 
-日期和时间类型 `YYYY-MM-DD hh:mm:ss`，采用与 `DateField` 相同的额外参数，该字段的默认表单控件是单个 `DateTimeInput`，管理后台有两个单独的 `TextInput` 控件。
+日期和时间类型 `YYYY-MM-DD hh:mm:ss`，在 Python 中由 `datetime.datetime` 实例表示，采用与 `DateField` 相同的额外参数，该字段的默认表单控件是单个 `DateTimeInput`，管理后台有两个单独的 `TextInput` 控件。
 
 ```python
 name_1 = models.DateTimeField(auto_now=True)
 name_2 = models.DateTimeField(auto_now_add=True)
+```
+
+##### DecimalField
+
+固定精度的十进制数，在 Python 中由 `Decimal` 实例表示，使用 `DecimalValidator` 验证输入，有两个必需的参数：
+
+- DecimalField.max_digits : 数字中允许的最大位数，此数字必须大于或等于小数位数
+- DecimalField.decimal_places : 小数位的最大位数
+
+```python
+# 最大数字 999 且保留 2 位小数
+name_1 = models.DecimalField(max_digits=5, decimal_places=2)
+# 最大数字 10亿 且保留 10 位小数
+name_2 = models.DecimalField(max_digits=19, decimal_places=10)
+```
+
+当 `localize` 为 `False` 时，此字段的默认控件为 `NumberInput`，否则为 `TextInput`。
+
+##### DurationField
+
+时间段（两个时间的差值）类型，使用 `timedelta` 在 Python 中建模，在 PostgreSQL 上使用的数据类型是 `interval`，在 Oracle 上使用的数据类型是 `INTERVAL DAY(9) TO SECOND(6)`，否则将使用微秒级的 `bigint` 类型。
+
+```python
+name_1 = models.DurationField(default=timedelta())
+```
+
+需要注意，在除 PostgreSQL 以外的所有数据库上，直接使用 `DurationField` 的值进行算术运算时，结果不准确。
+
+##### EmailField
+
+特殊的 `CharField` 类型，使用 `EmailValidator` 检查该值是否为有效的电子邮箱地址。
+
+```python
+name_1 = models.EmailField(max_length=250)
+```
+
+##### FileField
+
+文件上传字段。需要注意，`FileField` 不支持 `primary_key` 参数，如果使用该参数，则会引发错误。
+
+###### FileField.upload_to
+
+此属性可以设置上传目录和文件名，有两种方法进行设置。在这两种情况下，该值都将传递到 `Storage.save()` 方法。
+
+如果指定字符串值或 `Path`，则它可能包含 `strftime()` 格式，该格式将替换为文件上传的日期/时间，以使上传的文件不会填满给定目录，例如：
+
+```python
+class MyModel(models.Model):
+    # 文件将被上传到 MEDIA_ROOT/uploads_1
+    upload_1 = models.FileField(upload_to='uploads_1/')
+    # 文件将保存到 MEDIA_ROOT/uploads_2/2020/09/02
+    upload_2 = models.FileField(upload_to='uploads_2/%Y/%m/%d/')
+```
+
+如果使用默认的 `FileSystemStorage`，则字符串值将附加到 `MEDIA_ROOT` 路径中，作为存储上传文件的目录。
+
+属性 `upload_to` 也是可调用的，通过调用可获得上传路径、文件名，可调用对象必须接受两个参数，并返回 Unix 样式的路径，传递给存储系统。这两个参数是：
+
+- instance : 定义 FileField 的模型实例，更准确地说，这是一个包含当前文件的特殊实例。通常，这个对象还没有在数据库中保存，若该对象用的是默认的 AutoField 字段，那它的 primary key 字段还可能没有值
+- filename : 最初提供给文件的文件名，确定最终目标路径时，可以用也可以不用
+
+```python
+def user_directory_path(instance, filename):
+    # 文件将被上传到 MEDIA_ROOT/user_<id>/<filename>
+    return 'user_{0}/{1}'.format(instance.user.id, filename)
+
+class MyModel(models.Model):
+    upload = models.FileField(upload_to=user_directory_path)
+```
+
+###### FileField.storage
+
+存储对象或返回存储对象的可调用对象，可以处理文件的存储和检索。使用前需新建 `storage.py` 文件：
+
+```python
+from django.core.files.storage import FileSystemStorage
+
+class TestStorage(FileSystemStorage):
+    from django.conf import settings
+    # 初始化
+    def __init__(self, location=settings.MEDIA_ROOT, base_url=settings.MEDIA_URL):
+        super(TestStorage, self).__init__(location, base_url)
+    # 重写 _save 方法
+    def _save(self, name, content):
+        # name 为上传文件名称
+        import os, time, random
+        # 文件扩展名
+        ext = os.path.splitext(name)[1]
+        # 文件目录
+        d = os.path.dirname(name)
+        # 定义/重写/合成文件名
+        name = '自定义文件名'
+        # 调用父类方法
+        return super(TestStorage, self)._save(name, content)
+```
+
+然后在 `models.py` 文件中进行调用：
+
+```python
+name_1 = models.FileField(storage=TestStorage())
 ```
