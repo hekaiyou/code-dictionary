@@ -169,7 +169,17 @@ name_1 = models.EmailField(max_length=250)
 
 ##### FileField
 
-文件上传字段。需要注意，`FileField` 不支持 `primary_key` 参数，如果使用该参数，则会引发错误。
+文件上传字段，此字段的默认表单控件是 `ClearableFileInput`。需要注意，`FileField` 不支持 `primary_key` 参数，如果使用该参数，则会引发错误。
+
+在模型中使用 `FileField` 或 `ImageField` 需要执行几个步骤：
+
+1. 在 `setting` 文件中，需要定义：`setting: MEDIA_ROOT` 作为 Django 存储上传文件目录的完整路径。（为了提高性能，这些文件不会储存在数据库中）定义：`setting: MEDIA_URL` 作为该目录的基本公共 URL，确保该目录能够被 Web 服务器的用户写入
+2. 将 `FileField` 或 `ImageField` 添加到模型中，定义 `upload_to` 参数，以指定 `MEDIA_ROOT` 的子目录以用于上传的文件
+3. 存储在数据库中的所有文件路径都是相对于 `MEDIA_ROOT` 目录的，Django 提供了便捷 `url` 属性。例如，如果 `ImageField` 名为 `mug_shot`，则可以使用 `{{ object.mug_shot.url }}` 在模板中获取图像的绝对路径。
+
+例如 `MEDIA_ROOT` 设置为 `/home/media`，而 `upload_to` 设置为 `photos/%Y/%m/%d`。`upload_to` 的 `%Y/%m/%d` 部分为 `strftime()` 格式；`%Y` 是四位数的年份，`%m` 是两位数的月份，`%d` 是两位数的日期。如果在2020年9月2日上传文件，该文件将保存在目录 `/home/media/photos/2020/09/02` 中。
+
+如果要检索上传的文件在磁盘上的文件名或文件的大小，可以分别使用 `name` 和 `size` 属性。
 
 ###### FileField.upload_to
 
