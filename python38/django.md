@@ -532,3 +532,67 @@ class Car(models.Model):
 在幕后，Django 在字段名称后附加 `_id` 以创建其数据库列名称。除非编写自定义 SQL，否则您的代码永远不必处理数据库列名，您只要处理模型对象的字段名称。
 
 #### 字段选项
+
+## 实例
+
+### 配置JWT认证
+
+先通过 `pip install djangorestframework` 命令下载 [Django REST framework](https://pypi.org/project/djangorestframework/) 库，再通过 `pip install djangorestframework-simplejwt` 命令下载 [Django REST framework Simple JWT](https://pypi.org/project/djangorestframework-simplejwt/) 库。它们提供了 JWT 的 Django 应用。
+
+#### 配置与编码
+
+在 `settings.py` 文件里加入以下内容，以支持 JWT 认证：
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ],
+}
+```
+
+在某个应用的 `views.py` 文件下，写一个测试用的视图。
+
+```python
+from rest_framework.views import APIView
+from rest_framework import permissions
+from rest_framework.response import Response
+from rest_framework_simplejwt import authentication
+
+class AutoTestView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = (authentication.JWTAuthentication,)
+
+    def get(self, request, *args, **kwargs):
+        print('authenticate: ', request.successful_authenticator.authenticate(request))
+        print('authenticate_header: ', request.successful_authenticator.authenticate_header(request))
+        print('get_header: ', request.successful_authenticator.get_header(request))
+        print('get_raw_token: ', request.successful_authenticator.get_raw_token(request.successful_authenticator.get_header(request)))
+        print('get_validated_token: ', request.successful_authenticator.get_validated_token(request.successful_authenticator.get_raw_token(request.successful_authenticator.get_header(request))))
+        print('get_user: ', request.successful_authenticator.get_user(request.successful_authenticator.get_validated_token(request.successful_authenticator.get_raw_token(request.successful_authenticator.get_header(request)))))
+        print('www_authenticate_realm: ', request.successful_authenticator.www_authenticate_realm)
+        return Response('O get K')
+
+    def post(self, request, *args, **kwargs):
+        return Response('O post K')
+```
+
+在 `urls.py` 文件下导入 JWT 的两个视图，以及我们的测试视图的路由：
+
+```python
+...
+from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
+from django.conf.urls import url
+from foundation import views as foundation_views
+
+urlpatterns = [
+    ...
+    url(r'^firmware/auth/token/obtain/$', TokenObtainPairView.as_view(), name='obtain_token'),
+    url(r'^firmware/auth/token/refresh/$', TokenRefreshView.as_view(), name='refresh_token'),
+    url(r'^firmware/auth/token/test/$', foundation_views.AutoTestView.as_view(), name='test_token'),
+]
+```
+
+#### d 
+
+的
