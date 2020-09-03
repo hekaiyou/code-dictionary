@@ -31,6 +31,12 @@ python manage.py runserver 0.0.0.0:8000
 python manage.py startapp [应用名称]
 ```
 
+创建一个 Django 后台管理系统的账号，添加，修改和删除内容的后台是一项缺乏创造性和乏味的工作，就交给 Django 自动完成吧。命令如下：
+
+```powershell
+python manage.py createsuperuser
+```
+
 ## 灵活路由
 
 函数 `include()` 允许引用其它 `urls.py`，每当 Django 遇到 `include()` 时，它会截断与此项匹配的 URL 的部分，并将剩余的字符串发送到对应 `urls.py` 以供进一步处理。
@@ -102,6 +108,7 @@ INSTALLED_APPS = [
 
 ```powershell
 python manage.py makemigrations
+python manage.py makemigrations [应用名称]
 ```
 
 #### migrate
