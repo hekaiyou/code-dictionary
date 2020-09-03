@@ -31,6 +31,35 @@ python manage.py runserver 0.0.0.0:8000
 python manage.py startapp [应用名称]
 ```
 
+## 灵活路由
+
+函数 `include()` 允许引用其它 `urls.py`，每当 Django 遇到 `include()` 时，它会截断与此项匹配的 URL 的部分，并将剩余的字符串发送到对应 `urls.py` 以供进一步处理。
+
+在 `[应用名称]/urls.py` 中，输入如下代码：
+
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.index, name='index'),
+]
+```
+
+下一步要在项目根 `urls.py` 文件中指定上面创建的 `[应用名称].urls` 模块，在项目根 `urls.py` 文件的 `urlpatterns` 列表里插入一个 `include()`，如下：
+
+```python
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('[应用名称]/', include('[应用名称].urls')),
+    path('admin/', admin.site.urls),
+]
+```
+
+Django 设计 `include()` 的理念是使其可以即插即用，因为每个独立的应用都有它自己的 `urls.py` 文件，他们能够被放在 `/polls/`、`/fun_polls/`、`/content/polls/`，或者其他任何路径下，这个应用都能够正常工作。
+
 ## 数据模型
 
 模型在 `models.py` 文件中定义，通过 “对象关系映射器” 实现无需 SQL 语句的数据库模型设计，如下定义了一个 `Person` 模型类，拥有 `first_name` 和 `last_nam` 两个类属性：
