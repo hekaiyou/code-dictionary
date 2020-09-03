@@ -593,6 +593,16 @@ urlpatterns = [
 ]
 ```
 
-#### d 
+#### 使用示例
 
-的
+获取 Token：
+
+![django_djangorestframeworksimplejwt_1](image/django_djangorestframeworksimplejwt_1.png)
+
+通过 Token 获取视图信息：
+
+![django_djangorestframeworksimplejwt_3](image/django_djangorestframeworksimplejwt_3.png)
+
+通过 `refresh` 刷新 Token：
+
+![django_djangorestframeworksimplejwt_2](image/django_djangorestframeworksimplejwt_2.png)
