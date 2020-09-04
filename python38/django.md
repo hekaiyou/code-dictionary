@@ -569,6 +569,42 @@ class Car(models.Model):
 
 #### 字段选项
 
+## 管理后台
+
+### 自定义表单
+
+通过 `admin.site.register([模型名称])` 注册对应的模型，Django 能够构建一个默认的表单用于展示。在 `admin.py` 文件通过重排列表单上的字段，即可实现简单的后台表单，代码如下：
+
+```python
+from django.contrib import admin
+from .models import Question
+
+class QuestionAdmin(admin.ModelAdmin):
+    fields = ['pub_date', 'question_text']
+
+admin.site.register(Question, QuestionAdmin)
+```
+
+但是对于数十个字段的模型来说，可以将表单分为几个字段集，`fieldsets` 元组中的第一个元素是字段集的标题，代码如下：
+
+```python
+from django.contrib import admin
+from .models import FirmwareProject
+
+class FirmwareProjectAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['project_name', 'project_desc']}),
+        ('测试记录', {'fields': ['testing_total', 'pass_number', 'fail_number', 'shutdown_number']}),
+        ('运营数据', {'fields': ['save_time', 'participants_number', 'participants']}),
+    ]
+
+admin.site.register(FirmwareProject, FirmwareProjectAdmin)
+```
+
+以下是多字段集表单的显示效果：
+
+![django_fieldsets](image/django_fieldsets.png)
+
 ## 实例
 
 ### 配置JWT认证
