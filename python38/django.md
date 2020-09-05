@@ -605,6 +605,10 @@ admin.site.register(FirmwareProject, FirmwareProjectAdmin)
 
 ![django_fieldsets](image/django_fieldsets.png)
 
+### 自定义更改列表
+
+默认情况下，Django 显示每个对象的 `str()` 返回的值，可以使用 `list_display` 后台选项，它是一个包含要显示的字段名的元组，在更改列表页中以列的形式展示这个对象。
+
 ## 实例
 
 ### 配置JWT认证
