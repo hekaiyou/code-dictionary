@@ -607,7 +607,22 @@ admin.site.register(FirmwareProject, FirmwareProjectAdmin)
 
 ### 自定义更改列表
 
-默认情况下，Django 显示每个对象的 `str()` 返回的值，可以使用 `list_display` 后台选项，它是一个包含要显示的字段名的元组，在更改列表页中以列的形式展示这个对象。
+默认情况下，Django 显示每个对象的 `str()` 返回的值，可以使用 `list_display` 后台选项，它是一个包含要显示的字段名的元组，在更改列表页中以列的形式展示这个对象，在 `admin.py` 文件编辑如下内容：
+
+```python
+from django.contrib import admin
+from .models import FirmwareProject
+
+class FirmwareProjectAdmin(admin.ModelAdmin):
+    list_display = ('id', 'project_name', 'project_desc', 'testing_total', 'save_time')
+    list_display_links = ('id',)
+```
+
+自定义后的更改列表页看起来像这样：
+
+![django_listdisplay](image/django_listdisplay.png)
+
+通过 `list_display_links` 后台选项，可以指定哪些字段可以链接到表单页面。
 
 ## 实例
 
