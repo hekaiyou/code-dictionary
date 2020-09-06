@@ -270,6 +270,30 @@ help_text="请使用以下格式: <em>YYYY-MM-DD</em>."
 
 请注意，当 `unique` 为 `True` 时，无需指定 `db_index`，因为 `unique` 意味着创建了索引。
 
+##### Field.unique_for_date
+
+将其设置为 `DateField` 或 `DateTimeField` 类型的字段名称，以要求此字段对于 `date` 字段的值是唯一的。例如，如果 `title` 标题具有 `unique_for_date="pub_date"`，则 Django 将不允许输入两个具有相同 `title` 和 `pub_date` 的记录。
+
+请注意，如果将其设置为指向 `DateTimeField`，则仅考虑字段的日期部分，此外，当 `USE_TZ` 为 `True` 时，将在保存对象时在当前时区执行检查。
+
+这是在模型验证期间由 `Model.validate_unique()` 强制实施的，而不是在数据库级别实施的。
+
+##### Field.unique_for_month
+
+类似于 `unique_for_date`，但要求该字段相对于月份是唯一的。
+
+##### Field.unique_for_year
+
+类似于 `unique_for_date` 和 `unique_for_month`，但要求该字段相对于年份是唯一的。
+
+##### Field.verbose_name
+
+该字段的易读名称，即在管理后台显示对应的名称，如果未提供详细名称，则 Django 将使用字段的属性名称自动创建，将下划线转换为空格。
+
+##### Field.validators
+
+要为此字段运行的验证器列表。
+
 #### 字段类型
 
 模型中每一个字段都应该是某个 `Field` 类的实例，Django 内置了数十种字段类型：
