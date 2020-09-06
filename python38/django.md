@@ -123,6 +123,153 @@ python manage.py migrate
 
 数据模型中最重要的是数据库的字段定义，字段在模型类属性中定义，定义字段名时应小心避免使用与模型API冲突的名称，如 `clean`、`save`、`delete` 等。
 
+#### 字段选项
+
+##### Field.null
+
+如果设置为 `True` 时，当该字段为空时，Django 会将数据库中该字段设置为 `NULL`，默认为 `False`。
+
+避免在基于字符串的字段，例如 `CharField` 和 `TextField` 使用 `null`，如果字符串字段的 `null=True`，字符串字段“无数据”有两个可能的情况：`NULL` 和空字符串。在大多数情况下，对于“无数据”声明两个值是赘余的，Django 的惯例是使用空字符串而不是 `NULL`，一个例外是当 `CharField` 同时具有 `unique=True` 和 `blank=True` 时。在这种情况下，需要设置 `null=True`，以便在使用空白值保存多个对象时避免唯一的约束违规则。
+
+对于基于字符串的字段和基于非字符串的字段，如果希望允许表单中的空值，则还需要设置 `blank=True`，因为 `null` 参数仅影响数据库存储。
+
+##### Field.blank
+
+如果设置为 `True`，该字段允许为空，默认为 `False`。
+
+与 `null` 不同，`null`纯粹是与数据库有关的，而 `blank` 是与验证有关的，如果字段的 `blank=True`，则后台表单验证将允许输入一个空值，如果字段为 `blank=False`，则该字段必填。
+
+##### Field.choices
+
+如果字段恰好由固定的项目，例如 `[(A, B), (A, B) ...]` 组成的序列，作为此字段的选择，如果给出了 `choices`，则模型验证将强制执行这些选择，并且默认表单控件是具有这些选择的选择框，而不是标准文本字段。
+
+每个元组中的第一个元素是要在模型上设置的实际值，第二个元素是用户可读的名称。例如：
+
+```python
+YEAR_IN_SCHOOL_CHOICES = [
+    ('FR', '大一'),
+    ('SO', '大二'),
+    ('JR', '大三'),
+    ('SR', '大四'),
+    ('GR', '研究生'),
+]
+```
+
+通常是在模型类中定义 `choices`，并为每个值定义一个适当名称的常量，例如：
+
+```python
+from django.db import models
+
+class Student(models.Model):
+    FRESHMAN = 'FR'
+    SOPHOMORE = 'SO'
+    JUNIOR = 'JR'
+    SENIOR = 'SR'
+    GRADUATE = 'GR'
+    YEAR_IN_SCHOOL_CHOICES = [
+        (FRESHMAN, '大一'),
+        (SOPHOMORE, '大二'),
+        (JUNIOR, '大三'),
+        (SENIOR, '大四'),
+        (GRADUATE, '研究生'),
+    ]
+    year_in_school = models.CharField(max_length=2, choices=YEAR_IN_SCHOOL_CHOICES, default=FRESHMAN,)
+
+    def is_upperclass(self):
+        return self.year_in_school in {self.JUNIOR, self.SENIOR}
+```
+
+尽管可以在模型类外部定义一个选择列表，然后再引用它，但是在模型类内部定义每个选择，会将所有信息保留在使用它的类中，并有助于引用选择。例如，`Student.SOPHOMORE` 将在所有导入了 `Student` 模型的地方工作。我们还可以将可用的选择收集到命名组中，例如：
+
+```python
+MEDIA_CHOICES = [
+    ('Audio', (
+            ('vinyl', 'Vinyl'),
+            ('cd', 'CD'),
+        )
+    ),
+    ('Video', (
+            ('vhs', 'VHS Tape'),
+            ('dvd', 'DVD'),
+        )
+    ),
+    ('unknown', 'Unknown'),
+]
+```
+
+每个元组中的第一个元素是要应用于该组的名称，第二个元素是元组格式的可迭代对象，每个元组包含一个值和一个选项的易于理解的名称。可以在单个列表中将分组选项与未分组选项组合在一起，例如上面的 `unknown` 选项。
+
+对于每个设置了 `choices` 的模型字段，Django 将添加一个 `get_FOO_display()` 方法来检索该字段的当前值的可读名称。每当 `choices` 的顺序变动时将会创建新的迁移。
+
+除非在字段上设置了 `blank=False` 以及 `default`，否则带有“---------”的标签将与选择框一起呈现。要覆盖此行为，要将元组添加到包含 `None` 的选项中；例如 `(None, '描述字符串')`，或者，可以在有意义的地方使用空字符串代替 `None`，例如在 `CharField` 上。
+
+##### Field.db_column
+
+用于该字段的数据库列的名称，如果未指定，则 Django 将使用该字段的名称。
+
+##### Field.db_index
+
+如果为 `True`，将为此字段创建数据库索引。
+
+##### Field.db_tablespace
+
+如果此字段已建立索引，则用于该字段的索引的数据库表空间的名称。缺省值是项目的 `DEFAULT_INDEX_TABLESPACE` 设置或模型的 `db_tablespace`。如果后端不支持索引的表空间，则忽略此选项。
+
+##### Field.default
+
+该字段的默认值，可以是一个值或者是个可调用的对象，如果是个可调用对象，每次实例化模型时都会调用该对象。
+
+默认值不能是可变对象，因为对该对象相同实例的引用将在所有新模型实例中用作默认值。而是将所需的默认值包装在可调用中。例如，如果要为 `JSONField` 指定默认字典，请使用以下函数：
+
+```python
+def contact_default():
+    return {"email": "to1@example.com"}
+
+contact_info = JSONField("ContactInfo", default=contact_default)
+```
+
+`lambda` 不能用于像 `default` 这样的字段选项，因为它们不能通过迁移序列化。对于映射到模型实例的诸如 `ForeignKey` 之类的字段，默认值应该是它们引用的字段的值（除非设置了 `to_field`，否则为 `pk`）而不是模型实例。
+
+创建新模型实例且未为该字段提供值时，将使用默认值。如果该字段是主键，则当该字段设置为 `None` 时，也会使用默认值。
+
+##### Field.editable
+
+如果为 `False`，则该字段将不会显示在管理后台或任何其他 `ModelForm` 中，在模型验证期间也将跳过它们，默认值为 `True`。
+
+##### Field.error_messages
+
+使用 `error_messages` 参数可以覆盖该字段将引发的默认消息，传递字典，其中包含与您要覆盖的错误消息相匹配的键。
+
+错误消息键包括 `null`、`blank`、`invalid`、`invalid_choice`、`unique` 和 `unique_for_date`，在下面的“字段类型”部分中，为每个字段指定了其他错误消息键，这些错误消息通常不会传播到表单。
+
+##### Field.help_text
+
+额外的“帮助”文本，随表单控件一同显示，即便该字段未用于表单，它对于生成文档也是很有用的。
+
+请注意，此值不会以自动生成的形式转义为 HTML，如果需要，可以在 `help_text` 中包含 HTML。例如：
+
+```python
+help_text="请使用以下格式: <em>YYYY-MM-DD</em>."
+```
+
+或者可以使用纯文本和 `django.utils.html.escape()` 来转义任何 HTML 特殊字符，确保避免转义来自不受信任用户的任何帮助文本，以避免跨站点脚本攻击。
+
+##### Field.primary_key
+
+如果设置为 `True`，将该字段设置为该模型的主键。
+
+如果没有为模型中的任何字段指定 `primary_key=True`，则 Django 会自动添加一个 `AutoField` 来保存主键，因此无需在任何字段上设置 `primary_key=True`，除非您想要覆盖默认的主键行为。`primary_key=True` 表示 `null=False` 和 `unique=True`，一个对象只允许使用一个主键。
+
+主键字段是只读的，如果更改现有对象上的主键的值然后保存，则将在旧对象的旁边创建一个新对象。
+
+##### Field.unique
+
+如果设置为 `True`，这个字段必须在整个表中保持值唯一。
+
+这是在数据库级别并通过模型验证强制执行的，如果尝试在 `unique` 字段中保存具有重复值的模型，则模型的 `save()` 方法将引发 `django.db.IntegrityError` 错误。此选项对除 `ManyToManyField` 和 `OneToOneField` 以外的所有字段类型均有效。
+
+请注意，当 `unique` 为 `True` 时，无需指定 `db_index`，因为 `unique` 意味着创建了索引。
+
 #### 字段类型
 
 模型中每一个字段都应该是某个 `Field` 类的实例，Django 内置了数十种字段类型：
@@ -566,8 +713,6 @@ class Car(models.Model):
 在解决两个应用之间的循环导入依赖关系时，这种称为惰性关系的引用可能会很有用。数据库索引是在 `ForeignKey` 上自动创建的。可以通过将 `db_index` 设置为 `False` 来禁用它。如果要创建外键以保持一致性而不是联接，或者要创建替代索引（例如部分或多列索引），则可能要避免索引的开销。
 
 在幕后，Django 在字段名称后附加 `_id` 以创建其数据库列名称。除非编写自定义 SQL，否则您的代码永远不必处理数据库列名，您只要处理模型对象的字段名称。
-
-#### 字段选项
 
 ## 管理后台
 
