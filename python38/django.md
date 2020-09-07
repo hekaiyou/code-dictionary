@@ -1208,6 +1208,33 @@ Poll.objects.get(
 (5, {'webapp.Entry': 5})
 ```
 
+请记住，只要有机会的话，这会通过纯 SQL 语句执行，所以就无需在过程中调用每个对象的删除方法了。若需要为模型类提供了自定义的 `delete()` 方法，且希望确保调用了该方法，你需要 “手动” 删除该模型的实例。例如，遍历 `QuerySet`，在每个对象上分别调用 `delete()` 方法，而不是使用 `QuerySet` 的批量删除方法 `delete()`。
+
+当 Django 删除某个对象时，默认会模仿 SQL 约束 `ON DELETE CASCADE` 的行为——换而言之，某个对象被删除时，关联对象也会被删除。例子：
+
+```python
+b = Blog.objects.get(pk=1)
+# 这将删除 Blog 及其所有 Entry 对象
+b.delete()
+```
+
+这种约束行为由 `ForeignKey` 的 `on_delete` 参数指定。注意 `delete()` 是唯一未在 `Manager` 上暴漏的 `QuerySet` 方法。这是一种安全机制，避免不小心调用了 `Entry.objects.delete()`，删除了 *所有的* 条目。若 *确实* 想要删除所有对象，必须显示请求完整结果集合：
+
+```python
+Entry.objects.all().delete()
+```
+
+### 复制模型实例
+
+虽然没有用于拷贝模型实例的内置方法，但仍能很简单的拷贝所有字段值创建新实例。最简单的例子，你可以将 `pk` 设为 `None`。使用博客示例：
+
+```python
+blog = Blog(name='My blog', tagline='Blogging is easy')
+blog.save() # blog.pk == 1
+blog.pk = None
+blog.save() # blog.pk == 2
+```
+
 ## 管理后台
 
 ### 自定义表单
