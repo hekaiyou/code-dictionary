@@ -738,32 +738,475 @@ class Car(models.Model):
 
 在幕后，Django 在字段名称后附加 `_id` 以创建其数据库列名称。除非编写自定义 SQL，否则您的代码永远不必处理数据库列名，您只要处理模型对象的字段名称。
 
-### 实例方法
+### 执行查询
 
-要创建模型的新实例，要像其他正常的 Python 类一样实例化它。关键字参数是在模型上定义的字段的名称。请注意，实例化模型绝不会影响数据库。为此，需要使用 `save()` 方法。
+一旦创建数据模型后，Django 自动给予我们一套数据库抽象 API，允许我们创建、检索、更新和删除对象。
 
-#### 保存对象
+#### 创建对象
 
-要将对象保存回数据库，请调用 `save()`：
+为了用 Python 对象展示数据表对象，Django 使用了一套直观的系统：一个模型类代表一张数据表，一个模型类的实例代表数据库表中的一行记录。要创建一个对象，用关键字参数初始化它，然后调用 `save()` 将其存入数据库。
+
+假设模型都位于文件 `mysite/blog/models.py` 中，要将对象保存回数据库，需要调用 `save()` 例如：
 
 ```python
-Model.save(force_insert=False, force_update=False, using=DEFAULT_DB_ALIAS, update_fields=None)
+>>> from blog.models import Blog
+>>> b = Blog(name='Beatles Blog', tagline='All the latest Beatles news.')
+>>> b.save()
 ```
 
-如果要自定义保存行为，则可以覆盖此 `save()` 方法。
+这在幕后执行了 `INSERT` SQL 语句，Django 在显式调用 `save()` 才操作数据库。`save()` 方法没有返回值，如果需要一步创建并保存一个对象，可以使用 `create()` 方法。
 
-##### 自动递增主键
+#### 将修改保存至对象
 
-如果模型具有 `AutoField`（自动递增的主键），则将在首次调用 `save()` 时计算该自动递增的值并将其保存为对象上的属性：
+要将修改保存至数据库中已有的某个对象，使用 `save()`，有一个已被存入数据库中的 **Blog** 实例 *b5*，本例将其改名，并在数据库中更新其记录：
 
-```powershell
-b2 = Blog(name='Cheddar Talk', tagline='Thoughts on cheese.')
-b2.id     # 返回 None，因为 b2 还没有 ID
-b2.save()
-b2.id     # 返回新对象的 ID
+```python
+>>> b5.name = 'New name'
+>>> b5.save()
 ```
 
-在调用 `save()` 之前，无法知道 ID 的值是什么，因为该值是由数据库而不是 Django 计算的。为方便起见，每个模型默认都有一个名为 `id` 的 `AutoField`，除非在模型中的字段上明确指定 `primary_key=True`。
+这在幕后执行了 `UPDATE` SQL 语句，Django 在显示调用 `save()` 后才操作数据库。
+
+##### 保存ForeignKey字段
+
+更新 `ForeignKey` 字段的方式与保存普通字段的方式相同——只需将正确类型的实例分配给相关字段。本例为 **Entry** 类的实例 **entry** 更新了 *blog* 属性，假设 **Entry** 和 **Blog** 的实例均已保存在数据库中（因此能在下面检索它们）：
+
+```python
+>>> from blog.models import Blog, Entry
+>>> entry = Entry.objects.get(pk=1)
+>>> cheese_blog = Blog.objects.get(name="Cheddar Talk")
+>>> entry.blog = cheese_blog
+>>> entry.save()
+```
+
+Django 会在添加或指定错误类型的对象时报错。
+
+#### 检索对象
+
+要从数据库检索对象，要通过模型类的 `Manager` 构建一个 `QuerySet`。一个 `QuerySet` 代表来自数据库中对象的一个集合，它可以有 0 个，1 个或者多个 `filters.Filters`，可以根据给定参数缩小查询结果量。在 SQL 的层面上，`QuerySet` 对应 `SELECT` 语句，而 `filters` 对应类似 `WHERE` 或 `LIMIT` 的限制子句。
+
+可以通过模型的 `Manager` 获取 `QuerySet`，每个模型至少有一个 `Manager`，默认名称是 `objects`。像这样直接通过模型类使用它：
+
+```python
+>>> Blog.objects
+<django.db.models.manager.Manager object at ...>
+>>> b = Blog(name='Foo', tagline='Bar')
+>>> b.objects
+Traceback:
+    ...
+AttributeError: "Manager isn't accessible via Blog instances."
+```
+
+`Managers` 只能通过模型类访问，而不是通过模型实例，目的是强制分离 “表级” 操作和 “行级” 操作。`Manager` 是模型的 `QuerySets` 主要来源，例如 `Blog.objects.all()` 返回了一个 `QuerySet`，后者包含了数据库中所有的 `Blog` 对象。
+
+##### 检索全部对象
+
+从数据库中检索对象最简单的方式就是检索全部。为此，在 `Manager` 上调用 `all()` 方法：
+
+```python
+>>> all_entries = Entry.objects.all()
+```
+
+方法 `all()` 返回了一个包含数据库中所有对象的 `QuerySet` 对象。
+
+##### 通过过滤器检索指定对象
+
+`all()` 返回的 `QuerySet` 包含了数据表中所有的对象。虽然大多数情况下，你只需要完整对象集合的一个子集。要创建一个这样的子集，你需要通过添加过滤条件精炼原始 `QuerySet`。两种最常见的精炼 `QuerySet` 的方式是：
+
+- filter(/*/*kwargs) : 返回一个新的 QuerySet，包含的对象 **满足** 给定查询参数
+- exclude(/*/*kwargs) : 返回一个新的 QuerySet，包含的对象 **不满足** 给定查询参数
+
+查询参数（`/*/*kwargs`）应该符合下面的字段查询的要求。例如，要包含获取 2006 年的博客条目（*entries blog*）的 `QuerySet`，像这样使用 `filter()`：
+
+```python
+Entry.objects.filter(pub_date__year=2006)
+# 通过默认管理器类，也一样
+Entry.objects.all().filter(pub_date__year=2006)
+```
+
+##### 链式过滤器
+
+精炼 `QuerySet` 的结果本身还是一个 `QuerySet`，所以能串联精炼过程。例如：
+
+```python
+>>> Entry.objects.filter(
+...     headline__startswith='What'
+... ).exclude(
+...     pub_date__gte=datetime.date.today()
+... ).filter(
+...     pub_date__gte=datetime.date(2005, 1, 30)
+... )
+```
+
+这个先获取包含数据库所有条目（*entry*）的 `QuerySet`，然后排除一些，再进入另一个过滤器。最终的 `QuerySet` 包含标题以 “What” 开头的，发布日期介于 2005 年 1 月 30 日与今天之间的所有条目。
+
+##### 每个QuerySet都是唯一的
+
+每次精炼一个 `QuerySet`，就会获得一个全新的 `QuerySet`，后者与前者毫无关联。每次精炼都会创建一个单独的、不同的 `QuerySet`，能被存储、使用和复用。例如：
+
+```python
+>>> q1 = Entry.objects.filter(headline__startswith="What")
+>>> q2 = q1.exclude(pub_date__gte=datetime.date.today())
+>>> q3 = q1.filter(pub_date__gte=datetime.date.today())
+```
+
+这三个 `QuerySets` 是独立的。第一个是基础 `QuerySet`，包含了所有标题以 “What” 开头的条目。第二个是第一个的子集，带有额外条件，排除了 *pub_date* 是今天和今天之后的所有记录。第三个是第一个的子集，带有额外条件，只筛选 *pub_date* 是今天或未来的所有记录。最初的 `QuerySet(q1)` 不受筛选操作影响。
+
+##### QuerySet是惰性的
+
+`QuerySet` 是惰性的 —— 创建 `QuerySet` 并不会引发任何数据库活动。你可以将一整天的过滤器都堆积在一起，Django 只会在 `QuerySet` 被计算时执行查询操作。例如：
+
+```python
+>>> q = Entry.objects.filter(headline__startswith="What")
+>>> q = q.filter(pub_date__lte=datetime.date.today())
+>>> q = q.exclude(body_text__icontains="food")
+>>> print(q)
+```
+
+虽然这看起来像是三次数据库操作，实际上只在最后一行 `(print(q))` 做了一次。一般来说，`QuerySet` 的结果直到 “要使用” 时才会从数据库中拿出。当要用时，才通过数据库计算出 `QuerySet`。
+
+##### 用get()检索单个对象
+
+`filter()` 总是返回一个 `QuerySet`，即便只有一个对象满足查询条件 —— 这种情况下， `QuerySet` 只包含了一个元素。若知道只会有一个对象满足查询条件，可以在 `Manager` 上使用 `get()` 方法，它会直接返回这个对象：
+
+```python
+>>> one_entry = Entry.objects.get(pk=1)
+```
+
+可以对 `get()` 使用与 `filter()` 类似的所有查询表达式。注意，使用切片 `[0]` 时的 `get()` 和 `filter()` 有点不同。如果没有满足查询条件的结果，`get()` 会抛出一个 `DoesNotExist` 异常。该异常是执行查询的模型类的一个属性 —— 所有，上述代码中，若没有哪个 **Entry** 对象的主键是 *1*，Django 会抛出 `Entry.DoesNotExist`。
+
+类似的，`Django` 会在有不止一个记录满足 `get()` 查询条件时发出警告。这时，Django 会抛出 `MultipleObjectsReturned`，这同样也是模型类的一个属性。
+
+##### 限制QuerySet条目数
+
+利用 Python 的数组切片语法将 `QuerySet` 切成指定长度。这等价于 SQL 的 `LIMIT` 和 `OFFSET` 子句。例如，这将返回前 5 个对象 `(LIMIT 5)`：
+
+```python
+>>> Entry.objects.all()[:5]
+```
+
+这会返回第 6 至第 10 个对象 `(OFFSET 5 LIMIT 5)`：
+
+```python
+>>> Entry.objects.all()[5:10]
+```
+
+不支持负索引，例如 `Entry.objects.all()[-1]`。
+
+一般情况下，`QuerySet` 的切片返回一个新的 `QuerySet` —— 其并未执行查询。一个特殊情况是使用了的 Python 切片语法的 “步长”。例如，这将会实际的执行查询命令，为了获取从前 10 个对象中，每隔一个抽取的对象组成的列表：
+
+```python
+>>> Entry.objects.all()[:10:2]
+```
+
+由于对 `QueryQet` 切片工作方式的模糊性，禁止对其进行进一步的排序或过滤。要检索 **单个** 对象而不是一个列表时（例如 `SELECT foo FROM bar LIMIT 1`），要使用索引，而不是切片。例如，这会返回按标题字母排序后的第一个 *Entry*：
+
+```python
+>>> Entry.objects.order_by('headline')[0]
+```
+
+这大致等价于：
+
+```python
+>>> Entry.objects.order_by('headline')[0:1].get()
+```
+
+然而，注意一下，若没有对象满足给定条件，前者会抛出 `IndexError`，而后者会抛出 `DoesNotExist`。
+
+##### 字段查询
+
+字段查询即如何制定 SQL `WHERE` 子句，它们以关键字参数的形式传递给 `QuerySet` 方法 `filter()`、`exclude()` 和 `get()`。基本的查询关键字参数遵照 `field__lookuptype=value`，有个双下划线，例如：
+
+```python
+>>> Entry.objects.filter(pub_date__lte='2006-01-01')
+```
+
+转换为 SQL 语句大致如下：
+
+```sql
+SELECT * FROM blog_entry WHERE pub_date <= '2006-01-01';
+```
+
+查询子句中指定的字段必须是模型的一个字段名。不过也有个例外，在 `ForeignKey` 中，你可以指定以 `_id` 为后缀的字段名。这种情况下，`value` 参数需要包含 **foreign** 模型的主键的原始值。例如：
+
+```python
+>>> Entry.objects.filter(blog_id=4)
+```
+
+若传入了无效的关键字参数，查询函数会抛出 `TypeError`。数据库 API 支持两套查询类型。
+
+###### exact
+
+一个 `exact` 匹配的例子：
+
+```python
+>>> Entry.objects.get(headline__exact="Cat bites dog")
+```
+
+会生成这些 SQL：
+
+```sql
+SELECT ... WHERE headline = 'Cat bites dog';
+```
+
+若为提供查询类型 —— 也就说，若关键字参数未包含双下划线 —— 查询类型会被指定为 `exact`。例如，以下两条语句是等价的：
+
+```python
+>>> Blog.objects.get(id__exact=14)  # 显式形式
+>>> Blog.objects.get(id=14)         # __exact 是隐式
+```
+
+这是为了方便，因为 `exact` 查询是最常见的。
+
+###### iexact
+
+不分大小写的匹配，查询语句：
+
+```python
+>>> Blog.objects.get(name__iexact="beatles blog")
+```
+
+会匹配标题为 “Beatles Blog”、“beatles blog” 甚至 “BeAtlES blOG” 的 **Blog**。
+
+###### contains
+
+大小写敏感的包含测试。例如：
+
+```python
+Entry.objects.get(headline__contains='Lennon')
+```
+
+粗略地转为 SQL：
+
+```sql
+SELECT ... WHERE headline = 'Cat bites dog';
+```
+
+注意这将匹配标题 “Today Lennon honored”，而不是 “today lennon honored”。这也有个大小写不敏感的版本，`icontains`。
+
+###### startswith, endswith
+
+以……开头和以……结尾的查找。当然也有大小写不敏感的版本，名为 `istartswith` 和 `iendswith`。
+
+##### 跨关系查询
+
+Django 提供了一种强大而直观的方式来 “追踪” 查询中的关系，在幕后自动为你处理 SQL `JOIN` 关系。为了跨越关系，跨模型使用关联字段名，字段名由双下划线分割，直到拿到想要的字段。本例检索出所有的 **Entry** 对象，其 **Blog** 的 *name* 为 “Beatles Blog” ：
+
+```python
+>>> Entry.objects.filter(blog__name='Beatles Blog')
+```
+
+跨域的深度随意，反向操作也能行。尽管可以自定义，但默认情况下，使用模型的小写名称在查找中引用 “反向” 关系。本例检索的所有 **Blog** 对象均拥有少一个 标题 含有 “Lennon” 的条目：
+
+```python
+>>> Blog.objects.filter(entry__headline__contains='Lennon')
+```
+
+如果在跨多个关系进行筛选，而某个中间模型的没有满足筛选条件的值，Django 会将它当做一个空的（所有值都是 `NULL`）但是有效的对象。这样就意味着不会抛出错误。例如，在这个过滤器中：
+
+```python
+Blog.objects.filter(entry__authors__name='Lennon')
+```
+
+假设有个关联的 **Author** 模型，若某项条目没有任何关联的 *author*，它会被视作没有关联的 `name`，而不是因为缺失 *author* 而抛出错误。大多数情况下，这就很好。唯一可能使我们迷惑的场景是在使用 `isnull` 时。因此：
+
+```python
+Blog.objects.filter(entry__authors__name__isnull=True)
+```
+
+将会返回 **Blog** 对象，包含 *author* 的 `name` 为空的对象，以及那些 **entry** 的 *author* 为空的对象。若不想要后面的对象，可以这样写：
+
+```python
+Blog.objects.filter(entry__authors__isnull=False, entry__authors__name__isnull=True)
+```
+
+##### 过滤器可以为模型指定字段
+
+在之前的例子中，已经构建过的 `filter` 都是将模型字段值与常量做比较。但是，如果要将模型字段值与同一模型中的另一字段做比较，Django 提供了 `F` 表达式 实现这种比较。`F()` 的实例充当查询中的模型字段的引用。这些引用可在查询过滤器中用于在同一模型实例中比较两个不同的字段。
+
+例如，要查出所有评论数大于 *pingbacks* 的博客条目，可以构建了一个 `F()` 对象，指代 *pingback* 的数量，然后在查询中使用该 `F()` 对象：
+
+```python
+>>> from django.db.models import F
+>>> Entry.objects.filter(number_of_comments__gt=F('number_of_pingbacks'))
+```
+
+Django 支持对 `F()` 对象进行加、减、乘、除、求余和次方，另一操作数既可以是常量，也可以是其它 `F()` 对象。要找到那些评论数两倍于 *pingbacks* 的博客条目，可以这样修改查询条件：
+
+```python
+>>> Entry.objects.filter(number_of_comments__gt=F('number_of_pingbacks') * 2)
+```
+
+要找出所有评分低于 *pingback* 和评论总数之和的条目，修改查询条件：
+
+```python
+>>> Entry.objects.filter(rating__lt=F('number_of_comments') + F('number_of_pingbacks'))
+```
+
+也能用双下划线在 `F()` 对象中通过关联关系查询。带有双下划线的 `F()` 对象将引入访问关联对象所需的任何连接。例如，要检索出所有作者名与博客名相同的博客，这样修改查询条件：
+
+```python
+>>> Entry.objects.filter(authors__name=F('blog__name'))
+```
+
+对于 `date` 和 `date/time` 字段，可以加上或减去一个 `timedelta` 对象。以下会返回所有发布 3 天后被修改的条目：
+
+```python
+>>> from datetime import timedelta
+>>> Entry.objects.filter(mod_date__gt=F('pub_date') + timedelta(days=3))
+```
+
+##### 主键(pk)查询快捷方式
+
+出于方便的目的，Django 提供了一种 `pk` 查询快捷方式，`pk` 表示主键 `primary key`。例如 **Blog** 模型中，主键是 *id* 字段，所以这 3 个语句是等效的：
+
+```python
+>>> Blog.objects.get(id__exact=14) # 显式形式
+>>> Blog.objects.get(id=14) # __exact 是隐式
+>>> Blog.objects.get(pk=14) # pk 隐式 id__exact
+```
+
+`pk` 的使用并不仅限于 `__exact` 查询——任何的查询项都能接在 `pk` 后面，执行对模型主键的查询：
+
+```python
+# 获取 ID 为 1、4 和 7 的博客条目
+>>> Blog.objects.filter(pk__in=[1,4,7])
+# 获取所有 ID > 14 的博客条目
+>>> Blog.objects.filter(pk__gt=14)
+```
+
+`pk` 查找也支持跨连接。例如，以下 3 个语句是等效的：
+
+```python
+>>> Entry.objects.filter(blog__id__exact=3) # 显式形式
+>>> Entry.objects.filter(blog__id=3)        # __exact 是隐式
+>>> Entry.objects.filter(blog__pk=3)        # __pk 隐式 __id__exact
+```
+
+##### 在LIKE语句中转义百分号和下划线
+
+等效于 `LIKE` SQL 语句的字段查询子句 (`iexact`、`contains`、`icontains`、`startswith`、`istartswith`、`endswith` 和 `iendswith`) 会将 `LIKE` 语句中有特殊用途的两个符号，即百分号和下划线自动转义。在 `LIKE` 语句中，百分号匹配多个任意字符，而下划线匹配一个任意字符。
+
+这意味着事情应该直观地工作，这样抽象就不会泄露。例如，要检索所有包含百分号的条目，就像对待其它字符一样使用百分号：
+
+```python
+>>> Entry.objects.filter(headline__contains='%')
+```
+
+Django 小心处理了引号，生成的 SQL 语句看起来像这样：
+
+```sql
+SELECT ... WHERE headline LIKE '%\%%';
+```
+
+同样的处理也包括下划线。百分号和下划线都已经自动处理，就无需担心了。
+
+##### 缓存和QuerySet
+
+每个 `QuerySet` 都带有缓存，尽量减少数据库访问。理解它是如何工作的能让我们编写更高效的代码。
+
+新创建的 `QuerySet` 缓存是空的。一旦要计算 `QuerySet` 的值，就会执行数据查询，随后，Django 就会将查询结果保存在 `QuerySet` 的缓存中，并返回这些显式请求的缓存。例如，下一个元素，若 `QuerySet` 正在被迭代，后续针对 `QuerySet` 的计算会复用缓存结果。
+
+牢记这种缓存行为，在你错误使用 `QuerySet` 时可能会被它咬一下。例如，以下会创建两个 `QuerySet`，计算它们，丢掉它们：
+
+```python
+>>> print([e.headline for e in Entry.objects.all()])
+>>> print([e.pub_date for e in Entry.objects.all()])
+```
+
+这意味着同样的数据库查询会被执行两次，实际加倍了数据库负载。同时，有可能这两个列表不包含同样的记录，因为在两次请求间，可能有 **Entry** 被添加或删除了。要避免此问题，保存 `QuerySet` 并复用它：
+
+```python
+>>> queryset = Entry.objects.all()
+>>> print([p.headline for p in queryset])
+>>> print([p.pub_date for p in queryset]) # 重新使用缓存
+```
+
+#### 通过Q对象完成复杂查询
+
+在类似 `filter()` 中，查询使用的关键字参数是通过 `AND` 连接起来的。如果要执行更复杂的查询。例如，由 `OR` 语句连接的查询，可以使用 `Q` 对象。
+
+一个 `Q` 对象 (`django.db.models.Q`) 用于压缩关键字参数集合。这些关键字参数由前文 “字段查询” 指定。例如，该 `Q` 对象压缩了一个 `LIKE` 查询：
+
+```python
+from django.db.models import Q
+Q(question__startswith='What')
+```
+
+`Q` 对象能通过 `&` 和 `|` 操作符连接起来。当操作符被用于两个 `Q` 对象之间时会生成一个新的 `Q` 对象。例如，该语句生成一个 `Q` 对象，表示两个 `question_startswith` 查询语句之间的 `OR` 关系：
+
+```python
+Q(question__startswith='Who') | Q(question__startswith='What')
+```
+
+这等价于以下 SQL `WHERE` 字句：
+
+```sql
+WHERE question LIKE 'Who%' OR question LIKE 'What%'
+```
+
+我们可以通过 `&` 和 `|` 操作符和括号分组，组合任意复杂度的语句。当然，`Q` 对象也可通过 `~` 操作符反转，允许在组合查询中组合普通查询或反向 (`NOT`) 查询：
+
+```python
+Q(question__startswith='Who') | ~Q(pub_date__year=2005)
+```
+
+每个接受关键字参数的查询函数 (例如 `filter()`、`exclude()`、`get()`) 也同时接受一个或多个 `Q` 对象作为位置（未命名的）参数。若为查询函数提供了多个 `Q` 对象参数，这些参数会通过 `AND` 连接。例如：
+
+```python
+Poll.objects.get(
+    Q(question__startswith='Who'),
+    Q(pub_date=date(2005, 5, 2)) | Q(pub_date=date(2005, 5, 6))
+)
+```
+
+...粗略地转为 SQL：
+
+```sql
+SELECT * from polls WHERE question LIKE 'Who%'
+    AND (pub_date = '2005-05-02' OR pub_date = '2005-05-06')
+```
+
+查询函数能混合使用 `Q` 对象和关键字参数。所有提供给查询函数的参数（即关键字参数或 `Q` 对象）均通过 `AND` 连接。然而，若提供了 `Q` 对象，那么它必须位于所有关键字参数之前。例如：
+
+```python
+Poll.objects.get(
+    Q(pub_date=date(2005, 5, 2)) | Q(pub_date=date(2005, 5, 6)),
+    question__startswith='Who',
+)
+```
+
+#### 比较对象
+
+要比较两个模型实例，使用标准的 Python 比较操作符，两个等号：`==`。实际上，这比较了两个模型实例的主键值。使用前文的 **Entry**，以下的两个语句是等效的：
+
+```python
+>>> some_entry == other_entry
+>>> some_entry.id == other_entry.id
+```
+
+若模型主键名不是 `id`，没问题。比较时总会使用主键，不管它叫啥。例如，若模型的主键字段名为 *name*，以下两个语句是等效的：
+
+```python
+>>> some_obj == other_obj
+>>> some_obj.name == other_obj.name
+```
+
+#### 删除对象
+
+通常，删除方法被命名为 `delete()`。该方法立刻删除对象，并返回被删除的对象数量和一个包含了每个被删除对象类型的数量的字典。例如：
+
+```python
+>>> e.delete()
+(1, {'weblog.Entry': 1})
+```
+
+我们也能批量删除对象。所有 `QuerySet` 都有个 `delete()` 方法，它会删除 `QuerySet` 中的所有成员。例如，这会删除 2005 发布的所有 **Entry** 对象：
+
+```python
+>>> Entry.objects.filter(pub_date__year=2005).delete()
+(5, {'webapp.Entry': 5})
+```
 
 ## 管理后台
 
