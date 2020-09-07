@@ -793,6 +793,65 @@ class FirmwareProjectAdmin(admin.ModelAdmin):
 
 通过 `list_display_links` 后台选项，可以指定哪些字段可以链接到表单页面。
 
+## 请求和响应
+
+Django 使用请求和响应对象在系统中传递状态。
+
+当请求页面时，Django 创建一个 `HttpRequest` 对象，该对象包含有关请求的元数据，然后 Django 加载适当的视图，并将 `HttpRequest` 作为第一个参数传递给视图函数，每个视图负责返回 `HttpResponse` 对象。
+
+### HttpRequest
+
+#### 属性
+
+除非有特殊情况，否则所有属性都应被视为只读属性。
+
+##### HttpRequest.scheme
+
+代表请求方案的字符串，通常为 `http` 或 `https`。
+
+##### HttpRequest.body
+
+原始 HTTP 请求主体为字节串，这对于以不同于常规 HTML 格式的方式处理数据很有用，例如：二进制图像、XML等，要处理常规形式的数据，建议 `HttpRequest.POST`。
+
+也可以使用带有 `HttpRequest.read()` 或 `HttpRequest.readline()` 的类似文件的接口从 `HttpRequest` 中读取。使用这些 I/O 流方法之一读取请求后访问 `body` 属性将产生 `RawPostDataException`。
+
+##### HttpRequest.path
+
+一个字符串，代表请求页面的完整路径，例如：`/music/bands/the_beatles/`。
+
+##### HttpRequest.path_info
+
+在某些 Web 服务器配置下，主机名之后的 URL 部分被分为脚本前缀部分和路径信息部分。无论使用哪种 Web 服务器，`path_info` 属性始终包含路径的路径信息部分，使用此路径代替路径可以使代码更容易在测试服务器和部署服务器之间移动。
+
+例如，如果应用的 `WSGIScriptAlias` 设置为 `/minfo`，则 `path` 可能是 `/minfo/music/bands/the_beatles/`，而 `path_info` 将是 `/music/bands/the_beatles/`。
+
+##### HttpRequest.method
+
+一个字符串，表示请求中使用的 `HTTP` 方法，保证是大写的。例如：
+
+```python
+if request.method == 'GET':
+    do_something()
+elif request.method == 'POST':
+    do_something_else()
+```
+
+##### HttpRequest.encoding
+
+一个字符串，表示用于解码表单提交数据的当前编码，可以写入此属性以更改访问表单数据时使用的编码。任何后续的属性访问将使用新的 `encoding` 值，通常用于表单数据不是采用 `DEFAULT_CHARSET` 编码的情况。
+
+##### HttpRequest.content_type
+
+从 `CONTENT_TYPE` 标头解析的表示请求的 `MIME` 类型的字符串。
+
+##### HttpRequest.content_params
+
+包含在 `CONTENT_TYPE` 标头中的“键/值对”参数字典。
+
+##### HttpRequest.GET
+
+包含所有给定 HTTP GET 参数的类字典对象。
+
 ## 实例
 
 ### 配置JWT认证
