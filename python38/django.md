@@ -738,6 +738,33 @@ class Car(models.Model):
 
 在幕后，Django 在字段名称后附加 `_id` 以创建其数据库列名称。除非编写自定义 SQL，否则您的代码永远不必处理数据库列名，您只要处理模型对象的字段名称。
 
+### 实例方法
+
+要创建模型的新实例，要像其他正常的 Python 类一样实例化它。关键字参数是在模型上定义的字段的名称。请注意，实例化模型绝不会影响数据库。为此，需要使用 `save()` 方法。
+
+#### 保存对象
+
+要将对象保存回数据库，请调用 `save()`：
+
+```python
+Model.save(force_insert=False, force_update=False, using=DEFAULT_DB_ALIAS, update_fields=None)
+```
+
+如果要自定义保存行为，则可以覆盖此 `save()` 方法。
+
+##### 自动递增主键
+
+如果模型具有 `AutoField`（自动递增的主键），则将在首次调用 `save()` 时计算该自动递增的值并将其保存为对象上的属性：
+
+```powershell
+b2 = Blog(name='Cheddar Talk', tagline='Thoughts on cheese.')
+b2.id     # 返回 None，因为 b2 还没有 ID
+b2.save()
+b2.id     # 返回新对象的 ID
+```
+
+在调用 `save()` 之前，无法知道 ID 的值是什么，因为该值是由数据库而不是 Django 计算的。为方便起见，每个模型默认都有一个名为 `id` 的 `AutoField`，除非在模型中的字段上明确指定 `primary_key=True`。
+
 ## 管理后台
 
 ### 自定义表单
