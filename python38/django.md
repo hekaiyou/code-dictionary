@@ -1306,6 +1306,8 @@ class ZigBeeLibraryAdmin(admin.ModelAdmin):
 
 现在的更改列表页看起来应该像这样：
 
+![django_searchfields](image/django_searchfields.png)
+
 ## 请求和响应
 
 Django 使用请求和响应对象在系统中传递状态。
