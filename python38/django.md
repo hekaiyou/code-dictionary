@@ -1288,7 +1288,23 @@ class FirmwareProjectAdmin(admin.ModelAdmin):
 
 ![django_listdisplay](image/django_listdisplay.png)
 
-通过 `list_display_links` 后台选项，可以指定哪些字段可以链接到表单页面。
+通过 `list_display_links` 后台选项，可以指定哪些字段可以链接到表单页面。我们还可以通过 `list_filter` 添加了一个“过滤器”侧边栏，允许用户以某些关键字段来过滤列表。通过 `search_fields` 在列表的顶部增加一个搜索框，当用户输入待搜项时，Django 将搜索相关字段。在 `admin.py` 文件编辑如下内容：
+
+```python
+from django.contrib import admin
+from .models import ZigBeeLibrary
+
+class ZigBeeLibraryAdmin(admin.ModelAdmin):
+    # ...
+    fieldsets = [
+        (None, {'fields': ['library_name', 'library_desc']}),
+        ('概要信息', {'fields': ['total', 'maintain', 'author_id']}),
+    ]
+    list_filter = ['maintain']
+    search_fields = ['library_name', 'library_desc']
+```
+
+现在的更改列表页看起来应该像这样：
 
 ## 请求和响应
 
