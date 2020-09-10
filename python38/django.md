@@ -1264,19 +1264,7 @@ Entry.objects.filter(pub_date__year=2007).update(headline='Everything is the sam
 
 ## 管理后台
 
-这个第三方的 [Django Simpleui](https://pypi.org/project/django-simpleui/) 库，可以快速实现以 Django Admin 为基础，配合 Element-UI 和 Vue 实现的更具现代化的 Admin 管理后台。通过 `pip install django-simpleui` 命令安装，然后在项目的 `settings.py` 文件中 `INSTALLED_APPS` 的第一行加入 `simpleui`：
 
-```python
-INSTALLED_APPS = [
-    'simpleui',
-    ...
-]
-```
-
-然后打开 Admin 即可，页面美化效果如下：
-
-
-更多关于 **Simpleui** 的使用方法，可以移步到 [Simpleui中文文档](https://simpleui.88cto.com/docs/simpleui/doc.html) 查看。
 
 ### 自定义表单
 
@@ -1348,6 +1336,23 @@ class ZigBeeLibraryAdmin(admin.ModelAdmin):
 现在的更改列表页看起来应该像这样：
 
 ![django_searchfields](image/django_searchfields.png)
+
+### 美化管理后台
+
+这个第三方的 [Django Simpleui](https://pypi.org/project/django-simpleui/) 库，可以快速实现以 Django Admin 为基础，配合 Element-UI 和 Vue 实现的更具现代化的 Admin 管理后台。通过 `pip install django-simpleui` 命令安装，然后在项目的 `settings.py` 文件中 `INSTALLED_APPS` 的第一行加入 `simpleui`：
+
+```python
+INSTALLED_APPS = [
+    'simpleui',
+    ...
+]
+```
+
+然后打开 Admin 即可，页面美化效果如下：
+
+![django_simpleui](image/django_simpleui.png)
+
+更多关于 **Simpleui** 的使用方法，可以移步到 [Simpleui中文文档](https://simpleui.88cto.com/docs/simpleui/doc.html) 查看。
 
 ## 请求和响应
 
