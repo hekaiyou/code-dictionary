@@ -1235,6 +1235,33 @@ blog.pk = None
 blog.save() # blog.pk == 2
 ```
 
+若使用了继承，操作会复杂一些，假设 *Blog* 的一个子类：
+
+```python
+class ThemeBlog(Blog):
+    theme = models.CharField(max_length=200)
+
+django_blog = ThemeBlog(name='Django', tagline='Django is easy', theme='python')
+django_blog.save() # django_blog.pk == 3
+```
+
+根据继承的原理，必须将 `pk` 和 `id` 都设置为 `None`，例如：
+
+```python
+django_blog.pk = None
+django_blog.id = None
+django_blog.save() # django_blog.pk == 4
+```
+
+### 批量修改对象
+
+有时候，我们需要统一设置 `QuerySet` 中的所有对象的某个字段，可以通过 `update()` 达到目的。例如：
+
+```python
+# 更新所有 pub_date 为 2007 年的数据的标题字段
+Entry.objects.filter(pub_date__year=2007).update(headline='Everything is the same')
+```
+
 ## 管理后台
 
 这个第三方的 [Django Simpleui](https://pypi.org/project/django-simpleui/) 库，可以快速实现以 Django Admin 为基础，配合 Element-UI 和 Vue 实现的更具现代化的 Admin 管理后台。通过 `pip install django-simpleui` 命令安装，然后在项目的 `settings.py` 文件中 `INSTALLED_APPS` 的第一行加入 `simpleui`：
@@ -1319,6 +1346,8 @@ class ZigBeeLibraryAdmin(admin.ModelAdmin):
 ```
 
 现在的更改列表页看起来应该像这样：
+
+![django_searchfields](image/django_searchfields.png)
 
 ## 请求和响应
 
