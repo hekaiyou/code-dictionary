@@ -1237,6 +1237,20 @@ blog.save() # blog.pk == 2
 
 ## 管理后台
 
+这个第三方的 [Django Simpleui](https://pypi.org/project/django-simpleui/) 库，可以快速实现以 Django Admin 为基础，配合 Element-UI 和 Vue 实现的更具现代化的 Admin 管理后台。通过 `pip install django-simpleui` 命令安装，然后在项目的 `settings.py` 文件中 `INSTALLED_APPS` 的第一行加入 `simpleui`：
+
+```python
+INSTALLED_APPS = [
+    'simpleui',
+    ...
+]
+```
+
+然后打开 Admin 即可，页面美化效果如下：
+
+
+更多关于 **Simpleui** 的使用方法，可以移步到 [Simpleui中文文档](https://simpleui.88cto.com/docs/simpleui/doc.html) 查看。
+
 ### 自定义表单
 
 通过 `admin.site.register([模型名称])` 注册对应的模型，Django 能够构建一个默认的表单用于展示。在 `admin.py` 文件通过重排列表单上的字段，即可实现简单的后台表单，代码如下：
