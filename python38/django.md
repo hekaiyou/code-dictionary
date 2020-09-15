@@ -1262,6 +1262,22 @@ django_blog.save() # django_blog.pk == 4
 Entry.objects.filter(pub_date__year=2007).update(headline='Everything is the same')
 ```
 
+要修改 `ForeignKey` 字段，将新值置为目标模型的新实例。例如：
+
+```python
+>>> b = Blog.objects.get(pk=1)
+# 更改所有数据，使其属于此Blog
+>>> Entry.objects.all().update(blog=b)
+```
+
+方法 `update()` 立刻被运行，更新` QuerySet` 的唯一限制即它只能操作一个数据表：该模型的主表。但是可以基于关联字段进行筛选，但只能更新模型主表中的列。例如：
+
+```python
+>>> b = Blog.objects.get(pk=1)
+# 更新属于此Blog的所有标题
+>>> Entry.objects.select_related().filter(blog=b).update(headline='Everything is the same')
+```
+
 ## 管理后台
 
 
