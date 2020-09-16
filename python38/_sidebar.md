@@ -17,3 +17,4 @@
 
   * [Django](python38/django)
   * [wxPython](python38/wxpython)
+  * [openpyxl](python38/openpyxl)
