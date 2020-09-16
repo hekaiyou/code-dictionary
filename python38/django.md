@@ -1353,6 +1353,8 @@ class ZigBeeLibraryAdmin(admin.ModelAdmin):
 
 ![django_searchfields](image/django_searchfields.png)
 
+展示的过滤器类型取决要过滤的字段的类型。例如 `DateTimeField` 类 ，Django 会提供日期时间过滤器，包括 “任意时间”、“今天”、“过去7天”、“这个月”、“今年” 这些选择。
+
 ### 美化管理后台
 
 这个第三方的 [Django Simpleui](https://pypi.org/project/django-simpleui/) 库，可以快速实现以 Django Admin 为基础，配合 Element-UI 和 Vue 实现的更具现代化的 Admin 管理后台。通过 `pip install django-simpleui` 命令安装，然后在项目的 `settings.py` 文件中 `INSTALLED_APPS` 的第一行加入 `simpleui`：
