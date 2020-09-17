@@ -175,6 +175,13 @@ for row in ws.iter_rows(min_row=1, max_col=3, max_row=2, values_only=True):
 # (None, None, None)
 ```
 
+如果我们只需要工作表的 *最大行数* 和 *最大列数*，可以使用 `max_row` 和 `max_column` 属性获取，例如一个4行15列的工作表：
+
+```python
+print(ws.max_row)  # 4
+print(ws.max_column)  # 15
+```
+
 ## 数据存储
 
 有了 `Cell` 就可以为其分配一个值：
