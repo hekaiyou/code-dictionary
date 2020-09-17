@@ -124,8 +124,8 @@ if __name__ == '__main__':
     print('工作簿对象：', excel_to_dict.work_book)
     excel_to_dict.read_excel()
     print('工作簿数据：', excel_to_dict.data_dict)
-    print('工作簿校验（异常演示）：', excel_to_dict.check())
-    print('工作簿校验（正常演示）：', excel_to_dict.check())
+    print('工作簿校验（异常演示）：', excel_to_dict.check(['标题四']))
+    print('工作簿校验（正常演示）：', excel_to_dict.check(['标题一', '标题二']))
 ```
 
 运行上面的代码，命令行输出效果如下：
