@@ -1431,6 +1431,14 @@ elif request.method == 'POST':
 
 包含所有给定 HTTP GET 参数的类字典对象。
 
+##### HttpRequest.POST
+
+包含所有给定HTTP POST参数的类字典对象，条件是请求包含表单数据。如果需要访问请求中发布的原始或非格式数据，请通过 `HttpRequest.body` 属性访问。
+
+可能有一个空的POST字典通过 POST 发出请求，例如：如果通过POST HTTP方法请求了表单，但其中不包含表单数据，因此，不应使用if request.POST来检查POST方法的使用。 而是使用if request.method ==“ POST”（请参阅HttpRequest.method）。
+
+##### HttpRequest.COOKIES
+
 ## 实例
 
 ### 配置JWT认证
@@ -1504,3 +1512,185 @@ urlpatterns = [
 通过 `refresh` 刷新 Token：
 
 ![django_djangorestframeworksimplejwt_2](image/django_djangorestframeworksimplejwt_2.png)
+
+### 自定义JWT认证
+
+同样的，要先通过 `pip install djangorestframework` 命令下载 [Django REST framework](https://pypi.org/project/djangorestframework/) 库，不同的是，接下来要通过 `pip install djangorestframework-jwt` 命令下载 [Django REST framework JWT](https://pypi.org/project/djangorestframework-jwt/) 库。
+
+#### 配置认证库
+
+在 `settings.py` 文件里加入 `djangorestframework` 与 `djangorestframework-jwt` 库的配置：
+
+```python
+……
+INSTALLED_APPS = [
+    ……
+    'rest_framework',
+]
+……
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 自定义 JWT Token 认证类
+        'foundation.utils.jwt_customize.TokenAuth',
+    ),
+}
+JWT_AUTH = {
+    # 用户 Token 有效期
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    # Token 前缀
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    # 自定义响应信息
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'foundation.utils.jwt_customize.jwt_response_payload_handler'
+}
+AUTHENTICATION_BACKENDS = [
+    # 自定义 JWT 的企业 AD 域认证
+    'foundation.utils.jwt_customize.UsernameAdAuthBackend',
+]
+……
+# 企业 AD 域信息
+AD_DOMAIN_INFO = {
+    'ACTIVATE': True,
+    'AD_SERVER': ['xxx.xx.xx.xxx'],
+    'AD_SERVER_PORT': xxx,
+    'AD_DN': 'xxx@xxx.local',
+    'AD_PASSWORD': 'xxx',
+}
+```
+
+#### 自定义认证类
+
+如上面的路径，创建一个 `jwt_customize.py` 文件，并编写三个自定义的认证类与方法：
+
+```python
+from django.contrib.auth.backends import ModelBackend
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
+from rest_framework import serializers
+from x_atp_firmware.settings import JWT_AUTH
+from django.contrib.auth.models import User, Group
+from foundation.utils.ad_login import ldap_auth
+from django.contrib.auth import get_user_model
+from x_atp_firmware.settings import AD_DOMAIN_INFO
+
+UserModel = get_user_model()
+
+class TokenAuth:
+    """
+    自定义 JWT Token 认证类
+    """
+    @staticmethod
+    def authenticate(request):
+        """
+        重写 authenticate
+        """
+        # 获取请求头的 Authorization 字段
+        headers_token = request.headers.get('Authorization', None)
+        # 校验 Authorization 是否符合规范
+        if not headers_token:
+            raise serializers.ValidationError({'Authorization': '该字段是必填项。'})
+        elif headers_token.find(JWT_AUTH['JWT_AUTH_HEADER_PREFIX'] + ' ') == -1:
+            raise serializers.ValidationError({'Token': '该字段不符合规范。'})
+        # 提取 Authorization 中的 JWT Token 信息
+        headers_token = headers_token.split(JWT_AUTH['JWT_AUTH_HEADER_PREFIX'] + ' ')[1]
+        token = {'token': headers_token}
+        # 调用默认的验证逻辑
+        valid_data = VerifyJSONWebTokenSerializer().validate(token)
+        user = valid_data['user']
+        if user:
+            # 返回用户名称与认证Token
+            return user, valid_data['token']
+        else:
+            raise AuthenticationFailed('认证失败')
+
+class UsernameAdAuthBackend(ModelBackend):
+    """
+    自定义企业 AD 域的登录验证
+    """
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        """
+        重写 authenticate
+        """
+        if request and request.path_info == '/admin/login/':
+            # 如果是来自Admin后台的请求，直接传递给默认认证函数
+            try:
+                user = User.objects.get(username=username)
+                # 判断密码是否正确
+                if not user.check_password(password):
+                    return None
+            except UserModel.DoesNotExist:
+                return None
+        elif not AD_DOMAIN_INFO['ACTIVATE']:
+            # 如果未启用AD域登录，则跳过验证
+            user = User.objects.get(username=username)
+        else:
+            login_res = ldap_auth(username, password)
+            # 判断返回值是否正常的字典类型
+            if isinstance(login_res, dict):
+                # 判断是否AD域认证是否成功
+                if login_res['result'] is True:
+                    # 判断数据库中是否已存在用户组
+                    if not Group.objects.filter(name=login_res['organization']['title']):
+                        # 创建新用户组
+                        group = Group.objects.create(name=login_res['organization']['title'])
+                    else:
+                        group = Group.objects.get(name=login_res['organization']['title'])
+                    # 判断数据库中是否已存在用户信息
+                    if not User.objects.filter(username=login_res['account']['s_am_account_name']):
+                        # 创建新用户数据
+                        user = User.objects.create_user(username=login_res['account']['s_am_account_name'],
+                                                        email=login_res['account']['mail'],
+                                                        last_name=login_res['account']['sn'],
+                                                        first_name=login_res['account']['given_name'],
+                                                        password=password)
+                    else:
+                        user = User.objects.get(username=username)
+                    # 为登录用户设置用户组
+                    user.groups.add(group)
+                else:
+                    raise serializers.ValidationError(detail='企业AD域异常: ' + str(login_res))
+            elif not login_res:
+                # 判断返回值是否为False
+                raise serializers.ValidationError(detail='内部账户名称不存在')
+            elif login_res == 'auth fail':
+                # 判断返回值是否为`auth fail`
+                raise serializers.ValidationError(detail='内部登录密码不正确')
+            else:
+                raise serializers.ValidationError(detail='企业AD域异常: ' + str(login_res))
+        return user
+
+def jwt_response_payload_handler(token, user=None, request=None):
+    """
+    自定义返回 Token 认证信息
+    :param token: JWT 认证 Token
+    :param user: 用户对象
+    :param request: 请求对象
+    :return: 认证信息
+    """
+    return {
+        "token": token,
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'exp': JWT_AUTH['JWT_EXPIRATION_DELTA']
+    }
+```
+
+#### 使用方式
+
+同样，在某个应用的 `views.py` 文件下写一个测试代码。
+
+```python
+from rest_framework.views import APIView
+
+class AutoTestView(APIView):
+    """
+    基础-验证-Token-测试
+    URL /foundation/auth/token/test/
+    """
+    @staticmethod
+    def options(request, *args, **kwargs):
+        print(request.user, request.auth)
+```
+
+#### 调用示例
+
