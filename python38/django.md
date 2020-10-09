@@ -1675,6 +1675,85 @@ def jwt_response_payload_handler(token, user=None, request=None):
     }
 ```
 
+还需要创建一个 `ad_login.py` 文件，编写企业AD域的连接认证方法：
+
+```python
+import logging
+from ldap3 import Connection, SUBTREE, ServerPool
+from x_atp_firmware.settings import AD_DOMAIN_INFO
+
+# 域控服务器ip地址
+LDAP_SERVER_POOL = AD_DOMAIN_INFO['AD_SERVER']
+# 端口
+LDAP_SERVER_PORT = AD_DOMAIN_INFO['AD_SERVER_PORT']
+# 拥有查询权限的域账号
+ADMIN_DN = AD_DOMAIN_INFO['AD_DN']
+# 对应的密码
+ADMIN_PASSWORD = AD_DOMAIN_INFO['AD_PASSWORD']
+SEARCH_BASE = 'ou=OU,dc=LEEDARSON,dc=LOCAL'
+
+def ldap_auth(username, password):
+    """
+    通过 AD 域认证并获取用户资料
+    :param username: 用户AD账号
+    :param password: 用户AD密码
+    :return: 认证信息
+    """
+    ldap_server_pool = ServerPool(LDAP_SERVER_POOL)
+    conn = Connection(ldap_server_pool, user=ADMIN_DN, password=ADMIN_PASSWORD,
+                      check_names=True, lazy=False, raise_exceptions=False)
+    logging.warning('x_atp_firmware.foundation.utils.ad_login.ldap_auth (AD域连接): ' + str(conn))
+    conn.open()
+    conn.bind()
+    res = conn.search(
+        search_base=SEARCH_BASE,
+        # 查询所有用户
+        search_filter='(sAMAccountName={})'.format(username),
+        search_scope=SUBTREE,
+        # sAMAccountName=账号，cn=用户中文名，sn=姓，givenName=名，mail=邮件
+        # department=部门，manager=经理, title=头衔
+        attributes=['cn', 'sn', 'ou', 'givenName', 'mail', 'sAMAccountName', 'department', 'manager', 'title',
+                    'directReports'],
+        # 使用`ALL_ATTRIBUTES`可以获取所有属性值
+        # attributes=ALL_ATTRIBUTES,
+        paged_size=5
+    )
+    if res:
+        # 开始同步
+        entry = conn.response[0]
+        # dn包含了ou信息dc信息等，在做域验登录时可以作为验证账号
+        _dn = entry['dn']
+        attr_dict = entry['attributes']
+        # 使用dn检查密码
+        try:
+            conn2 = Connection(ldap_server_pool, user=_dn, password=password,
+                               check_names=True, lazy=False, raise_exceptions=False)
+            conn2.bind()
+            if conn2.result['description'] == 'success':
+                res = {'result': True,
+                       'account': {
+                           's_am_account_name': attr_dict['sAMAccountName'],
+                           'cn': attr_dict['cn'],
+                           'sn': attr_dict['sn'],
+                           'given_name': attr_dict['givenName'],
+                           'mail': attr_dict['mail'],
+                       },
+                       'organization': {
+                           'title': attr_dict['title'],
+                           'department': attr_dict['department'],
+                           'manager': attr_dict['manager'],
+                           'ou': attr_dict['ou'],
+                       }}
+                return res
+            else:
+                # 返回认证失败信息
+                return 'auth fail'
+        except Exception as exc:
+            return exc
+    else:
+        return False
+```
+
 #### 使用方式
 
 同样，在某个应用的 `views.py` 文件下写一个测试代码。
