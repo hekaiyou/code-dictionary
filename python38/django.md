@@ -1694,3 +1694,10 @@ class AutoTestView(APIView):
 
 #### 调用示例
 
+通过用户名称与密码登录：
+
+![django_djangorestframeworkjwt_1](image/django_djangorestframeworkjwt_1.png)
+
+通过用户获取的 Token 发送请求到服务器：
+
+![django_djangorestframeworkjwt_2](image/django_djangorestframeworkjwt_2.png)
