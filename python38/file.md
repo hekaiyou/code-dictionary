@@ -138,7 +138,7 @@ next(iterator[, default])
 ###### 实例
 
 ```python
-fo = open("Test.txt", "wb")
+fo = open("Test.txt", "r")
 print("文件名为: ", fo.name)
 for index in range(5):
     line = next(fo)
@@ -180,7 +180,7 @@ fileObject.read()
 ###### 实例
 
 ```python
-fo = open("Test.txt", "wb")
+fo = open("Test.txt", "r+")
 print("文件名为: ", fo.name)
 line = fo.read(10)
 print("读取的字符串: %s" % (line))
@@ -193,4 +193,84 @@ fo.close()
 文件名为:  Test.txt
 读取的字符串: 这是第一行
 这是第二
+```
+
+## file.readline([size])
+
+###### 描述
+
+从文件读取整行，包括 *\n* 字符，如果指定了一个非负数的参数，则返回指定大小的字节数，包括 *\n* 字符。
+
+###### 语法
+
+```python
+fileObject.readline()
+```
+
+###### 参数
+
+- size -- 从文件中读取的字节数
+
+###### 返回值
+
+从字符串中读取的字节。
+
+###### 实例
+
+```python
+fo = open("Test.txt", "r+")
+print("文件名为: ", fo.name)
+line = fo.readline()
+print("读取第一行 %s" % (line))
+line = fo.readline(3)
+print("读取的字符串为: %s" % (line))
+fo.close()
+```
+
+以上实例输出结果如下：
+
+```powershell
+文件名为:  Test.txt
+读取第一行 这是第一行
+读取的字符串为: 这是第
+```
+
+## file.readlines([sizehint])
+
+###### 描述
+
+读取所有行（直到结束符 EOF）并返回列表，若给定 `sizeint>0`，返回总和大约为 `sizeint` 字节的行，实际读取值可能比 `sizhint` 较大，因为需要填充缓冲区。如果碰到结束符 EOF 则返回空字符串。
+
+###### 语法
+
+```python
+fileObject.readlines(sizehint)
+```
+
+###### 参数
+
+- sizehint -- 从文件中读取的字节数
+
+###### 返回值
+
+包含所有的行的列表。
+
+###### 实例
+
+```python
+fo = open("Test.txt", "r+")
+print("文件名为: ", fo.name)
+line = fo.readlines()
+print("读取的数据为: %s" % (line))
+line = fo.readlines(2)
+print("读取的数据为: %s" % (line))
+fo.close()
+```
+
+以上实例输出结果如下：
+
+```powershell
+文件名为:  Test.txt
+读取的数据为: ['这是第一行\n', '这是第二行\n', '这是第三行\n', '这是第四行\n']
+读取的数据为: []
 ```
