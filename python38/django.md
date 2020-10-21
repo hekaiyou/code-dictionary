@@ -1441,6 +1441,38 @@ elif request.method == 'POST':
 
 ## 实例
 
+### 简单定时任务
+
+创建一个文件名为 `schedules.py`，输入一下代码，即可实现一个自定义的定时任务功能。
+
+```python
+import time
+import datetime
+import threading
+
+def conf_dict_handle():
+    while True:
+        try:
+            local_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            print('本地时间：' + str(local_time))
+            time.sleep(10)
+        except Exception as e:
+            print('发生错误，错误信息为：', e)
+            continue
+
+def main():
+    """主函数，用于启动所有定时任务，可以自由发挥"""
+    try:
+        # 启动定时任务，多个任务时，使用多线程
+        task1 = threading.Thread(target=conf_dict_handle)
+        task1.start()
+    except Exception as e:
+        print('发生异常：%s' % str(e))
+
+if __name__ == '__main__':
+    main()
+```
+
 ### 配置JWT认证
 
 先通过 `pip install djangorestframework` 命令下载 [Django REST framework](https://pypi.org/project/djangorestframework/) 库，再通过 `pip install djangorestframework-simplejwt` 命令下载 [Django REST framework Simple JWT](https://pypi.org/project/djangorestframework-simplejwt/) 库。它们提供了 JWT 的 Django 应用。

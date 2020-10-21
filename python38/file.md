@@ -274,3 +274,79 @@ fo.close()
 读取的数据为: ['这是第一行\n', '这是第二行\n', '这是第三行\n', '这是第四行\n']
 读取的数据为: []
 ```
+
+## file.seek(offset[, whence])
+
+###### 描述
+
+移动文件读取指针到指定位置。
+
+###### 语法
+
+```python
+fileObject.seek(offset[, whence])
+```
+
+###### 参数
+
+- offset -- 开始的偏移量，也就是代表需要移动偏移的字节数
+- whence -- 可选，默认值为0，给offset参数一个定义，表示要从哪个位置开始偏移；0代表从文件开头开始算起，1代表从当前位置开始算起，2代表从文件末尾算起
+
+###### 实例
+
+```python
+fo = open("Test.txt", "r+")
+print("文件名为: ", fo.name)
+line = fo.readline()
+print("读取的数据为: %s" % (line))
+fo.seek(0, 0)
+line = fo.readline()
+print("读取的数据为: %s" % (line))
+fo.close()
+```
+
+以上实例输出结果如下：
+
+```powershell
+文件名为:  Test.txt
+读取的数据为: 这是第一行
+
+读取的数据为: 这是第一行
+```
+
+## file.tell()
+
+###### 描述
+
+返回文件的当前位置，即文件指针当前位置。
+
+###### 语法
+
+```python
+fileObject.tell(offset[, whence])
+```
+
+###### 返回值
+
+文件的当前位置。
+
+###### 实例
+
+```python
+fo = open("Test.txt", "r+")
+print("文件名为: ", fo.name)
+line = fo.readline()
+print("读取的数据为: %s" % (line))
+pos = fo.tell()
+print("当前位置: %d" % (pos))
+fo.close()
+```
+
+以上实例输出结果如下：
+
+```powershell
+文件名为:  Test.txt
+读取的数据为: 这是第一行
+
+当前位置: 6
+```
