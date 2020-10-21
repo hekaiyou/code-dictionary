@@ -350,3 +350,115 @@ fo.close()
 
 当前位置: 6
 ```
+
+## file.truncate([size])
+
+###### 描述
+
+用于截断文件，如果指定了可选参数 `size`，则表示截断文件为 `size` 个字符，如果没有指定 `size`，则重置到当前位置。
+
+###### 语法
+
+```python
+fileObject.truncate([size])
+```
+
+###### 参数
+
+- size -- 可选，如果存在则文件截断为size字节
+
+###### 实例
+
+```python
+fo = open("Test.txt", "r+")
+print("文件名为: ", fo.name)
+line = fo.readline()
+print("读取行: %s" % (line))
+fo.truncate()
+line = fo.readlines()
+print("读取行: %s" % (line))
+fo.close()
+```
+
+以上实例输出结果如下：
+
+```powershell
+文件名为:  Test.txt
+读取行: 这是第一行
+
+读取行: ['这是第二行\n', '这是第三行\n', '这是第四行\n']
+```
+
+## file.write(str)
+
+###### 描述
+
+用于向文件中写入指定字符串，但是在文件关闭前或缓冲区刷新前，字符串内容存储在缓冲区中，这时你在文件中是看不到写入的内容的。
+
+###### 语法
+
+```python
+fileObject.write([str])
+```
+
+###### 参数
+
+- str -- 要写入文件的字符串
+
+###### 实例
+
+```python
+fo = open("Test.txt", "r+")
+print("文件名为: ", fo.name)
+str = "这是第五行"
+fo.seek(0, 2)
+line = fo.write(str)
+fo.seek(0,0)
+for index in range(6):
+    line = next(fo)
+    print("文件行号 %d - %s" % (index, line))
+fo.close()
+```
+
+以上实例输出结果如下：
+
+```powershell
+文件名为:  Test.txt
+文件行号 0 - 这是第一行
+文件行号 1 - 这是第二行
+文件行号 2 - 这是第三行
+文件行号 3 - 这是第四行
+文件行号 4 - 这是第五行
+```
+
+## file.writelines(sequence)
+
+###### 描述
+
+用于向文件中写入一序列的字符串，这一序列字符串可以是由迭代对象产生的，如一个字符串列表，换行需要制定换行符 `\n`。
+
+###### 语法
+
+```python
+fileObject.writelines([str])
+```
+
+###### 参数
+
+- str -- 要写入文件的字符串序列
+
+###### 实例
+
+```python
+fo = open("Test.txt", "w")
+print("文件名为: ", fo.name)
+seq = ["这是第一行\n", "这是第二行"]
+fo.writelines(seq)
+fo.close()
+```
+
+以上实例输出结果如下：
+
+```powershell
+文件名为:  Test.txt
+```
