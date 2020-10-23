@@ -1280,7 +1280,7 @@ Entry.objects.filter(pub_date__year=2007).update(headline='Everything is the sam
 
 ## 管理后台
 
-
+网站的管理员负责查看、添加、修改、删除数据，开发这些重复的功能是一件单调乏味、缺乏创造力的工作，为此，Django能够根据定义的模型类自动地生成管理模块。
 
 ### 自定义表单
 
@@ -1435,9 +1435,64 @@ elif request.method == 'POST':
 
 包含所有给定HTTP POST参数的类字典对象，条件是请求包含表单数据。如果需要访问请求中发布的原始或非格式数据，请通过 `HttpRequest.body` 属性访问。
 
-可能有一个空的POST字典通过 POST 发出请求，例如：如果通过POST HTTP方法请求了表单，但其中不包含表单数据，因此，不应使用if request.POST来检查POST方法的使用。 而是使用if request.method ==“ POST”（请参阅HttpRequest.method）。
+可能有一个空的POST字典通过 POST 发出请求，例如：如果通过 POST HTTP 方法请求了表单，但其中不包含表单数据，因此，不应使用 `if request.POST` 来检查 POST 方法，而是使用 `if request.method == "POST"`。
 
 ##### HttpRequest.COOKIES
+
+包含所有 Cookie 的字典，键和值是字符串。
+
+##### HttpRequest.FILES
+
+包含所有上载文件的类字典对象，FILES 中的每个键都是 `<input type="file" name="">` 中的 `name`。FILES中的每个值都是一个 `UploadedFile`。
+
+如果请求方法是 POST 并且发布到请求的 `<form>` 具有 `enctype="multipart/form-data"`，则 FILES 仅包含数据。否则，FILES将是一个空白的类似于字典的对象。
+
+##### HttpRequest.META
+
+包含所有可用 HTTP 标头的字典，可用的标头取决于客户端和服务器，但以下是一些示例：
+
+- CONTENT_LENGTH -- 请求正文的长度（以字符串形式）
+- CONTENT_TYPE -- 请求正文的 MIME 类型
+- HTTP_ACCEPT -- 响应的可接受的内容类型
+- HTTP_ACCEPT_ENCODING -- 响应的可接受编码
+- HTTP_ACCEPT_LANGUAGE -- 可接受的响应语言
+- HTTP_HOST -- 客户端发送的 HTTP Host 标头
+- HTTP_REFERER -- 推荐页面
+- HTTP_USER_AGENT -- 客户端的用户代理字符串
+- QUERY_STRING -- 查询字符串
+- REMOTE_ADDR -- 客户端的IP地址
+- REMOTE_HOST -- 客户端的主机名
+- REMOTE_USER -- 由 Web 服务器验证的用户
+- REQUEST_METHOD -- 例如 "GET" 或 "POST"（以字符串形式）
+- SERVER_NAME -- 服务器的主机名
+- SERVER_PORT -- 服务器的端口（以字符串形式）
+
+除了上面给出的 `CONTENT_LENGTH` 和 `CONTENT_TYPE` 外，通过将所有字符都转换为大写字母，用下划线替换所有连字符，并在名称中添加 `HTTP_` 前缀，将请求中的所有 HTTP 标头转换为 META 密钥。因此，例如，称为 *X-Bender* 的标头将映射到 META 密钥 *HTTP_X_BENDER*。
+
+请注意，`runserver` 会在名称中删除所有带有下划线的标头，因此您不会在 META 中看到它们。这样可以防止基于下划线和破折号之间的歧义的标头欺骗在 WSGI 环境变量中均被标准化为下划线，它与 Nginx 和 Apache 2.4+ 等 Web 服务器的做法是一样的。
+
+`HttpRequest.headers` 是访问所有 HTTP 前缀报头以及 `CONTENT_LENGTH` 和 `CONTENT_TYPE` 的一种简单方法。
+
+##### HttpRequest.headers
+
+不区分大小写，类似于字典类型的对象，该对象提供对请求中所有 HTTP 前缀的标头。以及 `Content-Length` 和 `Content-Type` 的访问。您可以不区分大小写地访问标头：
+
+```python
+request.headers
+# {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6', ...}
+'User-Agent' in request.headers
+# True
+'user-agent' in request.headers
+# True
+request.headers['User-Agent']
+# Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6)
+request.headers['user-agent']
+# Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6)
+```
+
+##### HttpRequest.resolver_match
+
+代表解析的 URL 的 `ResolverMatch` 实例，仅在发生 URL 解析之后才设置此属性，这意味着该属性在所有视图中可用，但在发生 URL 解析之前执行的中间件中不可用。不过可以在 `process_view()` 中使用它。
 
 ## 实例
 
