@@ -1,6 +1,6 @@
 ![logo](static/icon.svg)
 
-# Python小手册 <small>3.8</small>
+# Python小手册 <small>3.9</small>
 
 > 使用 Docsify 框架自动生成的文档网站
 
@@ -9,4 +9,4 @@
 - Markdown格式文档，便于维护！
 
 [GitHub](https://github.com/hekaiyou/code-dictionary)
-[Get Started](/python38/)
+[Get Started](/python/)

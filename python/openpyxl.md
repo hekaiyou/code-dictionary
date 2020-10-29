@@ -23,7 +23,7 @@ ws['A2'] = datetime.datetime.now()
 wb.save("sample.xlsx")
 ```
 
-![openpyxl_sample](image/openpyxl_sample.png)
+![openpyxl_sample](image/openpyxl/openpyxl_sample.png)
 
 ## 通用方案
 
@@ -170,7 +170,7 @@ ws.title = "New Title"
 ws.sheet_properties.tabColor = "1072BA"
 ```
 
-![openpyxl_tabcolor](image/openpyxl_tabcolor.png)
+![openpyxl_tabcolor](image/openpyxl/openpyxl_tabcolor.png)
 
 给工作表命名后，就可以将其作为工作簿的键值，以指向对应的工作表，并可以使用 `Workbook.sheetname` 属性查看工作簿中所有工作表的名称，亦可以遍历工作表：
 
@@ -385,9 +385,9 @@ print(ws3['AA10'].value)  # AA
 wb.save(filename = dest_filename)
 ```
 
-![openpyxl_writeaworkbook_1](image/openpyxl_writeaworkbook_1.png)
-![openpyxl_writeaworkbook_2](image/openpyxl_writeaworkbook_2.png)
-![openpyxl_writeaworkbook_3](image/openpyxl_writeaworkbook_3.png)
+![openpyxl_writeaworkbook_1](image/openpyxl/openpyxl_writeaworkbook_1.png)
+![openpyxl_writeaworkbook_2](image/openpyxl/openpyxl_writeaworkbook_2.png)
+![openpyxl_writeaworkbook_3](image/openpyxl/openpyxl_writeaworkbook_3.png)
 
 ### 读工作簿
 
@@ -479,4 +479,4 @@ ws.row_dimensions.group(1,10, hidden=True)
 wb.save('group.xlsx')
 ```
 
-![openpyxl_foldoutline](image/openpyxl_foldoutline.png)
+![openpyxl_foldoutline](image/openpyxl/openpyxl_foldoutline.png)

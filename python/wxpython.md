@@ -6,7 +6,7 @@
 
 下面是业余版本的 **Hello World**：
 
-![wxpython_helloworld](image/wxpython_helloworld.png)
+![wxpython_helloworld](image/wxpython/wxpython_helloworld.png)
 
 ```python
 # 导入wxPython库
@@ -24,7 +24,7 @@ app.MainLoop()
 
 下面是专业版本的 **Hello World Pro**：
 
-![wxpython_helloworldpro](image/wxpython_helloworldpro.png)
+![wxpython_helloworldpro](image/wxpython/wxpython_helloworldpro.png)
 
 ```python
 import wx
@@ -109,7 +109,7 @@ if __name__ == '__main__':
 
 该定位是以像素为单位对控件进行定位，但是该定位方式在整窗口大小时，控件的尺寸和位置不会随之改变，不推荐使用。
 
-![wxpython_possize](image/wxpython_possize.png)
+![wxpython_possize](image/wxpython/wxpython_possize.png)
 
 ```python
 class Example(wx.Frame):
@@ -129,7 +129,7 @@ class Example(wx.Frame):
 
 该定位比使用绝对定位更通用更灵活，可供选择的 Sizers 类型有：`wx.BoxSizer`、`wx.StaticBoxSizer`、`wx.GridSizer`、`wx.FlexGridSizer`、`wx.GridBagSizer`。
 
-![wxpython_sizers](image/wxpython_sizers.png)
+![wxpython_sizers](image/wxpython/wxpython_sizers.png)
 
 ```python
 class Example(wx.Frame):
@@ -197,7 +197,7 @@ box.Add(wx.Window window, integer proportion=0, integer flag=0, integer border=0
 
 ###### Demo 0
 
-![wxpython_boxsizer](image/wxpython_boxsizer.png)
+![wxpython_boxsizer](image/wxpython/wxpython_boxsizer.png)
 
 ```python
 class Example(wx.Frame):
@@ -221,7 +221,7 @@ class Example(wx.Frame):
 
 ###### Demo 1
 
-![wxpython_boxsizer_1](image/wxpython_boxsizer_1.png)
+![wxpython_boxsizer_1](image/wxpython/wxpython_boxsizer_1.png)
 
 ```python
 class Example(wx.Frame):
@@ -290,7 +290,7 @@ class Example(wx.Frame):
 
 该定位即网格布局，它可以在两维的表格中放置控件。
 
-![wxpython_gridsizer](image/wxpython_gridsizer.png)
+![wxpython_gridsizer](image/wxpython/wxpython_gridsizer.png)
 
 ```python
 class Example(wx.Frame):
@@ -338,7 +338,7 @@ class Example(wx.Frame):
 
 该定位与网格布局（`wx.GridSizer`）类似，同样以两维的表格方式放置控件，但 `wx.FlexGridSizer` 更灵活一些。`wx.GridSizer` 的单元格大小都一样，`wx.FlexGridSizer` 的单元格仅限制每行的单元格高度一致、每列的单元格宽度一致，不需要所有行列的宽高一致。
 
-![wxpython_flexgridsizer](image/wxpython_flexgridsizer.png)
+![wxpython_flexgridsizer](image/wxpython/wxpython_flexgridsizer.png)
 
 ```python
 class Example(wx.Frame):
@@ -402,7 +402,7 @@ AddGrowableCol(integer col)
 
 ###### Demo 0
 
-![wxpython_gridbagsizer_0](image/wxpython_gridbagsizer_0.png)
+![wxpython_gridbagsizer_0](image/wxpython/wxpython_gridbagsizer_0.png)
 
 ```python
 class Example(wx.Frame):
@@ -438,7 +438,7 @@ class Example(wx.Frame):
 
 ###### Demo 1
 
-![wxpython_gridbagsizer_1](image/wxpython_gridbagsizer_1.png)
+![wxpython_gridbagsizer_1](image/wxpython/wxpython_gridbagsizer_1.png)
 
 ```python
 class Example(wx.Frame):
@@ -499,7 +499,7 @@ class Example(wx.Frame):
 
 该控件仅包含一个文本字符串，用来触发某个动作。
 
-![wxpython_button](image/wxpython_button.png)
+![wxpython_button](image/wxpython/wxpython_button.png)
 
 ```python
 class Example(wx.Frame):
@@ -527,7 +527,7 @@ class Example(wx.Frame):
 
 该控件也是一种按钮，但它有两个状态：点击和非点击状态。通过点击按键可以在两种状态中切换，在特定场景中，这一功能将非常适用。
 
-![wxpython_togglebutton](image/wxpython_togglebutton.png)
+![wxpython_togglebutton](image/wxpython/wxpython_togglebutton.png)
 
 ```python
 class Example(wx.Frame):
@@ -600,7 +600,7 @@ class Example(wx.Frame):
 
 该控件在窗口上展示一个简单的直线，可以是竖直或水平的。
 
-![wxpython_staticline](image/wxpython_staticline.png)
+![wxpython_staticline](image/wxpython/wxpython_staticline.png)
 
 ```python
 class Example(wx.Frame):
@@ -639,7 +639,7 @@ class Example(wx.Frame):
 
 该控件在窗口上展示展示一行或多行的只读文本。
 
-![wxpython_statictext](image/wxpython_statictext.png)
+![wxpython_statictext](image/wxpython/wxpython_statictext.png)
 
 ```python
 class Example(wx.Frame):
@@ -673,7 +673,7 @@ class Example(wx.Frame):
 
 该控件是一个装饰控件，被用来逻辑上将一组控件包括起来。必须在它所包含的控件创建之前创建，且那些被包含的控件是 `wx.StaticBox` 的兄弟控件而非子控件。
 
-![wxpython_staticbox](image/wxpython_staticbox.png)
+![wxpython_staticbox](image/wxpython/wxpython_staticbox.png)
 
 ```python
 class Example(wx.Frame):
@@ -703,7 +703,7 @@ class Example(wx.Frame):
 
 该控件是由一行文本域、一个带有下拉箭头图标的按钮和一个列表框所构成的。当你按下按钮时，将出现一个列表框，用户只可选择其中的一个选项。
 
-![wxpython_combobox](image/wxpython_combobox.png)
+![wxpython_combobox](image/wxpython/wxpython_combobox.png)
 
 ```python
 class Example(wx.Frame):
@@ -735,7 +735,7 @@ class Example(wx.Frame):
 
 该控件只有两个状态：打开或关闭，它有一个框和文本标签组成，文本标签可以设置为放在框的左边或者右边。当 `wx.CheckBox` 被选择之后，框里将出现一个对号√。
 
-![wxpython_checkbox](image/wxpython_checkbox.png)
+![wxpython_checkbox](image/wxpython/wxpython_checkbox.png)
 
 ```python
 class Example(wx.Frame):
@@ -771,7 +771,7 @@ class Example(wx.Frame):
 
 该控件展示应用的状态信息，可以被分成不同的部分来展示不同的信息。也可以把其他控件插入到 `wx.StatusBar` 中，它可以作为对话框的替代选择，预防对话框被滥用。可以通过两种方式新建 `wx.StatusBar`，可以直接创建 `wx.StatusBar` 然后调用 `SetStatusBar()` 函数，也可以简单的调用 `CreateStatusBar()` 函数即可，第二种方法创建了一个默认的 `wx.StatusBar`。
 
-![wxpython_statusbar](image/wxpython_statusbar.png)
+![wxpython_statusbar](image/wxpython/wxpython_statusbar.png)
 
 ```python
 class Example(wx.Frame):
@@ -813,7 +813,7 @@ class Example(wx.Frame):
 
 该控件让用户从一组选项中选择一个唯一选项，通过对第一个 `RadioButton` 设置 `wx.RB_GROUP` 样式标记，可以将紧随其后的其他 `RadioButton` 囊括为一组，随后的 `RadioButton` 如果也被设置了 `wx.RB_GROUP` 样式标记，那表明将开始新的一组选择框。
 
-![wxpython_radiobutton](image/wxpython_radiobutton.png)
+![wxpython_radiobutton](image/wxpython/wxpython_radiobutton.png)
 
 ```python
 class Example(wx.Frame):
@@ -856,7 +856,7 @@ class Example(wx.Frame):
 
 该控件用在时间较长的任务场景，用来显示当前任务的状态。
 
-![wxpython_gauge](image/wxpython_gauge.png)
+![wxpython_gauge](image/wxpython/wxpython_gauge.png)
 
 ```python
 TASK_RANGE = 50
@@ -933,7 +933,7 @@ class Example(wx.Frame):
 
 该控件有一个简单的操作柄，可以向前或向后滑动，可以使用它完成特定的任务。
 
-![wxpython_slider](image/wxpython_slider.png)
+![wxpython_slider](image/wxpython/wxpython_slider.png)
 
 ```python
 class Example(wx.Frame):
@@ -968,7 +968,7 @@ class Example(wx.Frame):
 
 该控件对一个值进行增加或减少，它有两个按钮，一个带向上箭头，一个带向下箭头。用户可以直接输入数值，也可以通过两个箭头来对数值进行上下增减。
 
-![wxpython_spinctrl](image/wxpython_spinctrl.png)
+![wxpython_spinctrl](image/wxpython/wxpython_spinctrl.png)
 
 ```python
 class Example(wx.Frame):
@@ -1009,7 +1009,7 @@ class Example(wx.Frame):
 
 该控件用来设置窗口可视面积的大小，单位是像素，带有纵向、横向的滚动条。
 
-![wxpython_scrolledwindow](image/wxpython_scrolledwindow.png)
+![wxpython_scrolledwindow](image/wxpython/wxpython_scrolledwindow.png)
 
 ```python
 class Example(wx.Frame):
@@ -1041,7 +1041,7 @@ class Example(wx.Frame):
 
 ###### Demo 0
 
-![wxpython_messagedialog_0](image/wxpython_messagedialog_0.png)
+![wxpython_messagedialog_0](image/wxpython/wxpython_messagedialog_0.png)
 
 ```python
 dlg = wx.MessageDialog(None, '消息对话框内容', '标题信息', wx.OK)
@@ -1051,7 +1051,7 @@ dlg.Destroy()
 
 ###### Demo 1
 
-![wxpython_messagedialog_1](image/wxpython_messagedialog_1.png)
+![wxpython_messagedialog_1](image/wxpython/wxpython_messagedialog_1.png)
 
 ```python
 dlg = wx.MessageDialog(None, '消息对话框内容', '标题信息', wx.YES_NO | wx.ICON_QUESTION)
@@ -1064,7 +1064,7 @@ dlg.Destroy()
 
 该对话框向用户显示颜色选择器，并返回颜色信息。
 
-![wxpython_colourdialog](image/wxpython_colourdialog.png)
+![wxpython_colourdialog](image/wxpython/wxpython_colourdialog.png)
 
 ```python
 dlg = wx.ColourDialog(self)
@@ -1078,7 +1078,7 @@ dlg.Destroy()
 
 该对话框向用户显示字体选择器，并返回字体和颜色信息。
 
-![wxpython_fontdialog](image/wxpython_fontdialog.png)
+![wxpython_fontdialog](image/wxpython/wxpython_fontdialog.png)
 
 ```python
 dlg = wx.FontDialog(self, wx.FontData())
@@ -1091,7 +1091,7 @@ dlg.Destroy()
 
 该对话框向用户弹出文件选择器框，在 *Windows* 和 *GTK 2.4+* 上，这是公共文件选择器对话框，在 *MacOS* 中，这是一个文件选择器框，功能有所减少。
 
-![wxpython_filedialog_0](image/wxpython_filedialog_0.png)
+![wxpython_filedialog_0](image/wxpython/wxpython_filedialog_0.png)
 
 ###### Demo 0
 
@@ -1127,7 +1127,7 @@ dlg.Destroy()
 
 该对话框向用户显示一个目录选择器对话框，允许用户选择一个目录。
 
-![wxpython_dirdialog](image/wxpython_dirdialog.png)
+![wxpython_dirdialog](image/wxpython/wxpython_dirdialog.png)
 
 ```python
 dlg = wx.DirDialog(None, "选择一个目录:", style=wx.DD_DEFAULT_STYLE | wx.DD_NEW_DIR_BUTTON)
@@ -1140,7 +1140,7 @@ dlg.Destroy()
 
 该对话框是一个带有文本输入字段的对话框，使用 `wx.TextEntryDialog.GetValue()` 获得用户输入的值。
 
-![wxpython_textentrydialog](image/wxpython_textentrydialog.png)
+![wxpython_textentrydialog](image/wxpython/wxpython_textentrydialog.png)
 
 ```python
 dlg = wx.TextEntryDialog(None, "请在下面文本框中输入内容:", "文本输入框标题", "默认内容")
@@ -1153,7 +1153,7 @@ dlg.Destroy()
 
 该对话框是是一个带有密码输入字段的对话框，使用 `wx.TextEntryDialog.GetValue()` 获得用户输入的值。
 
-![wxpython_passwordentrydialog](image/wxpython_passwordentrydialog.png)
+![wxpython_passwordentrydialog](image/wxpython/wxpython_passwordentrydialog.png)
 
 ```python
 dlg = wx.PasswordEntryDialog(None, "请输入密码:", "密码输入框标题", "默认密码")
@@ -1166,7 +1166,7 @@ dlg.Destroy()
 
 该对话框显示选项列表，以及 `OK` 和（可选）`Cancel`，用户可以选择其中之一，可以从对话框中获得索引，字符串或客户数据的选择。
 
-![wxpython_singlechoicedialog](image/wxpython_singlechoicedialog.png)
+![wxpython_singlechoicedialog](image/wxpython/wxpython_singlechoicedialog.png)
 
 ```python
 dlg = wx.SingleChoiceDialog(None, "请选择你喜欢的水果:", "列表选择框标题", ["苹果", "西瓜", "草莓"])
@@ -1179,7 +1179,7 @@ dlg.Destroy()
 
 该对话框显示选项列表，以及 `OK` 和（可选）`Cancel`，用户可以选择其中一个或多个。
 
-![wxpython_multichoicedialog](image/wxpython_multichoicedialog.png)
+![wxpython_multichoicedialog](image/wxpython/wxpython_multichoicedialog.png)
 
 ```python
 dlg = wx.MultiChoiceDialog(None, "请选择几种你喜欢的水果:", "列表多选框标题", ["苹果", "西瓜", "草莓"])
@@ -1192,7 +1192,7 @@ dlg.Destroy()
 
 使用 `Grid` 及其相关类可以显示和编辑表格数据，而且支持表单元格的自定义属性，从而可以完全自定义其外观，并使用单独的网格表（`GridTableBase` 派生）类进行数据管理，这意味着它可用于显示任意数量的数据。
 
-![wxpython_grid](image/wxpython_grid.png)
+![wxpython_grid](image/wxpython/wxpython_grid.png)
 
 ```python
 import wx
@@ -1235,7 +1235,7 @@ if __name__ == '__main__':
 
 ### 图标与快捷键
 
-![wxpython_menuitem](image/wxpython_menuitem.png)
+![wxpython_menuitem](image/wxpython/wxpython_menuitem.png)
 
 ```python
 class Example(wx.Frame):
@@ -1274,7 +1274,7 @@ class Example(wx.Frame):
 
 每个菜单可以包含子菜单，这样可以把相似的命令放到同一组中，还可以通过分隔符来分割不同的命令，其实就是简单的一条线。
 
-![wxpython_appendsubmenu](image/wxpython_appendsubmenu.png)
+![wxpython_appendsubmenu](image/wxpython/wxpython_appendsubmenu.png)
 
 ```python
 class Example(wx.Frame):
@@ -1324,7 +1324,7 @@ class Example(wx.Frame):
 
 ### Check菜单项
 
-![wxpython_checkmenu](image/wxpython_checkmenu.png)
+![wxpython_checkmenu](image/wxpython/wxpython_checkmenu.png)
 
 ```python
 class Example(wx.Frame):
@@ -1376,7 +1376,7 @@ class Example(wx.Frame):
 
 ### Radio菜单项
 
-![wxpython_radiomenu](image/wxpython_radiomenu.png)
+![wxpython_radiomenu](image/wxpython/wxpython_radiomenu.png)
 
 ```python
 class Example(wx.Frame):
@@ -1401,7 +1401,7 @@ class Example(wx.Frame):
 
 ### 上下文菜单
 
-![wxpython_mypopupmenu](image/wxpython_mypopupmenu.png)
+![wxpython_mypopupmenu](image/wxpython/wxpython_mypopupmenu.png)
 
 ```python
 class MyPopupMenu(wx.Menu):
@@ -1448,7 +1448,7 @@ class Example(wx.Frame):
 
 ### 单行工具栏
 
-![wxpython_simpletoolbar](image/wxpython_simpletoolbar.png)
+![wxpython_simpletoolbar](image/wxpython/wxpython_simpletoolbar.png)
 
 ```python
 class Example(wx.Frame):
@@ -1477,7 +1477,7 @@ class Example(wx.Frame):
 
 ### 多行工具栏
 
-![wxpython_toolbars](image/wxpython_toolbars.png)
+![wxpython_toolbars](image/wxpython/wxpython_toolbars.png)
 
 ```python
 class Example(wx.Frame):
@@ -1513,7 +1513,7 @@ class Example(wx.Frame):
 
 ### 禁用工具栏
 
-![wxpython_undoredo](image/wxpython_undoredo.png)
+![wxpython_undoredo](image/wxpython/wxpython_undoredo.png)
 
 ```python
 class Example(wx.Frame):
@@ -1573,7 +1573,7 @@ class Example(wx.Frame):
 
 根据文档，`wx.ListBox` 中条目的个数在 GTK 平台上限制为 2000 个，需要滚动时会自动展示滚动条。
 
-![wxpython_listbox](image/wxpython_listbox.png)
+![wxpython_listbox](image/wxpython/wxpython_listbox.png)
 
 ```python
 class Example(wx.Frame):
@@ -1642,7 +1642,7 @@ class Example(wx.Frame):
 
 该控件是展示多列条目的图形展示控件，常用于文件管理器、CD刻录的文件等。它有三种不同的使用格式：列表视图、报告视图和图标视图，分别通过 `style` 参数：`wx.LC_REPORT`、`wx.LC_LIST` 和 `wx.LC_ICON` 来控制。
 
-![wxpython_listctrl](image/wxpython_listctrl.png)
+![wxpython_listctrl](image/wxpython/wxpython_listctrl.png)
 
 ```python
 packages = [('1', '2012', '1054.74'), ('2', '2013', '1062.89'), ('3', '2014', '1077.89'), ('4', '2015', '1137.87'),
@@ -1684,7 +1684,7 @@ class Example(wx.Frame):
 
 #### wx.ListCtrlAutoWidthMixin
 
-![wxpython_listctrlautowidthmixin](image/wxpython_listctrlautowidthmixin.png)
+![wxpython_listctrlautowidthmixin](image/wxpython/wxpython_listctrlautowidthmixin.png)
 
 ```python
 import wx
@@ -1726,7 +1726,7 @@ class Example(wx.Frame):
 
 #### wx.ColumnSorterMixin
 
-![wxpython_columnsortermixin](image/wxpython_columnsortermixin.png)
+![wxpython_columnsortermixin](image/wxpython/wxpython_columnsortermixin.png)
 
 ```python
 import wx
@@ -1775,7 +1775,7 @@ class Example(wx.Frame):
 
 该控件可以展示HTML页面，但是它不是一个完整的浏览器，只能展示一些基本的标签。
 
-![wxpython_htmlwindow](image/wxpython_htmlwindow.png)
+![wxpython_htmlwindow](image/wxpython/wxpython_htmlwindow.png)
 
 ```python
 import wx
@@ -1811,7 +1811,7 @@ class Example(wx.Frame):
 
 ### TextDropTarget
 
-![wxpython_textdroptarget](image/wxpython_textdroptarget.png)
+![wxpython_textdroptarget](image/wxpython/wxpython_textdroptarget.png)
 
 ```python
 import wx
@@ -1877,7 +1877,7 @@ class Example(wx.Frame):
 
 ### FileDropTarget
 
-![wxpython_filedroptarget](image/wxpython_filedroptarget.png)
+![wxpython_filedroptarget](image/wxpython/wxpython_filedroptarget.png)
 
 ```python
 class FileDrop(wx.FileDropTarget):
@@ -1920,7 +1920,7 @@ class Example(wx.Frame):
 
 当移动窗口到一个新位置时，会产生一个移动事件，它的类型是 `wx.MoveEvent`，该事件的绑定器是 `wx.EVT_MOVE`。
 
-![wxpython_moveevent](image/wxpython_moveevent.png)
+![wxpython_moveevent](image/wxpython/wxpython_moveevent.png)
 
 ```python
 class Example(wx.Frame):
@@ -1952,7 +1952,7 @@ class Example(wx.Frame):
 
 有时需要停止某个事件的继续处理，这时可以调用 `Veto()` 方法。
 
-![wxpython_closeevent](image/wxpython_closeevent.png)
+![wxpython_closeevent](image/wxpython/wxpython_closeevent.png)
 
 ```python
 class Example(wx.Frame):
@@ -1985,7 +1985,7 @@ class Example(wx.Frame):
 
 事件分两种：基础事件与命令事件，两者在事件传播上存在不同，事件传播是指将事件从子控件传播至父控件乃至更上层控件，基础事件不传播，而命令事件会传播。例如：`wx.CloseEvent` 是一个基础事件，这意味着它不会向上传播。默认情况下，如果事件被事件处理函数捕获，那么就会停止后续的传播，如果要让它继续传播，需要调用 `Skip()` 函数。
 
-![wxpython_eventskip](image/wxpython_eventskip.png)
+![wxpython_eventskip](image/wxpython/wxpython_eventskip.png)
 
 ```python
 class MyPanel(wx.Panel):
@@ -2059,7 +2059,7 @@ class Example(wx.Frame):
 
 使用标准标识符可以在不同平台提供标准的图形或行为。
 
-![wxpython_standardidentifier](image/wxpython_standardidentifier.png)
+![wxpython_standardidentifier](image/wxpython/wxpython_standardidentifier.png)
 
 ```python
 class Example(wx.Frame):
@@ -2170,7 +2170,7 @@ class Example(wx.Frame):
 
 焦点是指当前应用中被选择的控件，从键盘输入或剪切板拷入的文本将被发送到该控件，有两个事件与焦点有关：`wx.EVT_SET_FOCUS` 和 `wx.EVT_KILL_FOCUS`。当一个控件获得焦点时，会触发 `wx.EVT_SET_FOCUS`，当控件丢失焦点时，会触发 `wx.EVT_KILL_FOCUS`。通过点击或者键盘按键，比如 Tab 键或 Shift+Tab 键可以改变焦点。
 
-![wxpython_evtsetfocus](image/wxpython_evtsetfocus.png)
+![wxpython_evtsetfocus](image/wxpython/wxpython_evtsetfocus.png)
 
 ```python
 class MyPanel(wx.Panel):
@@ -2229,7 +2229,7 @@ class Example(wx.Frame):
 
 在键盘上按下按钮时，一个键盘事件会被触发，并被发送到当前焦点控件，有三种不同的键盘事件：`wx.EVT_KEY_DOWN`、`wx.EVT_KEY_UP` 和 `wx.EVT_CHAR`。
 
-![wxpython_evtkeyeown](image/wxpython_evtkeyeown.png)
+![wxpython_evtkeyeown](image/wxpython/wxpython_evtkeyeown.png)
 
 ```python
 class Example(wx.Frame):
@@ -2263,7 +2263,7 @@ class Example(wx.Frame):
 
 一般通过两种方式创建自定义控件：修改或增强已有控件、从零开始创建。
 
-![wxpython_genstatictext](image/wxpython_genstatictext.png)
+![wxpython_genstatictext](image/wxpython/wxpython_genstatictext.png)
 
 ```python
 import wx

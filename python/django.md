@@ -1314,7 +1314,7 @@ admin.site.register(FirmwareProject, FirmwareProjectAdmin)
 
 以下是多字段集表单的显示效果：
 
-![django_fieldsets](image/django_fieldsets.png)
+![django_fieldsets](image/django/django_fieldsets.png)
 
 ### 自定义更改列表
 
@@ -1331,7 +1331,7 @@ class FirmwareProjectAdmin(admin.ModelAdmin):
 
 自定义后的更改列表页看起来像这样：
 
-![django_listdisplay](image/django_listdisplay.png)
+![django_listdisplay](image/django/django_listdisplay.png)
 
 通过 `list_display_links` 后台选项，可以指定哪些字段可以链接到表单页面。我们还可以通过 `list_filter` 添加了一个“过滤器”侧边栏，允许用户以某些关键字段来过滤列表。通过 `search_fields` 在列表的顶部增加一个搜索框，当用户输入待搜项时，Django 将搜索相关字段。在 `admin.py` 文件编辑如下内容：
 
@@ -1351,7 +1351,7 @@ class ZigBeeLibraryAdmin(admin.ModelAdmin):
 
 现在的更改列表页看起来应该像这样：
 
-![django_searchfields](image/django_searchfields.png)
+![django_searchfields](image/django/django_searchfields.png)
 
 展示的过滤器类型取决要过滤的字段的类型。例如 `DateTimeField` 类 ，Django 会提供日期时间过滤器，包括 “任意时间”、“今天”、“过去7天”、“这个月”、“今年” 这些选择。
 
@@ -1368,7 +1368,7 @@ INSTALLED_APPS = [
 
 然后打开 Admin 即可，页面美化效果如下：
 
-![django_simpleui](image/django_simpleui.png)
+![django_simpleui](image/django/django_simpleui.png)
 
 更多关于 **Simpleui** 的使用方法，可以移步到 [Simpleui中文文档](https://simpleui.88cto.com/docs/simpleui/doc.html) 查看。
 
@@ -1590,15 +1590,15 @@ urlpatterns = [
 
 获取 Token：
 
-![django_djangorestframeworksimplejwt_1](image/django_djangorestframeworksimplejwt_1.png)
+![django_djangorestframeworksimplejwt_1](image/django/django_djangorestframeworksimplejwt_1.png)
 
 通过 Token 获取视图信息：
 
-![django_djangorestframeworksimplejwt_3](image/django_djangorestframeworksimplejwt_3.png)
+![django_djangorestframeworksimplejwt_3](image/django/django_djangorestframeworksimplejwt_3.png)
 
 通过 `refresh` 刷新 Token：
 
-![django_djangorestframeworksimplejwt_2](image/django_djangorestframeworksimplejwt_2.png)
+![django_djangorestframeworksimplejwt_2](image/django/django_djangorestframeworksimplejwt_2.png)
 
 ### 自定义JWT认证
 
@@ -1862,8 +1862,8 @@ class AutoTestView(APIView):
 
 通过用户名称与密码登录：
 
-![django_djangorestframeworkjwt_1](image/django_djangorestframeworkjwt_1.png)
+![django_djangorestframeworkjwt_1](image/django/django_djangorestframeworkjwt_1.png)
 
 通过用户获取的 Token 发送请求到服务器：
 
-![django_djangorestframeworkjwt_2](image/django_djangorestframeworkjwt_2.png)
+![django_djangorestframeworkjwt_2](image/django/django_djangorestframeworkjwt_2.png)
