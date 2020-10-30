@@ -20,3 +20,4 @@
   * [Django](python/django)
   * [wxPython](python/wxpython)
   * [openpyxl](python/openpyxl)
+  * [DearPyGui](python/dearpygui)
