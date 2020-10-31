@@ -102,3 +102,54 @@ start_dearpygui()
 ```
 
 ![dearpygui_showlogger](image/dearpygui/dearpygui_showlogger.png)
+
+## 控件与窗口
+
+通常，控件在添加时都需要使用对应的 `add_***` 方法，同时也必须有一个唯一的 `name`，默认情况下，`name` 会被当成 `label` 使用（视具体控件而定），因此，如果我们要改变 `label`，可以通过下面两种方式：
+
+- 使用 `##` 进行字符拼接，左边的字符串为要显示的名称，右边则为隐藏名称
+- 通过设置 `label` 参数的值，显式设置要显示的名称
+
+还有一些控件（下面以 `same_line` 为栗）是自动生成 `name` 的，在这些控件方法中，`name` 是可选参数，如果我们需要在以后引用这个控件，就可以填写这个 `name` 参数。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+with window("Tutorial"):
+    add_button("Apply")
+    add_same_line(spacing=10)
+    add_button("Apply##1")
+    add_same_line(spacing=10, name="sameline1")
+    add_button("Apply2", label="Apply")
+    add_spacing(count=5, name="spacing1")
+    add_button("Apply##3")
+
+start_dearpygui()
+```
+
+![dearpygui_namelabel](image/dearpygui/dearpygui_namelabel.png)
+
+Dear PyGui 的容器即 *窗口（windows）* 用于保存控件，创建方法如下：
+
+- 由 `add_window()` 方法启动窗口并在结束调 `end()` 方法
+- 使用 `dearpygui.simple` 包和相应的窗口管理器（推荐）
+
+包 `dearpygui.simple` 中相应的窗口上下文管理器将自动调用 `end()` 方法，这样代码就可以折叠起来，便于管理代码的层次结构。
+
+```python
+from dearpygui.core import *
+
+add_window("Tutorial")
+add_text("This is some text on window 1")
+end()
+
+from dearpygui.simple import *
+
+with window("Tutorial##2"):
+    add_text("This is some text on window 2")
+
+start_dearpygui()
+```
+
+![dearpygui_addwindow](image/dearpygui/dearpygui_addwindow.png)
