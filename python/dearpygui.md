@@ -103,7 +103,7 @@ start_dearpygui()
 
 ![dearpygui_showlogger](image/dearpygui/dearpygui_showlogger.png)
 
-## 控件与窗口
+### 控件与窗口
 
 通常，控件在添加时都需要使用对应的 `add_***` 方法，同时也必须有一个唯一的 `name`，默认情况下，`name` 会被当成 `label` 使用（视具体控件而定），因此，如果我们要改变 `label`，可以通过下面两种方式：
 
@@ -153,3 +153,37 @@ start_dearpygui()
 ```
 
 ![dearpygui_addwindow](image/dearpygui/dearpygui_addwindow.png)
+
+理论上，窗口和控件是按代码顺序来创建，但是，在 **DearPyGui** 中，我们可以通过指定 `parent` 参数来按一定规则添加窗口或控件。使用 `parent` 参数将在父级窗口或控件的末尾插入控件，如果要将其插入到其他位置，可以将 `before` 与 `parent` 参数结合使用，这样可以将控件放在另一个控件的前面。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+add_additional_font('汉仪荆戟.ttf', 18, glyph_ranges='chinese_simplified_common')
+
+with window('Tutorial'):
+    add_text('首先创建的控件')
+    # 我们可以在创建父对象之前就提前指定它，例如这里的 window 2 和 child 1
+    add_text('这是 window 2 上的一些文本', parent='window 2')
+    add_text('这是 child 1 上的一些文本', parent='child 1')
+
+with window('window 1'):
+    with child('child 1'):
+        # 在 child 内部添加一个输入项
+        add_checkbox('Checkbox', label='复选框')
+
+add_checkbox('最后创建的控件', parent="MainWindow", before='首先创建的控件')
+add_checkbox('最后创建的控件-2', parent="child 1", before="Checkbox")
+
+add_window('window 2')
+end()
+
+# 空窗口
+with window('window 3'):
+    pass
+
+start_dearpygui()
+```
+
+![dearpygui_beforeparent](image/dearpygui/dearpygui_beforeparent.png)
