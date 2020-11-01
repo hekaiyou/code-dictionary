@@ -187,3 +187,24 @@ start_dearpygui()
 ```
 
 ![dearpygui_beforeparent](image/dearpygui/dearpygui_beforeparent.png)
+
+### 主窗口
+
+可以通过使用 `start_dearpygui` 方法的 `primary_window` 参数或使用 `set_primary_window` 方法将一个窗口设置为主窗口。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+with window("Tutorial"):
+    add_checkbox("Radio Button", default_value=False)
+    print("单选按钮的值为: ", get_value("Radio Button"))
+    set_value("Radio Button", True)
+    print("设置新值后，单选按钮的值为: ", get_value("Radio Button"))
+
+start_dearpygui(primary_window="Tutorial")
+```
+
+![dearpygui_primarywindow](image/dearpygui/dearpygui_primarywindow.png)
+
+每个输入窗口控件都有一个 `value`，可以在创建时使用 `default_value` 参数或在运行时通过 `set_value` 方法进行设置。同时，可以使用 `get_value` 方法访问控件的 `value`。
