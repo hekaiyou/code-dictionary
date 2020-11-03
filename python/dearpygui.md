@@ -507,3 +507,43 @@ start_dearpygui()
 ```
 
 ![dearpygui_menubar](image/dearpygui/dearpygui_menubar.png)
+
+### 文件和目录对话框
+
+通过 `select_directory_dialog` 来调用目录对话框，而且必须为其提供回调方法。 回调方法返回的 `data` 参数中将包含目录路径和文件夹路径。通常，目录对话框是由另一个控件（例如下面栗子中的按钮）调用的。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+add_additional_font('三极中柔宋.ttf', 18, glyph_ranges='chinese_simplified_common')
+
+def directory_picker(sender, data):
+    select_directory_dialog(callback=apply_selected_directory)
+
+def apply_selected_directory(sender, data):
+    log_debug(data)
+    directory = data[0]
+    folder = data[1]
+    set_value("目录", directory)
+    set_value("文件夹", folder)
+    set_value("文件夹路径", f"{directory}\\{folder}")
+
+show_logger()
+
+with window("Tutorial"):
+    add_button("目录选择器", callback=directory_picker)
+    add_text("目录路径: ")
+    add_same_line()
+    add_label_text("##dir", source="目录", color=[255, 0, 0])
+    add_text("文件夹: ")
+    add_same_line()
+    add_label_text("##folder", source="文件夹", color=[255, 0, 0])
+    add_text("文件夹路径: ")
+    add_same_line()
+    add_label_text("##folderpath", source="文件夹路径", color=[255, 0, 0])
+
+start_dearpygui()
+```
+
+![dearpygui_select_directory_dialog](image/dearpygui/dearpygui_select_directory_dialog.png)
