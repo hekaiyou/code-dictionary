@@ -508,9 +508,9 @@ start_dearpygui()
 
 ![dearpygui_menubar](image/dearpygui/dearpygui_menubar.png)
 
-### 文件和目录对话框
+### 目录对话框
 
-通过 `select_directory_dialog` 来调用目录对话框，而且必须为其提供回调方法。 回调方法返回的 `data` 参数中将包含目录路径和文件夹路径。通常，目录对话框是由另一个控件（例如下面栗子中的按钮）调用的。
+通过 `select_directory_dialog` 来调用目录对话框，而且必须为其提供回调方法。 回调方法返回的 `data` 参数中将包含 **目录路径** 和 **文件夹路径**。通常，目录对话框是由另一个控件（例如下面栗子中的按钮）调用的。
 
 ```python
 from dearpygui.core import *
@@ -546,4 +546,101 @@ with window("Tutorial"):
 start_dearpygui()
 ```
 
-![dearpygui_select_directory_dialog](image/dearpygui/dearpygui_select_directory_dialog.png)
+![dearpygui_selectdirectorydialog](image/dearpygui/dearpygui_selectdirectorydialog.png)
+
+### 文件对话框
+
+通过 `open_file_dialog` 可以调用文件对话框，同样，必须为其提供回调方法，回调方法返回的 `data` 参数中将包含 **目录路径** 和 **文件名称**。`extensions` 是文件对话框的可选参数，可以设置对文件扩展名的过滤，控制显示哪些后缀名的文件。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+add_additional_font('三极中柔宋.ttf', 18, glyph_ranges='chinese_simplified_common')
+
+def file_picker(sender, data):
+    open_file_dialog(callback=apply_selected_file, extensions=".*,.py")
+
+def apply_selected_file(sender, data):
+    log_debug(data)
+    directory = data[0]
+    file = data[1]
+    set_value("目录", directory)
+    set_value("文件", file)
+    set_value("文件路径", f"{directory}\\{file}")
+
+show_logger()
+
+with window("Tutorial"):
+    add_button("文件选择器", callback=file_picker)
+    add_text("目录路径: ")
+    add_same_line()
+    add_label_text("##filedir", source="目录", color=[255, 0, 0])
+    add_text("文件: ")
+    add_same_line()
+    add_label_text("##file", source="文件", color=[255, 0, 0])
+    add_text("文件路径: ")
+    add_same_line()
+    add_label_text("##filepath", source="文件路径", color=[255, 0, 0])
+
+start_dearpygui()
+```
+
+![dearpygui_openfiledialog](image/dearpygui/dearpygui_openfiledialog.png)
+
+### 图形标绘
+
+Dear PyGui 具有 `simple_plot`（简单绘图）和 `plot`（绘图）两个绘图方式，两者都是动态的。`simple_plot`（简单绘图）接受列表参数，并基于列表中的数据数据绘制 *y轴* 数据，可以是折线图或直方图。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+with window("Tutorial"):
+    add_simple_plot("Simpleplot1", value=[0.3, 0.9, 0.5, 0.3], height=300)
+    add_simple_plot("Simpleplot2", value=[0.3, 0.9, 2.5, 8.9], overlay="Overlaying", height=180, histogram=True)
+
+start_dearpygui()
+```
+
+![dearpygui_addsimpleplot](image/dearpygui/dearpygui_addsimpleplot.png)
+
+而 `plot`（绘图）则具有更多的功能，绘图同时使用 *x轴* 和 *y轴* 坐标，使用 `add_plot` 方法创建，然后可以将数据作为线形图或散布图添加，`plot`（绘图）的特点有：
+
+- 单击 & 拖动 —— 平移绘图
+- 单击 & 拖动轴 —— 在一个方向上平移绘图
+- 双击 —— 将绘图缩放并移动到数据区域
+- 右键单击 & 拖动 —— 缩放区域
+- 双右键单击 —— 打开设置
+- Shift + 右键单击 & 拖动 —— 缩放并填充当前轴的区域
+- 滚动鼠标滚轮 —— 缩放
+- 在轴上滚动鼠标滚轮 —— 仅缩放该轴
+- 点击图例 —— 切换图例上的数据集并隐藏
+
+另外，鼠标停留在绘图上时，会出现数值类型的浮动文本。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+from math import cos, sin
+
+def plot_callback(sender, data):
+    clear_plot("Plot")
+    data1 = []
+    for i in range(0, 100):
+        data1.append([3.14 * i / 180, cos(3 * 3.14 * i / 180)])
+    data2 = []
+    for i in range(0, 100):
+        data2.append([3.14 * i / 180, sin(2 * 3.14 * i / 180)])
+    add_line_series("Plot", "Cos", data1, weight=2, color=[0, 0, 255, 100])
+    add_shade_series("Plot", "Cos", data1, weight=2, fill=[255, 0, 0, 100])
+    add_scatter_series("Plot", "Sin", data2, color=[0, 255, 0, 100])
+
+with window("Tutorial"):
+    add_button("Plot data", callback=plot_callback)
+    add_plot("Plot", height=-1)
+
+start_dearpygui()
+```
+
+![dearpygui_addplot](image/dearpygui/dearpygui_addplot.png)
