@@ -644,3 +644,30 @@ start_dearpygui()
 ```
 
 ![dearpygui_addplot](image/dearpygui/dearpygui_addplot.png)
+
+通过 `set_value` 方法可以更改绘图调用的值，使 `simple_plot`（简单绘图）实现动态实时绘制。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+from math import sin
+
+def on_render(sender, data):
+    frame_count = get_data("frame_count")
+    frame_count += 1
+    add_data("frame_count", frame_count)
+    plot_data = get_value("plot_data")
+    if len(plot_data) > 100:
+        plot_data.pop(0)
+    plot_data.append(sin(frame_count / 30))
+    set_value("plot_data", plot_data)
+
+with window("Tutorial"):
+    add_simple_plot("Simple Plot", source="plot_data", minscale=-1.0, maxscale=1.0, height=300)
+    add_data("frame_count", 0)
+    set_render_callback(on_render)
+
+start_dearpygui()
+```
+
+![dearpygui_simpleplotsetvalue](image/dearpygui/dearpygui_simpleplotsetvalue.png)
