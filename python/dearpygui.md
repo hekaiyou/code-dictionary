@@ -588,7 +588,7 @@ start_dearpygui()
 
 ![dearpygui_openfiledialog](image/dearpygui/dearpygui_openfiledialog.png)
 
-### 图形标绘
+### 绘制图表
 
 Dear PyGui 具有 `simple_plot`（简单绘图）和 `plot`（绘图）两个绘图方式，两者都是动态的。`simple_plot`（简单绘图）接受列表参数，并基于列表中的数据数据绘制 *y轴* 数据，可以是折线图或直方图。
 
@@ -671,3 +671,143 @@ start_dearpygui()
 ```
 
 ![dearpygui_simpleplotsetvalue](image/dearpygui/dearpygui_simpleplotsetvalue.png)
+
+同样的，`plot`（绘图）也可以动态实时绘制，举个栗子，我们使用 `set_render_callback` 设置一个渲染回调实现动态绘制。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+from math import cos
+
+def plot_callback(sender, data):
+    # 跟踪每一帧
+    frame_count = get_data("frame_count")
+    frame_count += 1
+    add_data("frame_count", frame_count)
+    # 更新 plot_data
+    plot_data = get_data("plot_data")
+    if len(plot_data) > 2000:
+        frame_count = 0
+        plot_data.clear()
+    plot_data.append([3.14 * frame_count / 180, cos(3 * 3.14 * frame_count / 180)])
+    add_data("plot_data", plot_data)
+    # 绘制新数据
+    clear_plot("Plot")
+    add_line_series("Plot", "Cos", plot_data, weight=2)
+
+with window("Tutorial"):
+    add_plot("Plot", height=-1)
+    add_data("plot_data", [])
+    add_data("frame_count", 0)
+    set_render_callback(plot_callback)
+
+start_dearpygui()
+```
+
+![dearpygui_plotsetvalue](image/dearpygui/dearpygui_plotsetvalue.png)
+
+### 绘画与画布
+
+Dear PyGui 有一个低级绘图 API，可以用来原始绘画、自定义控件甚至动态绘画。先通过调用 `add_drawing` 方法开始绘画，再通过调用各种绘画方法来添加笔画。需要注意的是，画布的原点位于左下角。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+with window("Tutorial"):
+    add_drawing("Drawing_1", width=120, height=120)
+
+draw_line("Drawing_1", [10, 10], [100, 100], [255, 0, 0, 255], 1)
+draw_text("Drawing_1", [16, 16], "Origin", color=[250, 250, 250, 255], size=15)
+draw_arrow("Drawing_1", [100, 65], [50, 70], [0, 200, 255], 1, 10)
+
+start_dearpygui()
+```
+
+![dearpygui_adddrawing](image/dearpygui/dearpygui_adddrawing.png)
+
+绘画（`drawing`）具有可以获取和设置的缩放（`origin`）、原点（`origin`）和尺寸（`size`）属性，缩放（`origin`）是 *x* 和 *y* 值的乘数，尺寸（`size`）以像素为单位。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+with window("Tutorial"):
+    add_drawing("Drawing_1", width=240, height=240)
+
+draw_line("Drawing_1", [10, 10], [100, 100], [255, 0, 0, 255], 1)
+draw_text("Drawing_1", [16, 16], "Origin", color=[250, 250, 250, 255], size=15)
+draw_arrow("Drawing_1", [100, 65], [50, 70], [0, 200, 255], 1, 10)
+
+set_drawing_origin("Drawing_1", 15, 15)
+set_drawing_scale("Drawing_1", 2, 2)
+set_drawing_size("Drawing_1", 250, 250)
+
+start_dearpygui()
+```
+
+![dearpygui_setdrawingorigin](image/dearpygui/dearpygui_setdrawingorigin.png)
+
+绘画（`drawing`）可以显示的图像类型有 *.png*、*.jpg*、*.bmp*，使用时需掉用 `draw_image` 以绘制图像。通过 `pmin` 和 `pmax` 参数，我们可以将图像绘制到画布上矩形的左上和右下区域，图像会缩放自动缩放以适应指定区域。
+
+使用 `uv_min` 和 `uv_max` 参数，我们可以控制图像要绘制到哪个区域的 [标量（scalar）](https://baike.baidu.com/item/%E6%A0%87%E9%87%8F)，默认情况下，`uv_min = [0,0]` 和 `uv_max = [1,1]` 将显示整个图像，而 `uv_min = [0,0]` 和 `uv_max = [0.5,0.5]` 则仅显示图形的一部分。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+with window("Tutorial"):
+    add_drawing("Drawing_1", width=700, height=700)
+
+draw_image("Drawing_1", 'pokemon_PNG146.png', [0, 700], pmax=[200, 500], uv_min=[0, 0], uv_max=[1, 1], tag="image")
+draw_image("Drawing_1", 'pokemon_PNG146.png', [0, 600], pmax=[200, 300], uv_min=[0, 0], uv_max=[1, 1])
+draw_image("Drawing_1", 'pokemon_PNG146.png', [0, 500], pmax=[200, 100], uv_min=[0, 0], uv_max=[1, 1])
+draw_image("Drawing_1", 'pokemon_PNG146.png', [400, 600], pmax=[600, 400], uv_min=[0, 0], uv_max=[0.5, 0.5])
+draw_image("Drawing_1", 'pokemon_PNG146.png', [400, 400], pmax=[700, 50], uv_min=[0, 0], uv_max=[3.5, 2.5])
+
+start_dearpygui()
+```
+
+![dearpygui_pokemonpng](image/dearpygui/dearpygui_pokemonpng.png)
+
+尽管我们可以通过清除和重绘整个图来实现图形的动态化，但是 **DearPyGui** 还提供了一种更有效的方法，要使绘画（`drawing`）动态化，应该使用 `tag` 参数标记要重绘的控件，然后，只要使用相同的标签去调用。这样，我们就能实现仅清除该控件，并将其重新绘制。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+def on_render(sender, data):
+    counter = get_data("counter")
+    counter += 1
+    modifier = get_data("modifier")
+    if counter < 300:
+        modifier += 1
+    elif counter < 600:
+        modifier -= 1
+    else:
+        counter = 0
+        modifier = 2
+    xpos = 15 + modifier * 1.25
+    ypos = 15 + modifier * 1.25
+    color1 = 255 - modifier * .8
+    color3 = 255 - modifier * .3
+    color2 = 255 - modifier * .8
+    radius = 15 + modifier / 2
+    segments = round(35 - modifier / 10)
+    draw_circle("Drawing_1", [xpos, ypos], radius, [color1, color3, color2, 255], segments=segments,
+                tag="circle##dynamic")
+    add_data("counter", counter)
+    add_data("modifier", modifier)
+
+add_data("counter", 0)
+add_data("modifier", 2)
+
+with window("Tutorial"):
+    add_drawing("Drawing_1", width=700, height=700)
+
+set_render_callback(on_render)
+
+start_dearpygui()
+```
+
+![dearpygui_drawcircletag](image/dearpygui/dearpygui_drawcircletag.png)
