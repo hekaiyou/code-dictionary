@@ -811,3 +811,185 @@ start_dearpygui()
 ```
 
 ![dearpygui_drawcircletag](image/dearpygui/dearpygui_drawcircletag.png)
+
+### 增量时间与内部时钟
+
+Dear PyGui 有一个内置的时钟，用于检查应用程序运行的总时间 `get_total_time`，该时间以秒为单位。通过 `get_delta_time()` 方法，我们可以检查渲染的每帧之间的时间差，同样是以秒为单位。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+add_additional_font('三极中柔宋.ttf', 18, glyph_ranges='chinese_simplified_common')
+
+def on_render(sender, data):
+    delta_time = str(round(get_delta_time(), 4))
+    total_time = str(round(get_total_time(), 4))
+    set_value("delta_time", delta_time)
+    set_value("total_time", total_time)
+
+with window("Tutorial"):
+    add_text("应用运行的总时间: ")
+    add_same_line()
+    add_label_text("##total_time_text", source="total_time")
+    add_text("应用刷新的时间差: ")
+    add_same_line()
+    add_label_text("##delta_time_text", source="delta_time")
+set_render_callback(callback=on_render)
+
+start_dearpygui()
+```
+
+![dearpygui_getdeltatime](image/dearpygui/dearpygui_getdeltatime.png)
+
+### 精灵(Sprites)
+
+“精灵(Sprites)” 的概念通常用于游戏开发中，而 **DearPyGui** 是对 [Dear ImGui](https://www.worldlink.com.cn/en/osdir/imgui.html) 游戏类框架的包装，因此， **DearPyGui** 中也有 **精灵** 这个概念。从技术上讲，**精灵** 就是一个可以不断变化的图片，这些变化包括：位置移动、旋转（以自身几何中心或以某个屏幕坐标为轴）、放大缩小、运动（按一定时间间隔连续显示一系列图像，形成运动效果）。
+
+通过带有 `tag` 的图像、`get_delta_time` 和渲染时触发的 `set_render_callback` 回调方法，我们可以创建一个 **精灵角色(Sprite Character)**，我们会用到下面这张图像：
+
+![SpriteMapExample](image/dearpygui/SpriteMapExample.png)
+
+再通过 `add_drawing` 开始绘制，就可以通过具体的绘制方法来添加控件了。同样的，画布的原点位于左下角。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+add_additional_font('三极中柔宋.ttf', 18, glyph_ranges='chinese_simplified_common')
+
+def on_render(sender, data):
+    delta_draw_time = get_data("delta_draw_time")
+    draw_speed = get_value("Draw Pause")
+    if delta_draw_time > draw_speed:
+        if get_value("Fly Mode") == 0:
+            if get_data("sprite1"):
+                draw_image("Drawing_1", 'SpriteMapExample.png', top_left, pmax=bottom_right, uv_min=[.7690, 0],
+                           uv_max=[.8074, .10], tag="sprite")
+                add_data("sprite1", False)
+            else:
+                draw_image("Drawing_1", 'SpriteMapExample.png', top_left, pmax=bottom_right, uv_min=[.8074, 0],
+                           uv_max=[.8461, .10], tag="sprite")
+                add_data("sprite1", True)
+        else:
+            if get_data("sprite1"):
+                draw_image("Drawing_1", 'SpriteMapExample.png', top_left, pmax=bottom_right, uv_min=[.8464, 0],
+                           uv_max=[.8848, .10], tag="sprite")
+                add_data("sprite1", False)
+            else:
+                draw_image("Drawing_1", 'SpriteMapExample.png', top_left, pmax=bottom_right, uv_min=[.8851, 0],
+                           uv_max=[.9235, .10], tag="sprite")
+                add_data("sprite1", True)
+        add_data("delta_draw_time", 0)
+    else:
+        add_data("delta_draw_time", delta_draw_time + get_delta_time())
+
+set_main_window_size(500, 500)
+
+with window("Tutorial"):
+    add_drawing("Drawing_1", width=120, height=120)
+    top_left = [100, 100]
+    bottom_right = [50, 50]
+    draw_image("Drawing_1", 'SpriteMapExample.png', top_left, pmax=bottom_right, uv_min=[.7687, 0], uv_max=[1, .10],
+               tag="sprite")
+    add_text("飞行模式:")
+    add_radio_button("Fly Mode", items=["禁用", "启用"], default_value=0)
+    add_slider_float("Draw Pause", label="快~慢", default_value=0.1, min_value=0.0, max_value=1.0,
+                     tip="通过等待 Elapsed Time 来降低绘制速度", format="%.4f")
+    set_render_callback(on_render)
+    add_data("delta_draw_time", 0.0)
+    add_data("sprite1", True)
+
+start_dearpygui()
+```
+
+![dearpygui_spritemap](image/dearpygui/dearpygui_spritemap.png)
+
+### 表格
+
+Dear PyGui 有一个调用简单的表格 API，可以实现静态和动态的表格。先通过调用 `add_table()` 方法以启动表格控件，然后如果要编辑表格，可以使用 `add_row()` 和 `add_column()` 方法将行/列追加到表格的最后。
+
+另外，还可以使用 `insert_row` 和 `insert_column` 方法插入行/列，列和行根据其 `***_index` 参数插入，如果指定的 `***_index` 参数已经存在，则会采取覆盖操作。默认情况下，添加或插入的行/列将用空值填充单元格。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+add_additional_font('三极中柔宋.ttf', 18, glyph_ranges='chinese_simplified_common')
+
+with window("Tutorial"):
+    add_table("Table Example", ["标题 0", "标题 1"])
+    add_row("Table Example", ["行 0", "文本内容"])
+    add_row("Table Example", ["行 2", "文本内容"])
+    add_column("Table Example", "标题 3", [{'a': 1}, {'b': 2}])
+    insert_row("Table Example", 1, ["行 1", "插入行", "插入行"])
+    insert_column("Table Example", 2, "标题 2", ["插入列", "插入列", "插入列"])
+
+start_dearpygui()
+```
+
+![dearpygui_addtable](image/dearpygui/dearpygui_addtable.png)
+
+此外，标题和单元格可以重命名/更改。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+add_additional_font('三极中柔宋.ttf', 18, glyph_ranges='chinese_simplified_common')
+
+def modify_tables(sender, data):
+    log_debug(f"表格名称: {sender}")
+    coord_list = get_table_selections("Table Example")
+    log_debug(f"选中的单元格 (坐标): {coord_list}")
+    for coordinates in coord_list:
+        set_table_item("Table Example", coordinates[0], coordinates[1], "新值")
+    set_headers("Table Example", ["新标题 0", "新标题 1", "新标题 2"])
+
+show_logger()
+
+with window("Tutorial"):
+    add_spacing(count=5)
+    add_button("修改选定的表值", callback=modify_tables)
+    add_spacing(count=5)
+    add_table("Table Example", ["标题 0", "标题 1"])
+    add_row("Table Example", ["文本内容", "文本内容"])
+    add_row("Table Example", ["文本内容", "文本内容"])
+    add_column("Table Example", "标题 2", ["文本内容", "文本内容"])
+    add_row("Table Example", ["文本内容"])
+
+start_dearpygui()
+```
+
+![dearpygui_settableitem](image/dearpygui/dearpygui_settableitem.png)
+
+上面的两个栗子中，表格的单元格是可选的，这意味着我们可以将回调方法应用于表格，并获取单元格中的内容。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+
+add_additional_font('三极中柔宋.ttf', 18, glyph_ranges='chinese_simplified_common')
+
+def table_printer(sender, data):
+    log_debug(f"表格名称: {sender}")
+    coord_list = get_table_selections("Table Example")
+    log_debug(f"选中的单元格 (坐标): {coord_list}")
+    names = []
+    for coordinates in coord_list:
+        names.append(get_table_item("Table Example", coordinates[0], coordinates[1]))
+    log_debug(names)
+
+show_logger()
+
+with window("Tutorial"):
+    add_table("Table Example", ["标题 0", "标题 1"], callback=table_printer)
+    add_row("Table Example", ["文本内容", "文本内容"])
+    add_row("Table Example", ["文本内容", "文本内容"])
+    add_column("Table Example", "标题 3", ["文本内容", "文本内容"])
+    add_row("Table Example", ["文本内容"])
+
+start_dearpygui()
+```
+
+![dearpygui_tableitemcallback](image/dearpygui/dearpygui_tableitemcallback.png)
