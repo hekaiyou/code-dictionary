@@ -993,3 +993,76 @@ start_dearpygui()
 ```
 
 ![dearpygui_tableitemcallback](image/dearpygui/dearpygui_tableitemcallback.png)
+
+## 高级操作
+
+### 多线程与异步
+
+对于一些需要长时间运行的计算和回调，我们可以使用在单线程上运行的异步方法，使用很简单，只需要调用 `run_async_function` 方法即可，需要注意的是，使用异步命令运行的方法中，不能调用 **DearPyGui** 的对象与方法。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+from time import sleep
+
+add_additional_font(file='MicrosoftYaHei.ttf', size=18.0, glyph_ranges='chinese_simplified_common')
+
+def long_async_callback(data, sender):
+    run_async_function(long_callback, None)
+
+def long_callback(sender, data):
+    sleep(3)
+
+show_logger()
+show_metrics()
+
+with window("Tutorial"):
+    add_button("耗时方法", callback=long_callback, tip="This will cause a 3 second freeze")
+    add_button("耗时异步方法", callback=long_async_callback, tip="This will not freeze")
+
+start_dearpygui()
+```
+
+![dearpygui_runasyncfunction](image/dearpygui/dearpygui_runasyncfunction.png)
+
+异步方法中无法访问 `add_data` 或 `get_data`，因此，当需要将数据传递到异步函方法时，我们必须使用 `data` 和 `return_handler` 参数，所有的 **Python** 对象都可以通过 `data` 参数发送到方法中。此外，通过指定返回回调的 `data` 输入，可以让异步方法访问任何数据。
+
+```python
+from dearpygui.core import *
+from dearpygui.simple import *
+from time import sleep
+
+add_additional_font(file='MicrosoftYaHei.ttf', size=18.0, glyph_ranges='chinese_simplified_common')
+
+def long_async_preparer(data, sender):
+    floaty = get_value("异步输入数据")
+    run_async_function(long_callback, floaty, return_handler=long_async_return)
+
+def long_callback(sender, data):
+    sleep(3)
+    return data * 2
+
+def long_async_return(sender, data):
+    log_debug(data)
+
+def long_callback2(sender, data):
+    sleep(3)
+    log_debug(data * 2)
+
+show_logger()
+
+with window("Tutorial"):
+    add_text("输入一个数字，然后在logger窗口中查看回调的输出，该回调通常会使整个GUI冻结")
+    add_input_float("异步输入数据", default_value=1.0)
+    add_button("耗时方法", callback=long_callback2, callback_data=get_value("异步输入数据"),
+               tip="This is the long callback that will freeze the gui")
+    add_button("耗时异步方法", callback=long_async_preparer, tip="this will not a freeze the GUI")
+
+start_dearpygui()
+```
+
+![dearpygui_asyncreturnhandler](image/dearpygui/dearpygui_asyncreturnhandler.png)
+
+当调用异步方法时，将创建一个 **线程池**，我们可以配置 *线程数* 和 *线程超时时间*。通过 `set_thread_count` 我们可以设置 **线程池** 中的线程数，也可以通过 `set_threadpool_high_performance` 将 **线程池** 的最大线程数设置为计算机的最大值。
+
+需要注意，调用异步方法时，CPU 将以 *100％* 的速度运行，因此，我们可以通过 `set_threadpool_timeout` 设置线程池中每个线程的超时时间，这样，在超出设定的时间后，将自动销毁线程并释放资源。
