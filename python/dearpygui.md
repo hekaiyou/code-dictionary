@@ -1034,7 +1034,7 @@ from time import sleep
 
 add_additional_font(file='MicrosoftYaHei.ttf', size=18.0, glyph_ranges='chinese_simplified_common')
 
-def long_async_preparer(data, sender):
+def long_async_preparer(sender, data):
     floaty = get_value("异步输入数据")
     run_async_function(long_callback, floaty, return_handler=long_async_return)
 
